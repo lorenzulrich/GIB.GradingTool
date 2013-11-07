@@ -1,0 +1,47 @@
+{namespace secure=Flow\Login\ViewHelpers}
+<!DOCTYPE html>
+<html lang="en" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+<head>
+	<title>GIB Grading Tool</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+	<f:base />
+</head>
+<body>
+<div class="container">
+	<f:flashMessages class="flashmessages"/>
+	<div class="row" id="siteHeader">
+		<h1>
+			<f:render section="Title"/>
+		</h1>
+	</div>
+	<f:render section="Content"/>
+	<div class="row" id="siteFooter">
+		<f:security.ifAuthenticated>
+			<f:then>
+				<secure:account propertyPath="party.name" /> |
+				<f:link.action action="logout" package="Flow.Login" controller="Login">Logout</f:link.action>
+			</f:then>
+			<f:else>
+				<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
+			</f:else>
+		</f:security.ifAuthenticated>
+	</div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+<script src="{f:uri.resource(path: 'JavaScript/jquery.form.js', package: 'Flow.Login')}"></script>
+<script src="{f:uri.resource(path: 'JavaScript/Login.js', package: 'Flow.Login')}"></script>
+<div class="modal fade" id="modal-login">
+</div>
+</body>
+</html>
