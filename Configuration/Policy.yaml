@@ -1,0 +1,15 @@
+resources:
+  methods:
+    Flow_LoginSignedInMethods: 'method(Flow\Login\Controller\LoginController->signedInAction())'
+
+roles:
+  Administrator: []
+  Editor: []
+
+acls:
+  Administrator:
+    methods:
+      Flow_LoginSignedInMethods: GRANT
+  Editor:
+    methods:
+      Flow_LoginSignedInMethods: GRANT

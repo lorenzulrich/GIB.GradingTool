@@ -1,10 +1,22 @@
 <f:layout name="Default" />
 
-<f:section name="Title">GIB Grading Tool</f:section>
+<f:section name="Title">GIB Grading Tool – Assessment of Sustainable Infrastructure</f:section>
 
 <f:section name="Content">
+<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+	<div class="col-md-12">
+		<p>In order to gain access to the GIB Grading Tool you must first complete the data sheet, which can be found here:</p>
 
+		<p>
+		<f:link.action class="btn btn-primary btn-lg" additionalAttributes="{role:'button'}" controller="Project" action="newDataSheet">Project Data Sheet</f:link.action>
+		</p>
 
+		<p>If you already have an account for the GIB Grading Tool, you can log in to edit your projects or add a new project:</p>
 
+		<p>
+			<a class="login-panel btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
+		</p>
+	</div>
+</div>
 
 </f:section>

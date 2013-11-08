@@ -1,0 +1,21 @@
+{namespace form=TYPO3\Form\ViewHelpers}
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<form:form action="index" object="{form}" method="post" id="{form.identifier}" enctype="multipart/form-data">
+	<div class="progress progress-striped">
+		<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{gib:calculation(expressionString: '{form.currentPage.index}+1')}" aria-valuemin="0" aria-valuemax="{form.pages -> f:count()}"></div>
+	</div>
+	<form:renderRenderable renderable="{form.currentPage}" />
+	<div class="actions">
+		<f:render partial="TYPO3.Form:Form/Navigation" arguments="{form: form}" />
+	</div>
+</form:form>
+<script type="text/javascript">
+	$(function() {
+		$('.progress-bar').css("width",
+				function() {
+					var currentProgressPercent = ($(this).attr("aria-valuenow") / $(this).attr("aria-valuemax")) * 100;
+					return Math.floor(currentProgressPercent) + '%';
+				}
+		)
+	});
+</script>

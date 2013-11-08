@@ -1,0 +1,47 @@
+TYPO3:
+  Form:
+    presets:
+      gibdatasheet:
+        title: 'GIB Data Sheet'
+        parentPreset: 'default'
+
+        ########### Required CSS / JavaScripts ###########
+
+        stylesheets:
+          bootstrap:
+            source: 'resource://GIB.GradingTool/Public/Stylesheets/bootstrap.min.css'
+        javaScripts: []
+
+        ########### DEFAULT FORM ELEMENT DEFINITIONS ###########
+        formElementTypes:
+
+          ### BASE ELEMENTS ###
+
+          # NAMING: base class for everything is RENDERABLE
+          'TYPO3.Form:Base':
+            renderingOptions:
+              templatePathPattern: 'resource://GIB.GradingTool/Private/Form/{@type}.html'
+              partialPathPattern: 'resource://GIB.GradingTool/Private/Form/Partials/{@type}.html'
+              layoutPathPattern: 'resource://GIB.GradingTool/Private/Form/Layouts/{@type}.html'
+              # set this to TRUE if you want to avoid exceptions for FormElements without definitions
+              skipUnknownElements: FALSE
+              # Package with XLIFF files for translatable messages (e.g. validation errors)
+              # If you need custom messages, copy Resources/Private/Translations/en/ValidationErrors.xlf to your package and adjust this setting
+              translationPackage: 'TYPO3.Flow'
+
+        ### FINISHERS ###
+        finisherPresets:
+          'GIB.GradingTool:SerializedStorageFinisher':
+            implementationClassName: 'GIB\GradingTool\Form\Finishers\SerializedStorageFinisher'
+        formElementTypes:
+          'TYPO3.Form:Form':
+            formBuilder:
+              editors:
+                finishers:
+                  availableFinishers:
+                    'GIB.GradingTool:SerializedStorageFinisher':
+                      label: 'Save serialized data to database'
+                      templateName: 'Finisher-GIB.GradingTool-SerializedStorageFinisher'
+  FormBuilder:
+    handlebarsTemplates:
+      Finisher-GIB.GradingTool-SerializedStorageFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SerializedStorageEditor.html'

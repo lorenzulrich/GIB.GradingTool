@@ -1,0 +1,14 @@
+{namespace form=TYPO3\Form\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="Title">Project Data Sheet</f:section>
+
+<f:section name="Content">
+	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<div class="col-md-12">
+
+			<form:render persistenceIdentifier="dataSheetForm" presetName="gibdatasheet" />
+
+		</div>
+	</div>
+</f:section>

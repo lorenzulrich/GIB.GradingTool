@@ -1,0 +1,23 @@
+#siteHeader h1 { font-size: 28px; }
+
+#siteHeader {
+    padding: 20px;
+    background-color: #d3d3d3;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 20px;
+}
+
+#siteFooter {
+    margin-top: 20px;
+    background-color: lightblue;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.pager .previous>button {
+    float: left;
+}
+
+.pager .next>button {
+    float: right;
+}
