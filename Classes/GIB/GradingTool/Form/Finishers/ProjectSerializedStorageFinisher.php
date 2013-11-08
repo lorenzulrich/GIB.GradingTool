@@ -18,7 +18,7 @@ namespace GIB\GradingTool\Form\Finishers;
 
 use TYPO3\Flow\Annotations as Flow;
 
-class SerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
+class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 	/**
 	 * @var array
@@ -47,31 +47,32 @@ class SerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher 
 	 * @throws \TYPO3\Form\Exception\FinisherException
 	 */
 	protected function executeInternal() {
+
+		/** @var \TYPO3\Form\Core\Runtime\FormRuntime $formRuntime */
 		$formRuntime = $this->finisherContext->getFormRuntime();
 
 		$formValueArray = $formRuntime->getFormState()->getFormValues();
-
-		$targetDomainModel = $this->parseOption('domainModel');
-
-		$targetContentProperty = $this->parseOption('formContentProperty');
-		$targetContentSetter = 'set' . ucfirst($targetContentProperty);
-
 		$sourceLabelField = $this->parseOption('labelFormFieldIdentifier');
 
-		$targetLabelProperty = $this->parseOption('labelDatabaseProperty');
-		$targetLabelSetter = 'set' . ucfirst($targetLabelProperty);
 
-		$project = new $targetDomainModel();
-		$project->$targetLabelSetter($formValueArray[$sourceLabelField]);
-		$project->$targetContentSetter(serialize($formValueArray));
+		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
+			// we need to update the form
+			/** @var \GIB\GradingTool\Domain\Model\Project $project */
+			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project')['__identity']);
+			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			$project->setDataSheetContent(serialize($formValueArray));
+			$this->projectRepository->update($project);
 
+		} else {
+			// we need to add a new form
+			/** @var \GIB\GradingTool\Domain\Model\Project $project */
+			$project = new \GIB\GradingTool\Domain\Model\Project();
+			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			$project->setDataSheetContent(serialize($formValueArray));
+			$this->projectRepository->add($project);
+		}
 
-		//\typo3\flow\var_dump($project->getProjectTitle());
-
-		$this->projectRepository->add($project);
 		$this->persistenceManager->persistAll();
-
-		die();
 
 	}
 

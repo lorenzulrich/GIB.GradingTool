@@ -1,0 +1,21 @@
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool</f:section>
+
+<f:section name="Content">
+
+	<h2>Projects</h2>
+
+	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<f:for each="{projects}" as="project">
+			<li><f:link.action action="editDataSheet" controller="Project" arguments="{project:project}">{project.projectTitle}</f:link.action></li>
+		</f:for>
+	</ul>
+
+
+
+	<f:form controller="project" action="newDataSheet">
+		<button class="btn btn-primary" type="submit">Add project</button>
+	</f:form>
+
+</f:section>

@@ -34,14 +34,24 @@ TYPO3:
               editors:
                 finishers:
                   availableFinishers:
-                    'GIB.GradingTool:SerializedStorageFinisher':
-                      label: 'Save serialized data to database'
-                      templateName: 'Finisher-GIB.GradingTool-SerializedStorageFinisher'
+                    'GIB.GradingTool:ProjectSerializedStorageFinisher':
+                      label: 'Save serialized data to project'
+                      templateName: 'Finisher-GIB.GradingTool-ProjectSerializedStorageFinisher'
         ### FINISHERS ###
         finisherPresets:
-          'GIB.GradingTool:SerializedStorageFinisher':
-            implementationClassName: 'GIB\GradingTool\Form\Finishers\SerializedStorageFinisher'
-
+          'GIB.GradingTool:ProjectSerializedStorageFinisher':
+            implementationClassName: 'GIB\GradingTool\Form\Finishers\ProjectSerializedStorageFinisher'
+      gibdatasheetedit:
+        title: 'GIB Data Sheet Edit Form'
+        parentPreset: 'gibdatasheet'
+        formElementTypes:
+          'TYPO3.Form:FormElement':
+            superTypes: ['TYPO3.Form:Base', 'TYPO3.Form:RemovableMixin']
+            implementationClassName: 'GIB\GradingTool\Form\FormElements\EditableGenericFormElement'
   FormBuilder:
     handlebarsTemplates:
-      Finisher-GIB.GradingTool-SerializedStorageFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SerializedStorageEditor.html'
+      Finisher-GIB.GradingTool-ProjectSerializedStorageFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/ProjectSerializedStorageEditor.html'
+
+
+
+
