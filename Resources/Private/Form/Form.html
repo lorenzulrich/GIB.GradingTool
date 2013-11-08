@@ -12,10 +12,10 @@
 <script type="text/javascript">
 	$(function() {
 		$('.progress-bar').css("width",
-				function() {
-					var currentProgressPercent = ($(this).attr("aria-valuenow") / $(this).attr("aria-valuemax")) * 100;
-					return Math.floor(currentProgressPercent) + '%';
-				}
+			function() {
+				var currentProgressPercent = ($(this).attr("aria-valuenow") / $(this).attr("aria-valuemax")) * 100;
+				return Math.floor(currentProgressPercent) + '%';
+			}
 		)
 	});
 </script>

@@ -14,40 +14,30 @@ namespace GIB\GradingTool\Form\Finishers;
 /**
  * This finisher sends an email to one recipient
  *
- * Options:
- *
- * - templatePathAndFilename (mandatory): Template path and filename for the mail body
- * - layoutRootPath: root path for the layouts
- * - partialRootPath: root path for the partials
- * - variables: associative array of variables which are available inside the Fluid template
- *
- * The following options control the mail sending. In all of them, placeholders in the form
- * of {...} are replaced with the corresponding form value; i.e. {email} as recipientAddress
- * makes the recipient address configurable.
- *
- * - subject (mandatory): Subject of the email
- * - recipientAddress (mandatory): Email address of the recipient
- * - recipientName: Human-readable name of the recipient
- * - senderAddress (mandatory): Email address of the sender
- * - senderName: Human-readable name of the sender
- * - replyToAddress: Email address of to be used as reply-to email
- * - format: format of the email (one of the FORMAT_* constants). By default mails are sent as HTML
- * - testMode: if TRUE the email is not actually sent but outputted for debugging purposes. Defaults to FALSE
  */
-class SerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
-	const FORMAT_PLAINTEXT = 'plaintext';
-	const FORMAT_HTML = 'html';
+use TYPO3\Flow\Annotations as Flow;
+
+class SerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 	/**
 	 * @var array
 	 */
 	protected $defaultOptions = array(
-		'recipientName' => '',
-		'senderName' => '',
-		'format' => self::FORMAT_HTML,
-		'testMode' => FALSE,
+
 	);
+
+	/**
+	 * @var \GIB\GradingTool\Domain\Repository\ProjectRepository
+	 * @Flow\Inject
+	 */
+	protected $projectRepository;
+
+	/**
+	 * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+	 * @Flow\Inject
+	 */
+	protected $persistenceManager;
 
 	/**
 	 * Executes this finisher
@@ -58,84 +48,31 @@ class SerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher 
 	 */
 	protected function executeInternal() {
 		$formRuntime = $this->finisherContext->getFormRuntime();
-		$standaloneView = $this->initializeStandaloneView();
-		$standaloneView->assign('form', $formRuntime);
-		$message = $standaloneView->render();
 
-		$subject = $this->parseOption('subject');
-		$recipientAddress = $this->parseOption('recipientAddress');
-		$recipientName = $this->parseOption('recipientName');
-		$senderAddress = $this->parseOption('senderAddress');
-		$senderName = $this->parseOption('senderName');
-		$replyToAddress = $this->parseOption('replyToAddress');
-		$format = $this->parseOption('format');
-		$testMode = $this->parseOption('testMode');
+		$formValueArray = $formRuntime->getFormState()->getFormValues();
 
-		if ($subject === NULL) {
-			throw new \TYPO3\Form\Exception\FinisherException('The option "subject" must be set for the EmailFinisher.', 1327060320);
-		}
-		if ($recipientAddress === NULL) {
-			throw new \TYPO3\Form\Exception\FinisherException('The option "recipientAddress" must be set for the EmailFinisher.', 1327060200);
-		}
-		if ($senderAddress === NULL) {
-			throw new \TYPO3\Form\Exception\FinisherException('The option "senderAddress" must be set for the EmailFinisher.', 1327060210);
-		}
+		$targetDomainModel = $this->parseOption('domainModel');
 
-		$mail = new \TYPO3\SwiftMailer\Message();
+		$targetContentProperty = $this->parseOption('formContentProperty');
+		$targetContentSetter = 'set' . ucfirst($targetContentProperty);
 
-		$mail
-			->setFrom(array($senderAddress => $senderName))
-			->setTo(array($recipientAddress => $recipientName))
-			->setSubject($subject);
+		$sourceLabelField = $this->parseOption('labelFormFieldIdentifier');
 
-		if ($replyToAddress !== NULL) {
-			$mail->setReplyTo($replyToAddress);
-		}
+		$targetLabelProperty = $this->parseOption('labelDatabaseProperty');
+		$targetLabelSetter = 'set' . ucfirst($targetLabelProperty);
 
-		if ($format === self::FORMAT_PLAINTEXT) {
-			$mail->setBody($message, 'text/plain');
-		} else {
-			$mail->setBody($message, 'text/html');
-		}
+		$project = new $targetDomainModel();
+		$project->$targetLabelSetter($formValueArray[$sourceLabelField]);
+		$project->$targetContentSetter(serialize($formValueArray));
 
-		if ($testMode === TRUE) {
-			\TYPO3\Flow\var_dump(
-				array(
-					'sender' => array($senderAddress => $senderName),
-					'recipient' => array($recipientAddress => $recipientName),
-					'replyToAddress' => $replyToAddress,
-					'message' => $message,
-					'format' => $format,
-				),
-				'E-Mail "' . $subject . '"'
-			);
-		} else {
-			$mail->send();
-		}
+
+		//\typo3\flow\var_dump($project->getProjectTitle());
+
+		$this->projectRepository->add($project);
+		$this->persistenceManager->persistAll();
+
+		die();
+
 	}
 
-	/**
-	 * @return \TYPO3\Fluid\View\StandaloneView
-	 * @throws \TYPO3\Form\Exception\FinisherException
-	 */
-	protected function initializeStandaloneView() {
-		$standaloneView = new \TYPO3\Fluid\View\StandaloneView();
-		if (!isset($this->options['templatePathAndFilename'])) {
-			throw new \TYPO3\Form\Exception\FinisherException('The option "templatePathAndFilename" must be set for the EmailFinisher.', 1327058829);
-		}
-		$standaloneView->setTemplatePathAndFilename($this->options['templatePathAndFilename']);
-
-		if (isset($this->options['partialRootPath'])) {
-			$standaloneView->setPartialRootPath($this->options['partialRootPath']);
-		}
-
-		if (isset($this->options['layoutRootPath'])) {
-			$standaloneView->setLayoutRootPath($this->options['layoutRootPath']);
-		}
-
-		if (isset($this->options['variables'])) {
-			$standaloneView->assignMultiple($this->options['variables']);
-		}
-		return $standaloneView;
-	}
 }
