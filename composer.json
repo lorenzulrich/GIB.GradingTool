@@ -5,8 +5,8 @@
     "version": null,
     "require": {
         "typo3/flow": "*",
-        "typo3/form": "*",
-        "typo3/formbuilder": "*"
+        "typo3/form": "dev-master",
+        "typo3/formbuilder": "dev-master"
     },
     "autoload": {
         "psr-0": {
