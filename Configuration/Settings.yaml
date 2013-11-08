@@ -20,9 +20,9 @@ TYPO3:
           # NAMING: base class for everything is RENDERABLE
           'TYPO3.Form:Base':
             renderingOptions:
-              templatePathPattern: 'resource://GIB.GradingTool/Private/Form/{@type}.html'
-              partialPathPattern: 'resource://GIB.GradingTool/Private/Form/Partials/{@type}.html'
-              layoutPathPattern: 'resource://GIB.GradingTool/Private/Form/Layouts/{@type}.html'
+              templatePathPattern: 'resource://{@package}/Private/Form/{@type}.html'
+              partialPathPattern: 'resource://{@package}/Private/Form/Partials/{@type}.html'
+              layoutPathPattern: 'resource://{@package}/Private/Form/Layouts/{@type}.html'
               # set this to TRUE if you want to avoid exceptions for FormElements without definitions
               skipUnknownElements: FALSE
               # Package with XLIFF files for translatable messages (e.g. validation errors)
