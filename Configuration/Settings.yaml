@@ -1,3 +1,7 @@
+GIB:
+  GradingTool:
+    dataSheetPresetName: 'gibdatasheet'
+
 TYPO3:
   Form:
     presets:

@@ -17,12 +17,31 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	protected $projectRepository;
 
 	/**
+	 * @var \TYPO3\Form\Persistence\YamlPersistenceManager
+	 * @Flow\Inject
+	 */
+	protected $yamlPersistenceManager;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
 		$projects = $this->projectRepository->findAll();
 		$this->view->assignMultiple(array(
-			'projects' => $projects
+			'projects' => $projects,
+			'currentAction' => $this->request->getControllerActionName(),
+		));
+	}
+
+	/**
+	 *
+	 */
+	public function settingsAction() {
+		$forms = $this->yamlPersistenceManager->listForms();
+
+		$this->view->assignMultiple(array(
+			'currentAction' => $this->request->getControllerActionName(),
+			'forms' => $forms,
 		));
 	}
 
