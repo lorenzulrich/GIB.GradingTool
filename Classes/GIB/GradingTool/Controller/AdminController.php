@@ -17,6 +17,12 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	protected $projectRepository;
 
 	/**
+	 * @var \GIB\GradingTool\Domain\Repository\ProjectManagerRepository
+	 * @Flow\Inject
+	 */
+	protected $projectManagerRepository;
+
+	/**
 	 * @var \TYPO3\Form\Persistence\YamlPersistenceManager
 	 * @Flow\Inject
 	 */
@@ -27,8 +33,10 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	 */
 	public function indexAction() {
 		$projects = $this->projectRepository->findAll();
+		$projectManagers = $this->projectManagerRepository->findAll();
 		$this->view->assignMultiple(array(
 			'projects' => $projects,
+			'projectManagers' => $projectManagers,
 			'currentAction' => $this->request->getControllerActionName(),
 		));
 	}

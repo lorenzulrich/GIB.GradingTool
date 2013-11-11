@@ -15,6 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Project {
 
 	/**
+	 * The blog
+	 * @var \GIB\GradingTool\Domain\Model\ProjectManager
+	 * @ORM\ManyToOne(inversedBy="projects")
+	 */
+	protected $projectManager;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="text")
 	 */
@@ -25,6 +32,24 @@ class Project {
 	 */
 	protected $projectTitle;
 
+	/**
+	 * Sets the project manager of a project
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager The projectManager
+	 * @return void
+	 */
+	public function setProjectManager(\GIB\GradingTool\Domain\Model\ProjectManager $projectManager) {
+		$this->projectManager = $projectManager;
+	}
+
+	/**
+	 * Returns the project manager of the project
+	 *
+	 * @return \GIB\GradingTool\Domain\Model\ProjectManager The projectManager this project is owned by
+	 */
+	public function getProjectManager() {
+		return $this->projectManager;
+	}
 
 	/**
 	 * @return string

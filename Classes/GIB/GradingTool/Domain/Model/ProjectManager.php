@@ -15,9 +15,38 @@ use Doctrine\ORM\Mapping as ORM;
 class ProjectManager extends \TYPO3\Party\Domain\Model\Person {
 
 	/**
-	 * @var \Doctrine\Common\Collections\Collection
+	 * @var \Doctrine\Common\Collections\Collection<\GIB\GradingTool\Domain\Model\Project>
+	 * @ORM\OneToMany(mappedBy="projectManager")
 	 */
 	protected $projects;
+
+	/**
+	 * Constructs a new projectManager
+	 */
+	public function __construct() {
+		$this->projects = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	/**
+	 * Adds a project to this projectManager
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 * @return void
+	 */
+	public function addProject(\GIB\GradingTool\Domain\Model\Project $project) {
+		$project->setProjectManager($this);
+		$this->projects->add($project);
+	}
+
+	/**
+	 * Removes a project from this projectManager
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 * @return void
+	 */
+	public function removePost(\GIB\GradingTool\Domain\Model\Project $project) {
+		$this->projects->removeElement($project);
+	}
 
 	/**
 	 * @return \Doctrine\Common\Collections\Collection

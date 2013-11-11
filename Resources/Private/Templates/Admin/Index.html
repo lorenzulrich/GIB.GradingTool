@@ -6,6 +6,15 @@
 
 	<f:render partial="Admin/Navigation" arguments="{currentAction:currentAction}"/>
 
+	<h2>Project Managers</h2>
+
+	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<f:for each="{projectManagers}" as="projectManager">
+			<li>{projectManager.name}</li>
+		</f:for>
+	</ul>
+
+
 	<h2>Projects</h2>
 
 	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
@@ -13,8 +22,6 @@
 			<li><f:link.action action="editDataSheet" controller="Project" arguments="{project:project}">{project.projectTitle}</f:link.action></li>
 		</f:for>
 	</ul>
-
-
 
 	<f:form controller="project" action="newDataSheet">
 		<button class="btn btn-primary" type="submit">Add project</button>
