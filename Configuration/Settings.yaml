@@ -307,7 +307,6 @@ TYPO3:
               sorting: 115
               label: 'Country selector'
 
-
           'TYPO3.Form:Form':
             formBuilder:
               editors:
@@ -316,17 +315,38 @@ TYPO3:
                     'GIB.GradingTool:ProjectSerializedStorageFinisher':
                       label: 'Save serialized data to project'
                       templateName: 'Finisher-GIB.GradingTool-ProjectSerializedStorageFinisher'
+
+          'GIB.GradingTool:IfNotAuthenticatedRequiredSingleLineText':
+            superTypes: ['TYPO3.Form:FormElement']
+            implementationClassName: 'GIB\GradingTool\Form\FormElements\IfNotAuthenticatedRequiredSingleLineText'
+            formBuilder:
+              group: input
+              sorting: 180
+              label: 'Text required if not authenticated'
+            renderingOptions:
+              templatePathPattern: 'resource://{@package}/Private/Form/SingleLineText.html'
+
+          'GIB.GradingTool:IfNotAuthenticatedRequiredPasswordWithConfirmation':
+            superTypes: ['TYPO3.Form:PasswordWithConfirmation']
+            implementationClassName: 'GIB\GradingTool\Form\FormElements\IfNotAuthenticatedRequiredPasswordWithConfirmation'
+            formBuilder:
+              group: input
+              sorting: 190
+              label: 'Password required if not authenticated'
+            renderingOptions:
+              templatePathPattern: 'resource://{@package}/Private/Form/PasswordWithConfirmation.html'
+
         ### FINISHERS ###
         finisherPresets:
           'GIB.GradingTool:ProjectSerializedStorageFinisher':
             implementationClassName: 'GIB\GradingTool\Form\Finishers\ProjectSerializedStorageFinisher'
-      gibdatasheetedit:
-        title: 'GIB Data Sheet Edit Form'
-        parentPreset: 'gibdatasheet'
-        formElementTypes:
-          'TYPO3.Form:FormElement':
-            superTypes: ['TYPO3.Form:Base', 'TYPO3.Form:RemovableMixin']
-            implementationClassName: 'GIB\GradingTool\Form\FormElements\EditableGenericFormElement'
+#      gibdatasheetedit:
+#        title: 'GIB Data Sheet Edit Form'
+#        parentPreset: 'gibdatasheet'
+#        formElementTypes:
+#          'TYPO3.Form:FormElement':
+#            superTypes: ['TYPO3.Form:Base', 'TYPO3.Form:RemovableMixin']
+#            implementationClassName: 'GIB\GradingTool\Form\FormElements\EditableGenericFormElement'
 
   FormBuilder:
     handlebarsTemplates:

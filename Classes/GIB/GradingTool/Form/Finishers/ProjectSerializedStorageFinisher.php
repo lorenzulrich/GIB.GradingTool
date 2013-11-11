@@ -40,6 +40,12 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 	protected $persistenceManager;
 
 	/**
+	 * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface
+	 * @Flow\Inject
+	 */
+	protected $authenticationManager;
+
+	/**
 	 * Executes this finisher
 	 * @see AbstractFinisher::execute()
 	 *
