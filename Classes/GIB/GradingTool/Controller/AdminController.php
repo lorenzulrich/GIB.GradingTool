@@ -29,6 +29,23 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	protected $yamlPersistenceManager;
 
 	/**
+	 * @var \TYPO3\Flow\I18n\Service
+	 * @Flow\Inject
+	 */
+	protected $i18nService;
+
+	/**
+	 * Initializes the controller before invoking an action method.
+	 *
+	 * @return void
+	 * @api
+	 */
+	protected function initializeAction() {
+		$locale = new \TYPO3\Flow\I18n\Locale('en');
+		$this->i18nService->getConfiguration()->setCurrentLocale($locale);
+	}
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
