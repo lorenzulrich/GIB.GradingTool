@@ -30,10 +30,16 @@ class IfNotAuthenticatedRequiredPasswordWithConfirmation extends \TYPO3\Form\Cor
 	 * @param \TYPO3\Form\Core\Runtime\FormRuntime $formRuntime
 	 */
 	public function beforeRendering(\TYPO3\Form\Core\Runtime\FormRuntime $formRuntime) {
-		$this->requireIfTriggerIsSet($formRuntime->getFormState());
-		if ($this->authenticationManager->isAuthenticated()) {
+		$this->requireIfTriggerIsSet($formRuntime);
+
+		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'newDataSheet') {
+			if ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:ProjectManager')) {
+				$this->setRenderingOption('templatePathPattern', 'resource://GIB.GradingTool/Private/Form/NoOutput.html');
+			}
+		} elseif ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
 			$this->setRenderingOption('templatePathPattern', 'resource://GIB.GradingTool/Private/Form/NoOutput.html');
 		}
+
 	}
 
 	/**
@@ -48,21 +54,28 @@ class IfNotAuthenticatedRequiredPasswordWithConfirmation extends \TYPO3\Form\Cor
 			$processingRule->getProcessingMessages()->addError(new \TYPO3\Flow\Error\Error('Password doesn\'t match confirmation', 1334768052));
 		}
 		$elementValue = $elementValue['password'];
-		$this->requireIfTriggerIsSet($formRuntime->getFormState());
+		$this->requireIfTriggerIsSet($formRuntime);
 	}
 
 	/**
 	 * Adds a NotEmptyValidator to the current element if the "trigger" value is not empty.
 	 * The trigger can be configured with $this->properties['triggerPropertyPath']
 	 *
-	 * @param \TYPO3\Form\Core\Runtime\FormState $formState
+	 * @param \TYPO3\Form\Core\Runtime\FormRunTime $formRuntime
 	 * @return void
 	 */
-	protected function requireIfTriggerIsSet(\TYPO3\Form\Core\Runtime\FormState $formState) {
-		if ($this->authenticationManager->isAuthenticated()) {
+	protected function requireIfTriggerIsSet(\TYPO3\Form\Core\Runtime\FormRuntime $formRuntime) {
+		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'newDataSheet') {
+			if ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
+				$this->addValidator(new \TYPO3\Flow\Validation\Validator\NotEmptyValidator());
+			} elseif (!$this->authenticationManager->isAuthenticated()) {
+				$this->addValidator(new \TYPO3\Flow\Validation\Validator\NotEmptyValidator());
+			} else {
+				return;
+			}
+
+		} elseif ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
 			return;
-		} else {
-			$this->addValidator(new \TYPO3\Flow\Validation\Validator\NotEmptyValidator());
 		}
 	}
 

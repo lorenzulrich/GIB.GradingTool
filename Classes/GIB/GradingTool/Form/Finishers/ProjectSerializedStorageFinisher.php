@@ -93,51 +93,35 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 
 
 		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
-			// we need to update the form, we assume that the person is authenticated because a data sheet can only be edited by a authenticated user
+			// we need to update the data sheet, we assume that the person is authenticated because a data sheet can only be edited by a authenticated user
 
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project')['__identity']);
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			// todo remove username and password from formValueArray (security!)
 			$project->setDataSheetContent(serialize($formValueArray));
 			$this->projectRepository->update($project);
-
-			// the name of the project manager may have been updated, so reflect it in the party
-			/** @var \TYPO3\Party\Domain\Model\Person $person */
-			// todo respect admin doing changes to the form
-			$person = $this->authenticationManager->getSecurityContext()->getParty();
-			$person->getName()->setFirstName($formValueArray['projectManagerFirstName']);
-			$person->getName()->setLastName($formValueArray['projectManagerLastName']);
-			$this->partyRepository->update($person);
 
 			// add a flash message
 			$message = new \TYPO3\Flow\Error\Message('Your data sheet was successfully edited.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
 			$this->flashMessageContainer->addMessage($message);
 
 		} else {
+			// we need to add a new data sheet
 
-			// we need to add a new form
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
 			$project->setDataSheetContent(serialize($formValueArray));
 			$this->projectRepository->add($project);
 
-			if ($this->authenticationManager->isAuthenticated()) {
-				// person is authenticated, so we just update the account name
-				/** @var \TYPO3\Party\Domain\Model\Person $person */
-				// todo respect admin doing changes to the form
-				$person = $this->authenticationManager->getSecurityContext()->getParty();
-				$person->getName()->setFirstName($formValueArray['projectManagerFirstName']);
-				$person->getName()->setLastName($formValueArray['projectManagerLastName']);
-				$this->partyRepository->update($person);
+			// add a flash message
+			$message = new \TYPO3\Flow\Error\Message('Your data sheet was successfully submitted.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+			$this->flashMessageContainer->addMessage($message);
 
-				// add a flash message
-				$message = new \TYPO3\Flow\Error\Message('Your data sheet was successfully submitted.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
-				$this->flashMessageContainer->addMessage($message);
-
-
-			} else {
+			if (!$this->authenticationManager->isAuthenticated() || ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator'))) {
 				// person (supposedly) doesn't have an account yet, so we create one
+
 				$projectManager = new \GIB\GradingTool\Domain\Model\ProjectManager();
 				$projectManagerName = new \TYPO3\Party\Domain\Model\PersonName('', $formValueArray['projectManagerFirstName'], '', $formValueArray['projectManagerLastName']);
 				$projectManager->setName($projectManagerName);
@@ -163,16 +147,17 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 				// finally add the complete ProjectManager
 				$this->partyRepository->add($projectManager);
 
-				// authenticate the created account
-				$authenticationTokens = $this->securityContext->getAuthenticationTokensOfType('TYPO3\Flow\Security\Authentication\Token\UsernamePassword');
-				if (count($authenticationTokens) === 1) {
-					$authenticationTokens[0]->setAccount($account);
-					$authenticationTokens[0]->setAuthenticationStatus(\TYPO3\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
+				if (!$this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
+					// authenticate user if no Administrator is authenticated
+					$authenticationTokens = $this->securityContext->getAuthenticationTokensOfType('TYPO3\Flow\Security\Authentication\Token\UsernamePassword');
+					if (count($authenticationTokens) === 1) {
+						$authenticationTokens[0]->setAccount($account);
+						$authenticationTokens[0]->setAuthenticationStatus(\TYPO3\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
+					}
+					// add a flash message
+					$message = new \TYPO3\Flow\Error\Message('An account was created and you were successfully logged in.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+					$this->flashMessageContainer->addMessage($message);
 				}
-
-				// add a flash message
-				$message = new \TYPO3\Flow\Error\Message('An account was created and you were successfully logged in.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
-				$this->flashMessageContainer->addMessage($message);
 
 			}
 
@@ -196,7 +181,6 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 		while ($response = $response->getParentResponse()) {
 			$mainResponse = $response;
 		};
-		//$mainResponse->setContent('<html><head><meta http-equiv="refresh" content="0;url=' . $uri . '"/></head></html>');
 		$mainResponse->setStatus(303);
 		$mainResponse->setHeader('Location', (string)$uri);
 

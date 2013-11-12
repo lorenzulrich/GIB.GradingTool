@@ -6,25 +6,30 @@
 
 	<f:render partial="Admin/Navigation" arguments="{currentAction:currentAction}"/>
 
-	<h2>Project Managers</h2>
-
-	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
-		<f:for each="{projectManagers}" as="projectManager">
-			<li>{projectManager.name}</li>
-		</f:for>
-	</ul>
-
-
 	<h2>Projects</h2>
 
-	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+	<table xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers" class="table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Project Title</th>
+				<th>Project Manager</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
 		<f:for each="{projects}" as="project">
-			<li><f:link.action action="editDataSheet" controller="Project" arguments="{project:project}">{project.projectTitle}</f:link.action></li>
+			<tr>
+				<td><f:link.action action="editDataSheet" controller="Project" arguments="{project:project}">{project.projectTitle}</f:link.action></td>
+				<td><f:link.email email="{project.projectManager.primaryElectronicAddress}">{project.projectManager.name}</f:link.email></td>
+				<td><f:link.action class="btn btn-primary btn-sm" action="editDataSheet" controller="Project" arguments="{project:project}"><i class="fa fa-edit"></i> Edit Data Sheet</f:link.action></td>
+			</tr>
 		</f:for>
-	</ul>
+		</tbody>
+	</table>
 
 	<f:form controller="project" action="newDataSheet">
-		<button class="btn btn-primary" type="submit">Add project</button>
+		<p><button class="btn btn-primary" type="submit"><i class="fa fa-plus-square"></i> Add project</button></p>
 	</f:form>
 
 </f:section>

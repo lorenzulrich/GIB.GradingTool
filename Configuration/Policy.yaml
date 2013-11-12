@@ -1,6 +1,7 @@
 resources:
   methods:
     Flow_LoginSignedInMethods: 'method(Flow\Login\Controller\LoginController->signedInAction())'
+    AdminClass: 'method(GIB\GradingTool\Controller\AdminController->.*())'
 
 roles:
   Administrator: []
@@ -11,6 +12,7 @@ acls:
   Administrator:
     methods:
       Flow_LoginSignedInMethods: GRANT
+      AdminClass: GRANT
   Editor:
     methods:
       Flow_LoginSignedInMethods: GRANT

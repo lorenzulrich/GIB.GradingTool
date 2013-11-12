@@ -30,11 +30,11 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 		if ($this->authenticationManager->isAuthenticated()) {
 
 			if ($this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:ProjectManager')) {
-				$this->redirect('dashboard');
+				$this->forward('dashboard');
 			}
 
 			if ($this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
-				$this->redirect('index', 'Admin');
+				$this->forward('index', 'Admin');
 			}
 
 		}

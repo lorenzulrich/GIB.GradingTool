@@ -36,10 +36,16 @@ class IfNotAuthenticatedRequiredSingleLineText extends \TYPO3\Form\Core\Model\Ab
 	 * @param \TYPO3\Form\Core\Runtime\FormRuntime $formRuntime
 	 */
 	public function beforeRendering(\TYPO3\Form\Core\Runtime\FormRuntime $formRuntime) {
-		$this->requireIfTriggerIsSet($formRuntime->getFormState());
-		if ($this->authenticationManager->isAuthenticated()) {
+		$this->requireIfTriggerIsSet($formRuntime);
+
+		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'newDataSheet') {
+			if ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:ProjectManager')) {
+				$this->setRenderingOption('templatePathPattern', 'resource://GIB.GradingTool/Private/Form/NoOutput.html');
+			}
+		} elseif ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
 			$this->setRenderingOption('templatePathPattern', 'resource://GIB.GradingTool/Private/Form/NoOutput.html');
 		}
+
 	}
 
 	/**
@@ -54,21 +60,28 @@ class IfNotAuthenticatedRequiredSingleLineText extends \TYPO3\Form\Core\Model\Ab
 			$processingRule = $this->getRootForm()->getProcessingRule($this->getIdentifier());
 			$processingRule->getProcessingMessages()->addError(new \TYPO3\Flow\Error\Error('User name is already taken', 1334768053));
 		}
-		$this->requireIfTriggerIsSet($formRuntime->getFormState());
+		$this->requireIfTriggerIsSet($formRuntime);
 	}
 
 	/**
 	 * Adds a NotEmptyValidator to the current element if the "trigger" value is not empty.
 	 * The trigger can be configured with $this->properties['triggerPropertyPath']
 	 *
-	 * @param \TYPO3\Form\Core\Runtime\FormState $formState
+	 * @param \TYPO3\Form\Core\Runtime\FormRuntime $formRuntime
 	 * @return void
 	 */
-	protected function requireIfTriggerIsSet(\TYPO3\Form\Core\Runtime\FormState $formState) {
-		if ($this->authenticationManager->isAuthenticated()) {
+	protected function requireIfTriggerIsSet(\TYPO3\Form\Core\Runtime\FormRuntime $formRuntime) {
+		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'newDataSheet') {
+			if ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
+				$this->addValidator(new \TYPO3\Flow\Validation\Validator\NotEmptyValidator());
+			} elseif (!$this->authenticationManager->isAuthenticated()) {
+				$this->addValidator(new \TYPO3\Flow\Validation\Validator\NotEmptyValidator());
+			} else {
+				return;
+			}
+
+		} elseif ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
 			return;
-		} else {
-			$this->addValidator(new \TYPO3\Flow\Validation\Validator\NotEmptyValidator());
 		}
 	}
 }

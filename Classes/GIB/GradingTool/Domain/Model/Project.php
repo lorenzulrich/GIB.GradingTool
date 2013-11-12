@@ -33,6 +33,23 @@ class Project {
 	protected $projectTitle;
 
 	/**
+	 * @ORM\Column(nullable=true)
+	 * @var \DateTime
+	 */
+	protected $created;
+
+	/**
+	 * @ORM\Column(nullable=true)
+	 * @var \DateTime
+	 */
+	protected $lastUpdated;
+
+	/**
+	 * @var boolean
+	 */
+	protected $submissionFormAccess = FALSE;
+
+	/**
 	 * Sets the project manager of a project
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager The projectManager
@@ -79,6 +96,48 @@ class Project {
 	 */
 	public function setProjectTitle($projectTitle) {
 		$this->projectTitle = $projectTitle;
+	}
+
+	/**
+	 * @param \DateTime $created
+	 */
+	public function setCreated($created) {
+		$this->created = $created;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreated() {
+		return $this->created;
+	}
+
+	/**
+	 * @param \DateTime $lastUpdated
+	 */
+	public function setLastUpdated($lastUpdated) {
+		$this->lastUpdated = $lastUpdated;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getLastUpdated() {
+		return $this->lastUpdated;
+	}
+
+	/**
+	 * @param boolean $submissionFormAccess
+	 */
+	public function setSubmissionFormAccess($submissionFormAccess) {
+		$this->submissionFormAccess = $submissionFormAccess;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getSubmissionFormAccess() {
+		return $this->submissionFormAccess;
 	}
 
 }
