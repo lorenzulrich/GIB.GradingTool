@@ -21,12 +21,38 @@
 </head>
 <body>
 <div class="container">
-	<f:flashMessages class="flashmessages"/>
+
 	<div class="header" id="siteHeader">
 		<h1>
 			<f:render section="Title"/>
 		</h1>
 	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<f:flashMessages as="flashMessages">
+			<div class="messages">
+				<f:for each="{flashMessages}" as="flashMessage">
+					<f:if condition="{flashMessage.code} == 'OK'">
+						<f:then>
+							<div class="alert alert-dismissable alert-success">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+								{flashMessage}
+							</div>
+						</f:then>
+						<f:else>
+							<div class="alert alert-dismissable alert-info">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+								{flashMessage}
+							</div>
+						</f:else>
+					</f:if>
+				</f:for>
+			</div>
+			</f:flashMessages>
+		</div>
+	</div>
+
 	<f:render section="Content"/>
 
 	<footer id="siteFooter">
@@ -37,10 +63,10 @@
 			</f:then>
 			<f:else>
 				<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
-
 			</f:else>
 		</f:security.ifAuthenticated>
 	</footer>
+
 </div>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <script src="{f:uri.resource(path: 'JavaScript/jquery.form.js', package: 'Flow.Login')}"></script>

@@ -61,6 +61,59 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 	}
 
+	/**
+	 * Remove a project
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function removeAction(\GIB\GradingTool\Domain\Model\Project $project) {
+		$this->projectRepository->remove($project);
+		$this->persistenceManager->persistAll();
+
+		// add a flash message
+		$message = new \TYPO3\Flow\Error\Message('The project "%s" was successfully removed.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
+		$this->flashMessageContainer->addMessage($message);
+
+		$this->redirect('index', 'Admin');
+	}
+
+	/**
+	 * Activate the submission form for a project
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function activateSubmissionFormAction(\GIB\GradingTool\Domain\Model\Project $project) {
+		$project->setSubmissionFormAccess(TRUE);
+		$this->projectRepository->update($project);
+		$this->persistenceManager->persistAll();
+
+		// TODO send notification e-mail
+
+		// add a flash message
+		$message = new \TYPO3\Flow\Error\Message('The submission form for the project "%s" is now active and the project manager was informed.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
+		$this->flashMessageContainer->addMessage($message);
+
+		$this->redirect('index', 'Admin');
+	}
+
+	/**
+	 * Deactivate the submission form for a project
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function deactivateSubmissionFormAction(\GIB\GradingTool\Domain\Model\Project $project) {
+		$project->setSubmissionFormAccess(FALSE);
+		$this->projectRepository->update($project);
+		$this->persistenceManager->persistAll();
+
+		// add a flash message
+		$message = new \TYPO3\Flow\Error\Message('The submission form for the project "%s" is now inactive.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
+		$this->flashMessageContainer->addMessage($message);
+
+		$this->redirect('index', 'Admin');
+	}
+
+
 }
 
 ?>

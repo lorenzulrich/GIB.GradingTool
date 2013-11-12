@@ -100,10 +100,11 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
 			// todo remove username and password from formValueArray (security!)
 			$project->setDataSheetContent(serialize($formValueArray));
+			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
 
 			// add a flash message
-			$message = new \TYPO3\Flow\Error\Message('Your data sheet was successfully edited.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+			$message = new \TYPO3\Flow\Error\Message('Your data sheet for project "%s" was successfully edited.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
 			$this->flashMessageContainer->addMessage($message);
 
 		} else {
@@ -112,11 +113,13 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			// todo remove username and password from formValueArray (security!)
 			$project->setDataSheetContent(serialize($formValueArray));
+			$project->setCreated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->add($project);
 
 			// add a flash message
-			$message = new \TYPO3\Flow\Error\Message('Your data sheet was successfully submitted.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+			$message = new \TYPO3\Flow\Error\Message('Your data sheet for project "%s" was successfully submitted.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($formValueArray[$sourceLabelField]));
 			$this->flashMessageContainer->addMessage($message);
 
 			if (!$this->authenticationManager->isAuthenticated() || ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator'))) {
@@ -155,7 +158,7 @@ class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFi
 						$authenticationTokens[0]->setAuthenticationStatus(\TYPO3\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
 					}
 					// add a flash message
-					$message = new \TYPO3\Flow\Error\Message('An account was created and you were successfully logged in.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+					$message = new \TYPO3\Flow\Error\Message('An account "%s" was created and you were successfully logged in.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($identifier));
 					$this->flashMessageContainer->addMessage($message);
 				}
 
