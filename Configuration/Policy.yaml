@@ -5,6 +5,7 @@ resources:
 roles:
   Administrator: []
   Editor: []
+  ProjectManager: []
 
 acls:
   Administrator:

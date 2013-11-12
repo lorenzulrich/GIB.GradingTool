@@ -16,9 +16,41 @@ use Tokk\pChartBundle\pRadar;
 class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 	/**
+	 * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface
+	 * @Flow\Inject
+	 */
+	protected $authenticationManager;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
+
+		// check is a user is authenticated
+		if ($this->authenticationManager->isAuthenticated()) {
+
+			if ($this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:ProjectManager')) {
+				$this->redirect('dashboard');
+			}
+
+			if ($this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
+				$this->redirect('index', 'Admin');
+			}
+
+		}
+
+	}
+
+	/**
+	 * Dashboard for project manager
+	 */
+	public function dashboardAction() {
+		/** @var \GIB\GradingTool\Domain\Model\ProjectManager $projectManager */
+		$projectManager = $this->authenticationManager->getSecurityContext()->getParty();
+
+		$this->view->assignMultiple(array(
+			'projects' => $projectManager->getProjects(),
+		));
 	}
 
 	/**

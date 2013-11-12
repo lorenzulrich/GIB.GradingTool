@@ -24,6 +24,7 @@ class ProjectManager extends \TYPO3\Party\Domain\Model\Person {
 	 * Constructs a new projectManager
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->projects = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 

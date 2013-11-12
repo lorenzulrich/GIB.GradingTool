@@ -1,0 +1,16 @@
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool: Admin Settings</f:section>
+
+<f:section name="Content">
+
+	<f:render partial="Admin/Navigation" arguments="{currentAction:currentAction}"/>
+
+	<h2>Manage forms</h2>
+	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<f:for each="{forms}" as="form">
+			<li><f:link.action package="TYPO3.FormBuilder" action="index" controller="editor" arguments="{formPersistenceIdentifier:form.persistenceIdentifier, presetName:settings.dataSheetPresetName}">{form.name}</f:link.action></li>
+		</f:for>
+	</ul>
+
+</f:section>

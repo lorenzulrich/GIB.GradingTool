@@ -1,0 +1,19 @@
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool – Assessment of Sustainable Infrastructure</f:section>
+
+<f:section name="Content">
+<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+	<div class="col-md-12">
+		<f:flashMessages />
+		<h2>My projects</h2>
+		<ul>
+			<f:for each="{projects}" as="project">
+				<li><f:link.action action="editDataSheet" controller="Project" arguments="{project:project}">{project.projectTitle}</f:link.action></li>
+			</f:for>
+		</ul>
+
+	</div>
+</div>
+
+</f:section>
