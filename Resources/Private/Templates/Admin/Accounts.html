@@ -13,6 +13,7 @@
 			<tr>
 				<th>Username</th>
 				<th>Name</th>
+				<th>Roles</th>
 				<th>Created</th>
 				<th># of Projects</th>
 				<th></th>
@@ -23,6 +24,11 @@
 			<tr>
 				<td>{account.accountIdentifier}</td>
 				<td><f:link.email title="Click to send e-mail" email="{account.party.primaryElectronicAddress}">{account.party.name}</f:link.email></td>
+				<td>
+					<f:for each="{account.roles}" as="role">
+						{role}
+					</f:for>
+				</td>
 				<td><f:format.date format="d.m.Y H:i">{account.creationDate}</f:format.date></td>
 				<td><f:count>{account.party.projects}</f:count></td>
 				<td>
@@ -39,5 +45,9 @@
 		</f:for>
 		</tbody>
 	</table>
+
+	<f:form controller="Admin" action="newAdminAccount">
+		<p><button class="btn btn-primary" type="submit"><i class="fa fa-user"></i> Add admin user</button></p>
+	</f:form>
 
 </f:section>

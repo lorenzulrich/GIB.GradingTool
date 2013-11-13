@@ -30,14 +30,21 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 	/**
 	 * Add a new data sheet
+	 *
+	 * The create action is missing because the project is added in the
+	 * ProjectSerializedStorageFinisher (see Form/Finishers)
+	 *
 	 */
 	public function newDataSheetAction() {
 	}
 
-	public function editDataSheetAction() {
+	/**
+	 * Edit a project data sheet
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function editDataSheetAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
-		/** @var \GIB\GradingTool\Domain\Model\Project $project */
-		$project = $this->projectRepository->findByIdentifier($this->request->getArgument('project')['__identity']);
 		$dataSheetContentArray = unserialize($project->getDataSheetContent());
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');

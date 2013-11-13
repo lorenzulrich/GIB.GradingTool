@@ -1,0 +1,48 @@
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool</f:section>
+
+<f:section name="Content">
+	<f:render partial="Admin/Navigation" arguments="{currentAction:'accounts'}"/>
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Add new admin account</h2>
+				<f:form.validationResults>
+					<f:if condition="{validationResults.flattenedErrors}">
+						<div class="alert alert-danger">
+							<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="errors">
+								<ul class="list-unstyled">
+									<f:for each="{errors}" as="error">
+										<li>{error}</li>
+									</f:for>
+								</ul>
+							</f:for>
+						</div>
+					</f:if>
+				</f:form.validationResults>
+				<f:form additionalAttributes="{role: 'form'}" action="createAdminAccount">
+					<div class="form-group">
+						<label for="identifier">Username</label>
+						<f:form.textfield additionalAttributes="{required:'required'}" id="identifier" name="identifier" />
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<f:form.password additionalAttributes="{required:'required'}" id="password" name="password" />
+					</div>
+					<div class="form-group">
+						<label for="firstName">First name</label>
+						<f:form.textfield additionalAttributes="{required:'required'}" id="firstName" name="firstName" />
+					</div>
+					<div class="form-group">
+						<label for="lastName">Last name</label>
+						<f:form.textfield additionalAttributes="{required:'required'}" id="lastName" name="lastName" />
+					</div>
+					<div class="form-group">
+						<label for="electronicAddress">E-Mail</label>
+						<f:form.textfield additionalAttributes="{required:'required'}" id="electronicAddress" name="primaryElectronicAddress" />
+					</div>
+					<f:form.submit class="btn btn-primary" value="Save" />
+				</f:form>
+			</div>
+		</div>
+</f:section>

@@ -41,6 +41,12 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	protected $accountRepository;
 
 	/**
+	 * @var \TYPO3\Flow\Security\AccountFactory
+	 * @Flow\Inject
+	 */
+	protected $accountFactory;
+
+	/**
 	 * @var \TYPO3\Party\Domain\Repository\PartyRepository
 	 * @Flow\Inject
 	 */
@@ -155,6 +161,58 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 		$this->flashMessageContainer->addMessage($message);
 
 		$this->redirect('accounts', 'Admin');
+	}
+
+
+	public function newAdminAccountAction() {
+	}
+
+	/**
+	 * Create a new account
+	 *
+	 * @param string $firstName
+	 * @Flow\Validate(argumentName="firstName", type="NotEmpty")
+	 * @param string $lastName
+	 * @Flow\Validate(argumentName="lastName", type="NotEmpty")
+	 * @param string $primaryElectronicAddress
+	 * @Flow\Validate(argumentName="primaryElectronicAddress", type="EmailAddress")
+	 * @Flow\Validate(argumentName="primaryElectronicAddress", type="NotEmpty")
+	 * @param string $identifier
+	 * @Flow\Validate(argumentName="identifier", type="NotEmpty")
+	 * @Flow\Validate(argumentName="identifier", type="\TYPO3\AccountManagement\Validation\Validator\AccountExistsValidator")
+	 * @param string $password
+	 * @Flow\Validate(argumentName="password", type="\GIB\GradingTool\Validation\Validator\PasswordValidator", options={"minimumLength"=6})
+	 * @Flow\Validate(argumentName="password", type="NotEmpty")
+	 */
+	public function createAdminAccountAction($firstName, $lastName, $primaryElectronicAddress, $identifier, $password) {
+		// we use the projectManager also as model for an admin account, even if the admin won't have any projects
+		$projectManager = new \GIB\GradingTool\Domain\Model\ProjectManager();
+		$projectManagerName = new \TYPO3\Party\Domain\Model\PersonName('', $firstName, '', $lastName);
+		$projectManager->setName($projectManagerName);
+		$projectManagerElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
+		$projectManagerElectronicAddress->setIdentifier($primaryElectronicAddress);
+		$projectManagerElectronicAddress->setType(\TYPO3\Party\Domain\Model\ElectronicAddress::TYPE_EMAIL);
+		$projectManager->addElectronicAddress($projectManagerElectronicAddress);
+		$projectManager->setPrimaryElectronicAddress($projectManagerElectronicAddress);
+
+		// add account
+		$roles = array('GIB.GradingTool:Administrator');
+		$authenticationProviderName = 'DefaultProvider';
+		$account = $this->accountFactory->createAccountWithPassword($identifier, $password, $roles, $authenticationProviderName);
+		$this->accountRepository->add($account);
+
+		// add account to ProjectManager
+		$projectManager->addAccount($account);
+
+		// finally add the complete ProjectManager
+		$this->partyRepository->add($projectManager);
+
+		// add a flash message
+		$message = new \TYPO3\Flow\Error\Message('An administrator account "%s" was created.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($identifier));
+		$this->flashMessageContainer->addMessage($message);
+
+		$this->redirect('accounts');
+
 	}
 
 	/**
