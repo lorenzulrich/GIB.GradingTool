@@ -1,4 +1,9 @@
-<ul class="nav nav-pills" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
-	<li class="{f:if(condition: '{currentAction} == \'index\'', then: 'active')}"><f:link.action controller="Admin" action="index">Home</f:link.action></li>
-	<li class="{f:if(condition: '{currentAction} == \'settings\'', then: 'active')}"><f:link.action controller="Admin" action="settings">Settings</f:link.action></li>
-</ul>
+<div class="row">
+	<div class="col-md-12">
+		<ul class="nav nav-pills" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+			<li class="{f:if(condition: '{currentAction} == \'index\'', then: 'active')}"><f:link.action controller="Admin" action="index">Home</f:link.action></li>
+			<li class="{f:if(condition: '{currentAction} == \'accounts\'', then: 'active')}"><f:link.action controller="Admin" action="accounts">Accounts</f:link.action></li>
+			<li class="{f:if(condition: '{currentAction} == \'settings\'', then: 'active')}"><f:link.action controller="Admin" action="settings">Settings</f:link.action></li>
+		</ul>
+	</div>
+</div>

@@ -64,5 +64,10 @@ class ProjectManager extends \TYPO3\Party\Domain\Model\Person {
 		$this->projects = $projects;
 	}
 
+	public function setAccounts($account) {
+
+	}
+
+
 }
 ?>

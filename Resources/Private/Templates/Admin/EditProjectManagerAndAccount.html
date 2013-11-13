@@ -1,0 +1,44 @@
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool</f:section>
+
+<f:section name="Content">
+	<f:render partial="Admin/Navigation" arguments="{currentAction:'accounts'}"/>
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Edit account "{projectManagerAndAccount.account.accountIdentifier}"</h2>
+				<f:form.validationResults>
+					<f:if condition="{validationResults.flattenedErrors}">
+						<div class="alert alert-danger">
+							<f:for each="{validationResults.flattenedErrors}" key="propertyPath" as="errors">
+								<ul class="list-unstyled">
+									<f:for each="{errors}" as="error">
+										<li>{error}</li>
+									</f:for>
+								</ul>
+							</f:for>
+						</div>
+					</f:if>
+				</f:form.validationResults>
+				<f:form additionalAttributes="{role: 'form'}" arguments="{account:projectManagerAndAccount.account}" action="updateProjectManagerAndAccount" objectName="projectManagerAndAccount" object="{projectManagerAndAccount}">
+					<div class="form-group">
+						<label for="accountIdentifier">Username</label>
+						<f:form.textfield id="accountIdentifier" property="account.accountIdentifier" />
+					</div>
+					<div class="form-group">
+						<label for="firstName">First name</label>
+						<f:form.textfield id="firstName" property="projectManager.name.firstName" />
+					</div>
+					<div class="form-group">
+						<label for="lastName">Last name</label>
+						<f:form.textfield id="lastName" property="projectManager.name.lastName" />
+					</div>
+					<div class="form-group">
+						<label for="electronicAddress">Username</label>
+						<f:form.textfield id="electronicAddress" property="projectManager.primaryElectronicAddress.identifier" />
+					</div>
+					<f:form.submit class="btn btn-primary" value="Save" />
+				</f:form>
+			</div>
+		</div>
+</f:section>
