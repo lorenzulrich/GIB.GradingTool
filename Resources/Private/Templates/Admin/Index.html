@@ -35,6 +35,7 @@
 							<f:link.action additionalAttributes="{data-confirm: 'This will send a notification e-mail to the user. Are you sure?'}" class="btn btn-sm btn-info returnConfirm" arguments="{project:project}" action="activateSubmissionForm" controller="Project"><i class="fa fa-eye"></i> Activate Submission</f:link.action>
 						</f:else>
 					</f:if>
+					<f:link.action class="btn btn-primary btn-sm" action="submission" controller="Project" arguments="{project:project}"><i class="fa fa-list-ol"></i> Submission</f:link.action>
 					<f:link.action additionalAttributes="{data-confirm: 'Are you sure you want to remove this project?'}" class="btn btn-danger btn-sm returnConfirm" action="remove" controller="Project" arguments="{project:project}"><i class="fa fa-times-circle"></i> Remove</f:link.action>
 				</td>
 			</tr>

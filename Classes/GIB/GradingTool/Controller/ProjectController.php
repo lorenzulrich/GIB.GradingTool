@@ -69,6 +69,36 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	}
 
 	/**
+	 * Edit/create a submission
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function submissionAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		//$dataSheetContentArray = unserialize($project->getDataSheetContent());
+
+		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
+		$overrideConfiguration = $this->formPersistenceManager->load('submissionForm');
+		$formDefinition = $factory->build($overrideConfiguration, 'gibsubmission');
+
+//		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
+//			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
+//		}
+
+		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
+		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
+
+		$renderedForm = $form->render();
+
+		$this->view->assignMultiple(array(
+			'renderedForm' => $renderedForm,
+			'project' => $project,
+		));
+
+
+	}
+
+	/**
 	 * Remove a project
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\Project $project

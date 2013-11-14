@@ -340,13 +340,63 @@ TYPO3:
         finisherPresets:
           'GIB.GradingTool:ProjectSerializedStorageFinisher':
             implementationClassName: 'GIB\GradingTool\Form\Finishers\ProjectSerializedStorageFinisher'
-#      gibdatasheetedit:
-#        title: 'GIB Data Sheet Edit Form'
-#        parentPreset: 'gibdatasheet'
-#        formElementTypes:
-#          'TYPO3.Form:FormElement':
-#            superTypes: ['TYPO3.Form:Base', 'TYPO3.Form:RemovableMixin']
-#            implementationClassName: 'GIB\GradingTool\Form\FormElements\EditableGenericFormElement'
+
+
+      ### GIB SUBMISSION FORM ###
+      gibsubmission:
+        title: 'GIB Submission'
+        parentPreset: 'gibdatasheet'
+        formElementTypes:
+          'GIB.GradingTool:Question':
+            superTypes: ['TYPO3.Form:FormElement', 'GIB.GradingTool:QuestionMixin']
+            formBuilder:
+              group: select
+              sorting: 200
+              label: 'GIB Submission Question'
+              editors:
+                weighting:
+                  label: 'Weighting'
+                  propertyPath: 'properties.weighting'
+                  sorting: 185
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+          'GIB.GradingTool:NotApplicableMultiLineText':
+            superTypes: ['TYPO3.Form:FormElement', 'TYPO3.Form:TextMixin']
+            formBuilder:
+              group: input
+              sorting: 220
+              label: 'GIB Not Applicable Text'
+          'GIB.GradingTool:QuestionMixin':
+            formBuilder:
+              editors:
+                options:
+                  sorting: 200
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.PropertyGrid'
+                  propertyPath: 'properties.options'
+                  isSortable: true
+                  enableAddRow: true
+                  enableDeleteRow: true
+                  columns:
+                    0:
+                      field: '_value'
+                      name: 'Label'
+                      editor: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.PropertyGrid.TextCellEditor'
+                    1:
+                      field: '_key'
+                      name: 'Key'
+                      editor: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.PropertyGrid.TextCellEditor'
+                    2:
+                      field: 'score'
+                      name: 'Score'
+                      editor: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.PropertyGrid.TextCellEditor'
+
+          'TYPO3.Form:Form':
+            renderingOptions:
+              templatePathPattern: 'resource://GIB.GradingTool/Private/Form/SubmissionForm.html'
+
+        ### FINISHERS ###
+        finisherPresets:
+          'GIB.GradingTool:SubmissionFinisher':
+            implementationClassName: 'GIB\GradingTool\Form\Finishers\SubmissionFinisher'
 
   FormBuilder:
     handlebarsTemplates:
