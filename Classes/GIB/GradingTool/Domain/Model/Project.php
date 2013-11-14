@@ -15,13 +15,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Project {
 
 	/**
-	 * The blog
 	 * @var \GIB\GradingTool\Domain\Model\ProjectManager
 	 * @ORM\ManyToOne(inversedBy="projects")
 	 */
 	protected $projectManager;
 
 	/**
+	 * Serialized representation of Data Sheet Content
+	 *
 	 * @var string
 	 * @ORM\Column(type="text")
 	 */
@@ -48,6 +49,14 @@ class Project {
 	 * @var boolean
 	 */
 	protected $submissionFormAccess = FALSE;
+
+	/**
+	 * Serialized representation of Submission
+	 *
+	 * @var string
+	 * @ORM\Column(type="text")
+	 */
+	protected $submissionContent;
 
 	/**
 	 * Sets the project manager of a project
@@ -138,6 +147,20 @@ class Project {
 	 */
 	public function getSubmissionFormAccess() {
 		return $this->submissionFormAccess;
+	}
+
+	/**
+	 * @param mixed $submissionContent
+	 */
+	public function setSubmissionContent($submissionContent) {
+		$this->submissionContent = $submissionContent;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubmissionContent() {
+		return $this->submissionContent;
 	}
 
 }

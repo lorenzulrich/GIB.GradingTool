@@ -313,7 +313,7 @@ TYPO3:
                 finishers:
                   availableFinishers:
                     'GIB.GradingTool:ProjectSerializedStorageFinisher':
-                      label: 'Save serialized data to project'
+                      label: 'Save Project and Data Sheet'
                       templateName: 'Finisher-GIB.GradingTool-ProjectSerializedStorageFinisher'
 
           'GIB.GradingTool:IfNotAuthenticatedRequiredSingleLineText':
@@ -392,7 +392,13 @@ TYPO3:
           'TYPO3.Form:Form':
             renderingOptions:
               templatePathPattern: 'resource://GIB.GradingTool/Private/Form/SubmissionForm.html'
-
+            formBuilder:
+              editors:
+                finishers:
+                  availableFinishers:
+                    'GIB.GradingTool:SubmissionFinisher':
+                      label: 'Save Submission'
+                      templateName: 'Finisher-GIB.GradingTool-SubmissionFinisher'
         ### FINISHERS ###
         finisherPresets:
           'GIB.GradingTool:SubmissionFinisher':
@@ -401,6 +407,7 @@ TYPO3:
   FormBuilder:
     handlebarsTemplates:
       Finisher-GIB.GradingTool-ProjectSerializedStorageFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/ProjectSerializedStorageEditor.html'
+      Finisher-GIB.GradingTool-SubmissionFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SubmissionEditor.html'
 
 
 

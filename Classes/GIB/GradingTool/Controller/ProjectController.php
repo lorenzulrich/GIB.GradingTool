@@ -75,15 +75,18 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	 */
 	public function submissionAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
-		//$dataSheetContentArray = unserialize($project->getDataSheetContent());
-
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$overrideConfiguration = $this->formPersistenceManager->load('submissionForm');
 		$formDefinition = $factory->build($overrideConfiguration, 'gibsubmission');
 
-//		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
-//			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
-//		}
+		// populate form with existing data
+		$submissionContent = $project->getSubmissionContent();
+		if (!empty($submissionContent)) {
+			$submissionContentArray = unserialize($submissionContent);
+			foreach ($submissionContentArray as $submissionField => $submissionContent) {
+				$formDefinition->addElementDefaultValue($submissionField, $submissionContent);
+			}
+		}
 
 		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
 		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
