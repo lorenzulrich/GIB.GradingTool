@@ -69,6 +69,19 @@
 
 </div>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+<script src="{f:uri.resource(path: 'JavaScripts/bootbox.min.js')}"></script>
+<script>
+	$(document).on("click", ".returnConfirm", function(e) {
+		e.preventDefault();
+		var targetElement = $(e.target);
+		var message = targetElement.attr('data-confirm');
+		bootbox.confirm(message, function(result) {
+			if (result == true) {
+				window.location = targetElement.attr('href');
+			}
+		});
+	});
+</script>
 <script src="{f:uri.resource(path: 'JavaScript/jquery.form.js', package: 'Flow.Login')}"></script>
 <script src="{f:uri.resource(path: 'JavaScript/Login.js', package: 'Flow.Login')}"></script>
 <div class="modal fade" id="modal-login">

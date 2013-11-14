@@ -8,7 +8,6 @@ resources:
 
 roles:
   Administrator: []
-  Editor: []
   ProjectManager: []
 
 acls:
@@ -19,6 +18,3 @@ acls:
       RemoveProject: GRANT
       activateSubmissionForm: GRANT
       deactivateSubmissionForm: GRANT
-  Editor:
-    methods:
-      Flow_LoginSignedInMethods: GRANT

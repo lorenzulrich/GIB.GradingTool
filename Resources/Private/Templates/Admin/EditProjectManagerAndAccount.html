@@ -20,22 +20,22 @@
 						</div>
 					</f:if>
 				</f:form.validationResults>
-				<f:form additionalAttributes="{role: 'form'}" arguments="{account:projectManagerAndAccount.account}" action="updateProjectManagerAndAccount" objectName="projectManagerAndAccount" object="{projectManagerAndAccount}">
+				<f:form style="width: 300px;" additionalAttributes="{role: 'form'}" arguments="{account:projectManagerAndAccount.account}" action="updateProjectManagerAndAccount" objectName="projectManagerAndAccount" object="{projectManagerAndAccount}">
 					<div class="form-group">
 						<label for="accountIdentifier">Username</label>
-						<f:form.textfield id="accountIdentifier" property="account.accountIdentifier" />
+						<f:form.textfield class="form-control" id="accountIdentifier" property="account.accountIdentifier" />
 					</div>
 					<div class="form-group">
 						<label for="firstName">First name</label>
-						<f:form.textfield id="firstName" property="projectManager.name.firstName" />
+						<f:form.textfield class="form-control" id="firstName" property="projectManager.name.firstName" />
 					</div>
 					<div class="form-group">
 						<label for="lastName">Last name</label>
-						<f:form.textfield id="lastName" property="projectManager.name.lastName" />
+						<f:form.textfield class="form-control" id="lastName" property="projectManager.name.lastName" />
 					</div>
 					<div class="form-group">
 						<label for="electronicAddress">Username</label>
-						<f:form.textfield id="electronicAddress" property="projectManager.primaryElectronicAddress.identifier" />
+						<f:form.textfield class="form-control" id="electronicAddress" property="projectManager.primaryElectronicAddress.identifier" />
 					</div>
 					<f:form.submit class="btn btn-primary" value="Save" />
 				</f:form>

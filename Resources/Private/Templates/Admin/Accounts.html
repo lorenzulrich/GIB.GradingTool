@@ -32,12 +32,17 @@
 				<td><f:format.date format="d.m.Y H:i">{account.creationDate}</f:format.date></td>
 				<td><f:count>{account.party.projects}</f:count></td>
 				<td>
-					<f:link.action class="btn btn-primary btn-sm" action="editProjectManagerAndAccount" controller="Admin" arguments="{projectManager:account.party, account:account}"><i class="fa fa-edit"></i> Edit</f:link.action>
+					<f:if condition="{currentAccountIdentifier} == {account.accountIdentifier}">
+						<f:then />
+						<f:else>
+							<f:link.action class="btn btn-primary btn-sm" action="editProjectManagerAndAccount" controller="Admin" arguments="{projectManager:account.party, account:account}"><i class="fa fa-edit"></i> Edit</f:link.action>
+						</f:else>
+					</f:if>
 					<f:link.action class="btn btn-primary btn-sm" action="editAccountPassword" controller="Admin" arguments="{account:account}"><i class="fa fa-lock"></i> Reset password</f:link.action>
 					<f:if condition="{currentAccountIdentifier} == {account.accountIdentifier}">
 						<f:then />
 						<f:else>
-							<f:link.action onclick="return confirm('Are you sure you want to remove this account?');" class="btn btn-danger btn-sm" action="removeProjectManagerAndAccount" controller="Admin" arguments="{projectManager:account.party, account:account}"><i class="fa fa-times-circle"></i> Remove</f:link.action>
+							<f:link.action class="btn btn-danger btn-sm returnConfirm" additionalAttributes="{data-confirm: 'Are you sure you want to remove this account?'}" action="removeProjectManagerAndAccount" controller="Admin" arguments="{projectManager:account.party, account:account}"><i class="fa fa-times-circle"></i> Remove</f:link.action>
 						</f:else>
 					</f:if>
 				</td>
@@ -46,8 +51,8 @@
 		</tbody>
 	</table>
 
-	<f:form controller="Admin" action="newAdminAccount">
-		<p><button class="btn btn-primary" type="submit"><i class="fa fa-user"></i> Add admin user</button></p>
+	<f:form controller="Admin" action="newAccount">
+		<p><button class="btn btn-primary" type="submit"><i class="fa fa-user"></i> Add account</button></p>
 	</f:form>
 
 </f:section>

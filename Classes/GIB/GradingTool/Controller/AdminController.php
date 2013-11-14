@@ -65,6 +65,12 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	protected $hashService;
 
 	/**
+	 * @var \TYPO3\Flow\Security\Policy\PolicyService
+	 * @Flow\Inject
+	 */
+	protected $policyService;
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
@@ -164,7 +170,15 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	}
 
 
-	public function newAdminAccountAction() {
+	public function newAccountAction() {
+		$roles = $this->policyService->getRoles();
+		// unset all roles that are not related to our package
+		foreach ($roles as $key => $role) {
+			if (explode(':', $key)[0] !== 'GIB.GradingTool') {
+				unset($roles[$key]);
+			}
+		}
+		$this->view->assign('roles', $roles);
 	}
 
 	/**
@@ -183,8 +197,9 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	 * @param string $password
 	 * @Flow\Validate(argumentName="password", type="\GIB\GradingTool\Validation\Validator\PasswordValidator", options={"minimumLength"=6})
 	 * @Flow\Validate(argumentName="password", type="NotEmpty")
+	 * @param string $role
 	 */
-	public function createAdminAccountAction($firstName, $lastName, $primaryElectronicAddress, $identifier, $password) {
+	public function createAccountAction($firstName, $lastName, $primaryElectronicAddress, $identifier, $password, $role) {
 		// we use the projectManager also as model for an admin account, even if the admin won't have any projects
 		$projectManager = new \GIB\GradingTool\Domain\Model\ProjectManager();
 		$projectManagerName = new \TYPO3\Party\Domain\Model\PersonName('', $firstName, '', $lastName);
@@ -196,7 +211,7 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 		$projectManager->setPrimaryElectronicAddress($projectManagerElectronicAddress);
 
 		// add account
-		$roles = array('GIB.GradingTool:Administrator');
+		$roles = array($role);
 		$authenticationProviderName = 'DefaultProvider';
 		$account = $this->accountFactory->createAccountWithPassword($identifier, $password, $roles, $authenticationProviderName);
 		$this->accountRepository->add($account);

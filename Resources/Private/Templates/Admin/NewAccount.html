@@ -20,26 +20,34 @@
 						</div>
 					</f:if>
 				</f:form.validationResults>
-				<f:form additionalAttributes="{role: 'form'}" action="createAdminAccount">
+				<f:form additionalAttributes="{role: 'form'}" style="width: 300px;" action="createAccount">
 					<div class="form-group">
 						<label for="identifier">Username</label>
-						<f:form.textfield additionalAttributes="{required:'required'}" id="identifier" name="identifier" />
+						<f:form.textfield class="form-control" additionalAttributes="{required:'required'}" id="identifier" name="identifier" />
 					</div>
 					<div class="form-group">
 						<label for="password">Password</label>
-						<f:form.password additionalAttributes="{required:'required'}" id="password" name="password" />
+						<f:form.password class="form-control" additionalAttributes="{required:'required'}" id="password" name="password" />
+					</div>
+					<div class="form-group">
+						<label for="password">Group</label>
+						<select class="form-control" name="role">
+							<f:for each="{roles}" as="role">
+								<option value="{role}">{role}</option>
+							</f:for>
+						</select>
 					</div>
 					<div class="form-group">
 						<label for="firstName">First name</label>
-						<f:form.textfield additionalAttributes="{required:'required'}" id="firstName" name="firstName" />
+						<f:form.textfield class="form-control" additionalAttributes="{required:'required'}" id="firstName" name="firstName" />
 					</div>
 					<div class="form-group">
 						<label for="lastName">Last name</label>
-						<f:form.textfield additionalAttributes="{required:'required'}" id="lastName" name="lastName" />
+						<f:form.textfield class="form-control" additionalAttributes="{required:'required'}" id="lastName" name="lastName" />
 					</div>
 					<div class="form-group">
 						<label for="electronicAddress">E-Mail</label>
-						<f:form.textfield additionalAttributes="{required:'required'}" id="electronicAddress" name="primaryElectronicAddress" />
+						<f:form.textfield class="form-control" additionalAttributes="{required:'required'}" id="electronicAddress" name="primaryElectronicAddress" />
 					</div>
 					<f:form.submit class="btn btn-primary" value="Save" />
 				</f:form>
