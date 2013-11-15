@@ -325,6 +325,31 @@ TYPO3:
                       label: 'Save Project and Data Sheet'
                       templateName: 'Finisher-GIB.GradingTool-DataSheetFinisher'
 
+          'TYPO3.Form:Section':
+            formBuilder:
+              editors:
+                elementClass:
+                  sorting: 200
+                  label: 'Style'
+                  propertyPath: 'properties.elementClass'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.SelectEditor'
+                  availableElements:
+                    0:
+                      value: default
+                      label: Default
+                    1:
+                      value: hideCaption
+                      label: 'Hide caption'
+                    2:
+                      value: fieldContainer2Col
+                      label: 'Field container 2 columns'
+                    3:
+                      value: fieldContainer3Col
+                      label: 'Field container 3 columns'
+                    4:
+                      value: mutedFieldLabels
+                      label: 'Gray field labels'
+
           'GIB.GradingTool:DataSheetConditionalUserName':
             superTypes: ['TYPO3.Form:FormElement']
             implementationClassName: 'GIB\GradingTool\Form\FormElements\DataSheetConditionalUserName'

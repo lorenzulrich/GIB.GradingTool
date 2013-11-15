@@ -26,3 +26,15 @@ fieldset fieldset legend { font-size: 125%; }
 
 .form-control { max-width: 400px; }
 textarea.form-control { max-width: 100% !important; min-height: 130px; }
+
+.fieldContainer2Col legend { font-size: 100%; border-bottom: 0; margin-bottom: 5px; font-weight: bold; }
+.fieldContainer2Col .form-group { float: left; width: 50%;  }
+.fieldContainer2Col label { font-weight: normal; color: #999; }
+
+.fieldContainer3Col legend { font-size: 100%; border-bottom: 0; margin-bottom: 5px; font-weight: bold; }
+.fieldContainer3Col .form-group { float: left; width: 30%; margin-right: 5%; }
+.fieldContainer3Col .form-group:last-child { margin-right: 0; }
+.fieldContainer3Col label { font-weight: normal; color: #999; }
+
+.mutedFieldLabels legend { font-size: 100%; border-bottom: 0; margin-bottom: 5px; font-weight: bold; }
+.mutedFieldLabels label { font-weight: normal; color: #999; }
