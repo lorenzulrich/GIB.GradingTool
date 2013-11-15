@@ -56,7 +56,7 @@ class Project {
 	 * @var string
 	 * @ORM\Column(type="text")
 	 */
-	protected $submissionContent;
+	protected $submissionContent = '';
 
 	/**
 	 * Sets the project manager of a project

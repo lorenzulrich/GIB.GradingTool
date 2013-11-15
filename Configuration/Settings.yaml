@@ -33,6 +33,15 @@ TYPO3:
               # If you need custom messages, copy Resources/Private/Translations/en/ValidationErrors.xlf to your package and adjust this setting
               translationPackage: 'TYPO3.Flow'
 
+          'TYPO3.Form:FormElement':
+            properties:
+              elementErrorClassAttribute: 'has-error'
+
+          ### FORM ELEMENTS: CUSTOM ###
+          'TYPO3.Form:DatePicker':
+            properties:
+              elementClassAttribute: 'form-control'
+
           'GIB.GradingTool:CountrySelector':
             superTypes: ['TYPO3.Form:FormElement']
             implementationClassName: 'GIB\GradingTool\Form\FormElements\CountrySelector'
@@ -336,6 +345,22 @@ TYPO3:
             renderingOptions:
               templatePathPattern: 'resource://{@package}/Private/Form/PasswordWithConfirmation.html'
 
+          'TYPO3.Form:FileUpload':
+            superTypes: ['TYPO3.Form:FormElement']
+            implementationClassName: 'TYPO3\Form\FormElements\FileUpload'
+            properties:
+              allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'odt', 'ods', 'jpg', 'jpeg', 'gif', 'png', 'ai', 'psd', 'tiff', 'tif']
+            formBuilder:
+              editors:
+                allowedExtensions:
+                  availableElements:
+                    2:
+                      value: ['doc', 'docx', 'odt', 'pdf', 'xls', 'xlsx', 'ods']
+                      label: 'Documents and Spreadsheets'
+                    3:
+                      value: ['jpg', 'jpeg', 'gif', 'png', 'ai', 'psd', 'tiff', 'tif']
+                      label: 'Images'
+
         ### FINISHERS ###
         finisherPresets:
           'GIB.GradingTool:ProjectSerializedStorageFinisher':
@@ -399,6 +424,8 @@ TYPO3:
                     'GIB.GradingTool:SubmissionFinisher':
                       label: 'Save Submission'
                       templateName: 'Finisher-GIB.GradingTool-SubmissionFinisher'
+
+
         ### FINISHERS ###
         finisherPresets:
           'GIB.GradingTool:SubmissionFinisher':

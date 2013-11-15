@@ -1,13 +1,11 @@
 <f:layout name="TYPO3.Form:Field" />
 <f:section name="field">
-	<ul class="inputs-list" id="{element.uniqueIdentifier}">
-		<f:for each="{element.properties.options}" as="label" key="value">
-			<li>
-				<label>
-					<f:form.checkbox property="{element.identifier}" multiple="1" class="{element.properties.elementClassAttribute}" value="{value}" errorClass="{element.properties.elementErrorClassAttribute}" />
-					<span>{label}</span>
-				</label>
-			</li>
-		</f:for>
-	</ul>
+	<f:for each="{element.properties.options}" as="label" key="value">
+		<div class="checkbox" id="{element.uniqueIdentifier}">
+			<label>
+				<f:form.checkbox property="{element.identifier}" multiple="1" class="{element.properties.elementClassAttribute}" value="{value}" errorClass="{element.properties.elementErrorClassAttribute}" />
+				<span>{label}</span>
+			</label>
+		</div>
+	</f:for>
 </f:section>

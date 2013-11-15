@@ -21,3 +21,8 @@
 .pager .next>button {
     float: right;
 }
+
+fieldset fieldset legend { font-size: 125%; }
+
+.form-control { max-width: 400px; }
+textarea.form-control { max-width: 100% !important; min-height: 130px; }

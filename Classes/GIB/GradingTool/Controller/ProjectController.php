@@ -64,6 +64,7 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 		$this->view->assignMultiple(array(
 			'renderedForm' => $renderedForm,
+			'project' => $project,
 		));
 
 	}
