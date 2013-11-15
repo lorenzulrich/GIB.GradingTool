@@ -131,7 +131,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$this->flashMessageContainer->addMessage($message);
 
 			if (!$this->authenticationManager->isAuthenticated() || ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator'))) {
-				// person (supposedly) doesn't have an account yet, so we create one
+				// the product manager (supposedly) doesn't have an account yet, so we create one
 
 				$projectManager = new \GIB\GradingTool\Domain\Model\ProjectManager();
 				$projectManagerName = new \TYPO3\Party\Domain\Model\PersonName('', $formValueArray['projectManagerFirstName'], '', $formValueArray['projectManagerLastName']);
@@ -168,9 +168,13 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 					$this->flashMessageContainer->addMessage($message);
 				}
 
+			} elseif ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:ProjectManager')) {
+				// a productManager is adding a new project to his account
+				/** @var \GIB\GradingTool\Domain\Model\ProjectManager $projectManager */
+				$projectManager = $this->authenticationManager->getSecurityContext()->getParty();
+				$projectManager->addProject($project);
+				$this->partyRepository->update($projectManager);
 			}
-
-
 		}
 
 		$this->persistenceManager->persistAll();
