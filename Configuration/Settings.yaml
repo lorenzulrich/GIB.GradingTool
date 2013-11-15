@@ -350,6 +350,22 @@ TYPO3:
                       value: mutedFieldLabels
                       label: 'Gray field labels'
 
+          'TYPO3.Form:StaticText':
+            formBuilder:
+              editors:
+                allowHtml:
+                  sorting: 200
+                  label: 'Parse HTML'
+                  propertyPath: 'properties.allowHtml'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.SelectEditor'
+                  availableElements:
+                    0:
+                      value: 0
+                      label: No
+                    1:
+                      value: 1
+                      label: 'yes'
+
           'GIB.GradingTool:DataSheetConditionalUserName':
             superTypes: ['TYPO3.Form:FormElement']
             implementationClassName: 'GIB\GradingTool\Form\FormElements\DataSheetConditionalUserName'
