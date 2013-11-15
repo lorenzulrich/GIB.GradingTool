@@ -32,7 +32,7 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	 * Add a new data sheet
 	 *
 	 * The create action is missing because the project is added in the
-	 * ProjectSerializedStorageFinisher (see Form/Finishers)
+	 * DataSheetFinisher (see Form/Finishers)
 	 *
 	 */
 	public function newDataSheetAction() {
@@ -71,6 +71,9 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 	/**
 	 * Edit/create a submission
+	 *
+	 * The create action is missing because the project is added in the
+	 * SubmissionFinisher (see Form/Finishers)
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 */

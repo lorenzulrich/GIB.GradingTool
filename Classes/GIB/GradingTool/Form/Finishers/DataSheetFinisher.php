@@ -18,7 +18,7 @@ namespace GIB\GradingTool\Form\Finishers;
 
 use TYPO3\Flow\Annotations as Flow;
 
-class ProjectSerializedStorageFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
+class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 	/**
 	 * @var array
