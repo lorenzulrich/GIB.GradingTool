@@ -98,7 +98,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project')['__identity']);
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
-			// todo remove userName and password from formValueArray (security!)
 			$project->setDataSheetContent(serialize($formValueArray));
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
@@ -113,7 +112,16 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
-			// todo remove userName and password from formValueArray (security!)
+
+			// store identifier=userName and password for later usage
+			$identifier = $formValueArray['userName'];
+			$password = $formValueArray['password'];
+
+			// remove userName and password from data array so it doesn't get saved unencrypted
+			unset($formValueArray['userName']);
+			unset($formValueArray['password']);
+
+			// serialize all form content and set dataSheetContent
 			$project->setDataSheetContent(serialize($formValueArray));
 			$project->setCreated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->add($project);
@@ -135,8 +143,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				$projectManager->setPrimaryElectronicAddress($projectManagerElectronicAddress);
 
 				// add account
-				$identifier = $formValueArray['userName'];
-				$password = $formValueArray['password'];
 				$roles = array('GIB.GradingTool:ProjectManager');
 				$authenticationProviderName = 'DefaultProvider';
 				$account = $this->accountFactory->createAccountWithPassword($identifier, $password, $roles, $authenticationProviderName);
