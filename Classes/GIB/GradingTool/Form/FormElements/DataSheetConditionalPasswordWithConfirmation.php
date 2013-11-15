@@ -16,7 +16,7 @@ use TYPO3\Flow\Annotations as Flow;
 /**
  * A password with confirmation form element
  */
-class IfNotAuthenticatedRequiredPasswordWithConfirmation extends \TYPO3\Form\Core\Model\AbstractFormElement {
+class DataSheetConditionalPasswordWithConfirmation extends \TYPO3\Form\Core\Model\AbstractFormElement {
 
 	/**
 	 * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface

@@ -98,7 +98,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project')['__identity']);
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
-			// todo remove username and password from formValueArray (security!)
+			// todo remove userName and password from formValueArray (security!)
 			$project->setDataSheetContent(serialize($formValueArray));
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
@@ -113,7 +113,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
-			// todo remove username and password from formValueArray (security!)
+			// todo remove userName and password from formValueArray (security!)
 			$project->setDataSheetContent(serialize($formValueArray));
 			$project->setCreated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->add($project);
@@ -135,7 +135,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				$projectManager->setPrimaryElectronicAddress($projectManagerElectronicAddress);
 
 				// add account
-				$identifier = $formValueArray['username'];
+				$identifier = $formValueArray['userName'];
 				$password = $formValueArray['password'];
 				$roles = array('GIB.GradingTool:ProjectManager');
 				$authenticationProviderName = 'DefaultProvider';

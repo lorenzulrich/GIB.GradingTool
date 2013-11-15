@@ -16,7 +16,7 @@ use TYPO3\Flow\Annotations as Flow;
 /**
  * A "conditional required" form element.
  */
-class IfNotAuthenticatedRequiredSingleLineText extends \TYPO3\Form\Core\Model\AbstractFormElement {
+class DataSheetConditionalUserName extends \TYPO3\Form\Core\Model\AbstractFormElement {
 
 	/**
 	 * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface

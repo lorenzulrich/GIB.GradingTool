@@ -325,9 +325,9 @@ TYPO3:
                       label: 'Save Project and Data Sheet'
                       templateName: 'Finisher-GIB.GradingTool-DataSheetFinisher'
 
-          'GIB.GradingTool:IfNotAuthenticatedRequiredSingleLineText':
+          'GIB.GradingTool:DataSheetConditionalUserName':
             superTypes: ['TYPO3.Form:FormElement']
-            implementationClassName: 'GIB\GradingTool\Form\FormElements\IfNotAuthenticatedRequiredSingleLineText'
+            implementationClassName: 'GIB\GradingTool\Form\FormElements\DataSheetConditionalUserName'
             formBuilder:
               group: input
               sorting: 180
@@ -335,9 +335,9 @@ TYPO3:
             renderingOptions:
               templatePathPattern: 'resource://{@package}/Private/Form/SingleLineText.html'
 
-          'GIB.GradingTool:IfNotAuthenticatedRequiredPasswordWithConfirmation':
+          'GIB.GradingTool:DataSheetConditionalPasswordWithConfirmation':
             superTypes: ['TYPO3.Form:PasswordWithConfirmation']
-            implementationClassName: 'GIB\GradingTool\Form\FormElements\IfNotAuthenticatedRequiredPasswordWithConfirmation'
+            implementationClassName: 'GIB\GradingTool\Form\FormElements\DataSheetConditionalPasswordWithConfirmation'
             formBuilder:
               group: input
               sorting: 190
