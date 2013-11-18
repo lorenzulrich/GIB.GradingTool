@@ -25,6 +25,9 @@
 						<f:if condition="{project.submissionFormAccess}">
 							<f:then>
 								Approved
+								<f:if condition="{project.submissionContent}">
+									&nbsp- Submission form edited
+								</f:if>
 							</f:then>
 							<f:else>
 								Awaiting approval - contact us if you have questions
