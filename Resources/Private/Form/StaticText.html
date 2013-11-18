@@ -3,11 +3,11 @@
 </f:if>
 <f:if condition="{element.properties.allowHtml} == 1">
 	<f:then>
-		<div class="form-group text-muted">
+		<div class="form-group {element.properties.styleClass}">
 			<f:format.raw>{element.properties.text}</f:format.raw>
 		</div>
 	</f:then>
 	<f:else>
-		<p {f:if(condition: element.properties.elementClassAttribute, then: ' class="{element.properties.elementClassAttribute}"')}>{element.properties.text -> f:format.nl2br()}</p>
+		<p class="{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')} {element.properties.styleClass}">{element.properties.text -> f:format.nl2br()}</p>
 	</f:else>
 </f:if>

@@ -1,5 +1,5 @@
 {namespace form=TYPO3\Form\ViewHelpers}
-<fieldset id="{section.uniqueIdentifier}" class="{section.properties.elementClass} {f:if(condition: section.properties.elementClassAttribute, then: ' {section.properties.elementClassAttribute}')}">
+<fieldset id="{section.uniqueIdentifier}" class="{section.properties.elementClass} {f:if(condition: section.properties.displayConditionField, then: ' conditionalSection')} {f:if(condition: section.properties.elementClassAttribute, then: ' {section.properties.elementClassAttribute}')}">
 	<f:if condition="{section.label}">
 		<legend>{section.label}</legend>
 	</f:if>
@@ -7,3 +7,10 @@
 		<form:renderRenderable renderable="{element}" />
 	</f:for>
 </fieldset>
+<f:if condition="{section.properties.displayConditionField}">
+	<script>
+		$(function() {
+			registerConditionalSection('{section.uniqueIdentifier}', '{section.properties.displayConditionField}', '{section.properties.displayConditionValue}');
+		});
+	</script>
+</f:if>

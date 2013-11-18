@@ -349,6 +349,17 @@ TYPO3:
                     4:
                       value: mutedFieldLabels
                       label: 'Gray field labels'
+                displayConditionField:
+                  sorting: 210
+                  label: "Display if field"
+                  propertyPath: 'properties.displayConditionField'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+
+                displayConditionValue:
+                  sorting: 220
+                  label: "has value"
+                  propertyPath: 'properties.displayConditionValue'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
 
           'TYPO3.Form:StaticText':
             formBuilder:
@@ -360,11 +371,29 @@ TYPO3:
                   viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.SelectEditor'
                   availableElements:
                     0:
-                      value: 0
-                      label: No
+                      value: '0'
+                      label: 'No'
                     1:
-                      value: 1
-                      label: 'yes'
+                      value: '1'
+                      label: 'Yes'
+                styleClass:
+                  sorting: 220
+                  label: 'Styling'
+                  propertyPath: 'properties.styleClass'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.SelectEditor'
+                  availableElements:
+                    0:
+                      value: text-default
+                      label: Default
+                    1:
+                      value: text-primary
+                      label: Emphasize
+                    2:
+                      value: text-muted
+                      label: Grey text
+                    3:
+                      value: text-danger
+                      label: Red text
 
           'GIB.GradingTool:DataSheetConditionalUserName':
             superTypes: ['TYPO3.Form:FormElement']
