@@ -17,6 +17,10 @@ GIB:
       es: Español
       zh: '中国话'
 
+    email:
+      beforeContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/BeforeContent.html'
+      afterContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/AfterContent.html'
+
 TYPO3:
   Form:
     presets:
