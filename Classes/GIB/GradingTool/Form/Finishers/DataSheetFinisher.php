@@ -199,4 +199,11 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 	}
 
+	public function sendNotificationMail($recipient) {
+
+		/** @var \TYPO3\Fluid\View\StandaloneView $emailView */
+		$emailView = new \TYPO3\Fluid\View\StandaloneView();
+		$emailView->setTemplateSource();
+	}
+
 }

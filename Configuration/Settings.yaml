@@ -324,6 +324,9 @@ TYPO3:
                     'GIB.GradingTool:DataSheetFinisher':
                       label: 'Save Project and Data Sheet'
                       templateName: 'Finisher-GIB.GradingTool-DataSheetFinisher'
+                    'GIB.GradingTool:TemplateDatabaseFinisher':
+                      label: 'Save Template'
+                      templateName: 'Finisher-GIB.GradingTool-TemplateDatabaseFinisher'
 
           'TYPO3.Form:Section':
             formBuilder:
@@ -435,6 +438,8 @@ TYPO3:
         finisherPresets:
           'GIB.GradingTool:DataSheetFinisher':
             implementationClassName: 'GIB\GradingTool\Form\Finishers\DataSheetFinisher'
+          'GIB.GradingTool:TemplateDatabaseFinisher':
+            implementationClassName: 'GIB\GradingTool\Form\Finishers\TemplateDatabaseFinisher'
 
 
       ### GIB SUBMISSION FORM ###
@@ -495,7 +500,6 @@ TYPO3:
                       label: 'Save Submission'
                       templateName: 'Finisher-GIB.GradingTool-SubmissionFinisher'
 
-
         ### FINISHERS ###
         finisherPresets:
           'GIB.GradingTool:SubmissionFinisher':
@@ -505,6 +509,7 @@ TYPO3:
     handlebarsTemplates:
       Finisher-GIB.GradingTool-DataSheetFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/DataSheetEditor.html'
       Finisher-GIB.GradingTool-SubmissionFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SubmissionEditor.html'
+      Finisher-GIB.GradingTool-TemplateDatabaseFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/TemplateDatabaseEditor.html'
 
 
 
