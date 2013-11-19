@@ -1,12 +1,12 @@
 GIB:
   GradingTool:
-    dataSheetPresetName: 'gibdatasheet'
+    dataSheetPresetName: 'gibdefault'
 
 TYPO3:
   Form:
     presets:
-      gibdatasheet:
-        title: 'GIB Data Sheet'
+      gibdefault:
+        title: 'GIB'
         parentPreset: 'default'
 
         ########### Required CSS / JavaScripts ###########
@@ -445,7 +445,7 @@ TYPO3:
       ### GIB SUBMISSION FORM ###
       gibsubmission:
         title: 'GIB Submission'
-        parentPreset: 'gibdatasheet'
+        parentPreset: 'gibdefault'
         formElementTypes:
           'GIB.GradingTool:Question':
             superTypes: ['TYPO3.Form:FormElement', 'GIB.GradingTool:QuestionMixin']

@@ -49,7 +49,7 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$overrideConfiguration = $this->formPersistenceManager->load('dataSheetForm');
-		$formDefinition = $factory->build($overrideConfiguration, 'gibdatasheet');
+		$formDefinition = $factory->build($overrideConfiguration, 'gibdefault');
 
 		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
 			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);

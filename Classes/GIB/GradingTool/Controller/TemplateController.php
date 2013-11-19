@@ -54,7 +54,7 @@ class TemplateController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$overrideConfiguration = $this->formPersistenceManager->load('emailTemplate');
-		$formDefinition = $factory->build($overrideConfiguration, 'gibdatasheet');
+		$formDefinition = $factory->build($overrideConfiguration, 'gibdefault');
 
 		foreach ($templateContentArray as $templateField => $templateContent) {
 			$formDefinition->addElementDefaultValue($templateField, $templateContent);
