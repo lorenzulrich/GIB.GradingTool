@@ -17,6 +17,12 @@ abstract class AbstractBaseController extends \TYPO3\Flow\Mvc\Controller\ActionC
 	protected $i18nService;
 
 	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Form\Persistence\FormPersistenceManagerInterface
+	 */
+	protected $formPersistenceManager;
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void
@@ -59,6 +65,28 @@ abstract class AbstractBaseController extends \TYPO3\Flow\Mvc\Controller\ActionC
 	 */
 	public function getErrorFlashMessage() {
 		return FALSE;
+	}
+
+	/**
+	 * Check if a form has a localized version and deliver it if available
+	 *
+	 * @param $formName
+	 * @return string
+	 */
+	public function getFormNameRespectingLocale($formName) {
+		$currentLanguage = $this->i18nService->getConfiguration()->getCurrentLocale()->getLanguage();
+
+		/*
+		 * a localized version has the language iso code as uppercased suffix, e.g. dataSheetFormFr
+		 * english is the default language and has no suffix, therefore we return the unchanged name if
+		 * no translation was found
+		 */
+		if ($this->formPersistenceManager->exists($formName . ucfirst($currentLanguage))) {
+			$formName = $formName . ucfirst($currentLanguage);
+		}
+
+		return $formName;
+
 	}
 
 }

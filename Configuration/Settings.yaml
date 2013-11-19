@@ -3,7 +3,12 @@ GIB:
     formPresets:
       dataSheet: 'gibdefault'
       submission: 'gibsubmission'
-      template: 'gibdefault'
+      emailTemplate: 'gibdefault'
+
+    forms:
+      dataSheet: 'dataSheetForm'
+      submission: 'submissionForm'
+      emailTemplate: 'emailTemplate'
 
     defaultLanguage: en
     languages:
@@ -303,7 +308,6 @@ TYPO3:
                 VI: 'U.S. Virgin Islands'
                 UG: Uganda
                 UA: Ukraine
-                SU: 'Union of Soviet Socialist Republics'
                 AE: 'United Arab Emirates'
                 GB: 'United Kingdom'
                 US: 'United States'
@@ -322,9 +326,17 @@ TYPO3:
                 ZW: Zimbabwe
                 AX: 'Åland Islands'
             formBuilder:
-              group: select
-              sorting: 115
+              group: custom
+              sorting: 300
               label: 'Country selector'
+
+          'GIB.GradingTool:LanguageSelector':
+            superTypes: ['TYPO3.Form:FormElement']
+            implementationClassName: 'GIB\GradingTool\Form\FormElements\LanguageSelector'
+            formBuilder:
+              group: custom
+              sorting: 310
+              label: 'Language selector'
 
           'TYPO3.Form:Form':
             formBuilder:

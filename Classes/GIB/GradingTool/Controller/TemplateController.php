@@ -17,12 +17,6 @@ class TemplateController extends AbstractBaseController {
 	protected $templateRepository;
 
 	/**
-	 * @Flow\Inject
-	 * @var \TYPO3\Form\Persistence\FormPersistenceManagerInterface
-	 */
-	protected $formPersistenceManager;
-
-	/**
 	 * List action
 	 */
 	public function listAction() {
@@ -41,6 +35,21 @@ class TemplateController extends AbstractBaseController {
 	 *
 	 */
 	public function newAction() {
+
+		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['emailTemplate']);
+		$overrideConfiguration = $this->formPersistenceManager->load($formName);
+		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['emailTemplate']);
+
+		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
+		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
+
+		$renderedForm = $form->render();
+
+		$this->view->assignMultiple(array(
+			'renderedForm' => $renderedForm,
+		));
+
 	}
 
 	/**
@@ -53,8 +62,9 @@ class TemplateController extends AbstractBaseController {
 		$templateContentArray = unserialize($template->getContent());
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$overrideConfiguration = $this->formPersistenceManager->load('emailTemplate');
-		$formDefinition = $factory->build($overrideConfiguration, 'gibdefault');
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['emailTemplate']);
+		$overrideConfiguration = $this->formPersistenceManager->load($formName);
+		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['emailTemplate']);
 
 		foreach ($templateContentArray as $templateField => $templateContent) {
 			$formDefinition->addElementDefaultValue($templateField, $templateContent);

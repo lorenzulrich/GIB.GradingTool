@@ -17,12 +17,6 @@ class ProjectController extends AbstractBaseController {
 	protected $projectRepository;
 
 	/**
-	 * @Flow\Inject
-	 * @var \TYPO3\Form\Persistence\FormPersistenceManagerInterface
-	 */
-	protected $formPersistenceManager;
-
-	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -36,6 +30,20 @@ class ProjectController extends AbstractBaseController {
 	 *
 	 */
 	public function newDataSheetAction() {
+		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
+		$overrideConfiguration = $this->formPersistenceManager->load($formName);
+
+		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['dataSheet']);
+
+		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
+		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
+		$renderedForm = $form->render();
+
+		$this->view->assignMultiple(array(
+			'renderedForm' => $renderedForm,
+		));
+
 	}
 
 	/**
@@ -48,7 +56,8 @@ class ProjectController extends AbstractBaseController {
 		$dataSheetContentArray = unserialize($project->getDataSheetContent());
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$overrideConfiguration = $this->formPersistenceManager->load('dataSheetForm');
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
+		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['dataSheet']);
 
 		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
@@ -80,7 +89,8 @@ class ProjectController extends AbstractBaseController {
 	public function submissionAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$overrideConfiguration = $this->formPersistenceManager->load('submissionForm');
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['submission']);
+		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['submission']);
 
 		// populate form with existing data
@@ -156,7 +166,6 @@ class ProjectController extends AbstractBaseController {
 
 		$this->redirect('index', 'Admin');
 	}
-
 
 }
 
