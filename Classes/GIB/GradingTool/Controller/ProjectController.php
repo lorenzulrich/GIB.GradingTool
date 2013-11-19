@@ -49,7 +49,7 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$overrideConfiguration = $this->formPersistenceManager->load('dataSheetForm');
-		$formDefinition = $factory->build($overrideConfiguration, 'gibdefault');
+		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['dataSheet']);
 
 		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
 			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
@@ -81,7 +81,7 @@ class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$overrideConfiguration = $this->formPersistenceManager->load('submissionForm');
-		$formDefinition = $factory->build($overrideConfiguration, 'gibsubmission');
+		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['submission']);
 
 		// populate form with existing data
 		$submissionContent = $project->getSubmissionContent();

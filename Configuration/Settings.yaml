@@ -1,6 +1,9 @@
 GIB:
   GradingTool:
-    dataSheetPresetName: 'gibdefault'
+    formPresets:
+      dataSheet: 'gibdefault'
+      submission: 'gibsubmission'
+      template: 'gibdefault'
 
 TYPO3:
   Form:
