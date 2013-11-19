@@ -23,6 +23,12 @@ abstract class AbstractBaseController extends \TYPO3\Flow\Mvc\Controller\ActionC
 	protected $formPersistenceManager;
 
 	/**
+	 * @Flow\Inject
+	 * @var \GIB\GradingTool\Domain\Repository\TemplateRepository
+	 */
+	protected $templateRepository;
+
+	/**
 	 * Initializes the controller before invoking an action method.
 	 *
 	 * @return void

@@ -19,8 +19,6 @@ namespace GIB\GradingTool\Form\Finishers;
 use GIB\GradingTool\Utility\StringDiffUtility;
 use GIB\GradingTool\Utility\ArrayDiffUtility;
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Utility\Files;
-use TYPO3\SwiftMailer\Message;
 
 class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
@@ -34,12 +32,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	 * @Flow\Inject
 	 */
 	protected $projectRepository;
-
-	/**
-	 * @var \GIB\GradingTool\Domain\Repository\TemplateRepository
-	 * @Flow\Inject
-	 */
-	protected $templateRepository;
 
 	/**
 	 * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
@@ -76,6 +68,12 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	 * @Flow\Inject
 	 */
 	protected $partyRepository;
+
+	/**
+	 * @var \GIB\GradingTool\Service\NotificationMailService
+	 * @Flow\Inject
+	 */
+	protected $notificationMailService;
 
 	/**
 	 * The flash messages. Use $this->flashMessageContainer->addMessage(...) to add a new Flash
@@ -149,7 +147,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$diffContent .= '</table>';
 
 			// send a notification mail to the Administrator containing the changes
-			$this->sendNotificationMail('editDataSheetNotification', $project, NULL, '', '', $diffContent);
+			$this->notificationMailService->sendNotificationMail('editDataSheetNotification', $project, NULL, '', '', $diffContent);
 
 			// store changes to project
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
@@ -212,7 +210,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				$this->partyRepository->add($projectManager);
 
 				// send notification mail
-				$this->sendNotificationMail('newDataSheetNotification', $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
+				$this->notificationMailService->sendNotificationMail('newDataSheetNotification', $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
 
 				if (!$this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
 					// authenticate user if no Administrator is authenticated
@@ -254,54 +252,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		};
 		$mainResponse->setStatus(303);
 		$mainResponse->setHeader('Location', (string)$uri);
-
-	}
-
-	/**
-	 * @param $templateIdentifier
-	 * @param \GIB\GradingTool\Domain\Model\Project $project
-	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager
-	 * @param string $recipientName
-	 * @param string $recipientEmail
-	 * @param string $diffContent
-	 */
-	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $diffContent = '') {
-		/** @var \GIB\GradingTool\Domain\Model\Template $template */
-		$template = $this->templateRepository->findOneByTemplateIdentifier($templateIdentifier);
-		$templateContentArray = unserialize($template->getContent());
-
-		// some kind of wrapper of all e-mail templates containing the HTML structure and styles
-		$beforeContent = Files::getFileContents($this->settings['email']['beforeContentTemplate']);
-		$afterContent = Files::getFileContents($this->settings['email']['afterContentTemplate']);
-
-		// every variable of the data sheet needs to be available in Fluid
-		$dataSheetContentArray = unserialize($project->getDataSheetContent());
-
-		/** @var \TYPO3\Fluid\View\StandaloneView $emailView */
-		$emailView = new \TYPO3\Fluid\View\StandaloneView();
-		$emailView->setTemplateSource('<f:format.raw>' . $beforeContent . $templateContentArray['content'] . $afterContent . '</f:format.raw>');
-		$emailView->assignMultiple(array(
-			'beforeContent' => $beforeContent,
-			'afterContent' => $afterContent,
-			'projectManager' => $projectManager,
-			'dataSheetContent' => $dataSheetContentArray,
-			'diffContent' => $diffContent,
-		));
-		$emailBody = $emailView->render();
-
-		$email = new Message();
-		$email->setFrom(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
-		// the recipient e-mail can be overridden by method arguments
-		if (!empty($recipientEmail)) {
-			$email->setTo(array($recipientEmail => $recipientName));
-			// in this case, set a bcc to the GIB team
-			$email->setBcc(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
-		} else {
-			$email->setTo(array($templateContentArray['recipientEmail'] => $templateContentArray['recipientName']));
-		}
-		$email->setSubject($templateContentArray['subject']);
-		$email->setBody($emailBody, 'text/html');
-		$email->send();
 
 	}
 
