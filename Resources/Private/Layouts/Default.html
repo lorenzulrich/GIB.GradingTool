@@ -25,6 +25,7 @@
 	<![endif]-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script src="{f:uri.resource(path: 'JavaScripts/jquery.cookie.js')}"></script>
 </head>
 <body>
 <div class="container">
@@ -68,11 +69,15 @@
 				<secure:account propertyPath="party.name" /> |
 				<f:link.action action="logout" package="Flow.Login" controller="Login">Logout</f:link.action>
 				<div class="pull-right">
+					<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
 					<f:link.action action="index" controller="Standard" class="btn btn-primary btn-sm"><i class="fa fa-home"></i> Dashboard</f:link.action>
 				</div>
 			</f:then>
 			<f:else>
 				<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
+				<div class="pull-right">
+					<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
+				</div>
 			</f:else>
 		</f:security.ifAuthenticated>
 	</footer>
@@ -91,6 +96,16 @@
 			}
 		});
 	});
+
+	$(function() {
+		/* Set a language cookie depending on the language selector */
+		$('a.languageSelect').click(function(e) {
+			e.preventDefault();
+			$.cookie("GIB_GradingTool_Language", $(this).attr('data-language'), { path: '/'});
+			location.reload(true);
+		});
+	});
+
 </script>
 <script src="{f:uri.resource(path: 'JavaScript/jquery.form.js', package: 'Flow.Login')}"></script>
 <script src="{f:uri.resource(path: 'JavaScript/Login.js', package: 'Flow.Login')}"></script>

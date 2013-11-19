@@ -8,7 +8,7 @@ namespace GIB\GradingTool\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 
-class ProjectController extends \TYPO3\Flow\Mvc\Controller\ActionController {
+class ProjectController extends AbstractBaseController {
 
 	/**
 	 * @var \GIB\GradingTool\Domain\Repository\ProjectRepository

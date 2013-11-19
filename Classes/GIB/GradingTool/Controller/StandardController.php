@@ -13,7 +13,7 @@ use Tokk\pChartBundle\pData;
 use Tokk\pChartBundle\pImage;
 use Tokk\pChartBundle\pRadar;
 
-class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController {
+class StandardController extends AbstractBaseController {
 
 	/**
 	 * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface

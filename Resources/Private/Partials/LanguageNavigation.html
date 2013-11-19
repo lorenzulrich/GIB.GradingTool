@@ -1,0 +1,15 @@
+
+
+<!-- Split button -->
+<div class="btn-group">
+	<button type="button" class="btn btn-primary btn-sm ">{currentLanguage}</button>
+	<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+		<span class="caret"></span>
+		<span class="sr-only">Toggle Dropdown</span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<f:for each="{languages}" as="language" key="iso">
+			<li><a class="languageSelect" data-language="{iso}" href="#">{language}</a></li>
+		</f:for>
+	</ul>
+</div>

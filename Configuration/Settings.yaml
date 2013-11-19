@@ -5,6 +5,13 @@ GIB:
       submission: 'gibsubmission'
       template: 'gibdefault'
 
+    defaultLanguage: en
+    languages:
+      en: English
+      fr: Français
+      es: Español
+      zh: '中国话'
+
 TYPO3:
   Form:
     presets:

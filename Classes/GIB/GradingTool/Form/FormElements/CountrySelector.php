@@ -41,8 +41,10 @@ class CountrySelector extends \TYPO3\Form\Core\Model\AbstractFormElement {
 		// the not localized country codes and names
 		$selectOptions = $this->getProperties()['options'];
 
+
 		// get the localized country names from the CLDR data
 		$i18nConfiguration = $this->i18nService->getConfiguration();
+
 		$cldrModel = $this->cldrRepository->getModel('main/' . $i18nConfiguration->getCurrentLocale()->getLanguage());
 		$countries = $cldrModel->findNodesWithinPath('localeDisplayNames/territories', 'territory');
 

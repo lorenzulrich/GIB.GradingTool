@@ -8,7 +8,7 @@ namespace GIB\GradingTool\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 
-class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
+class AdminController extends AbstractBaseController {
 
 	/**
 	 * @var \GIB\GradingTool\Domain\Repository\ProjectRepository
@@ -27,12 +27,6 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	 * @Flow\Inject
 	 */
 	protected $yamlPersistenceManager;
-
-	/**
-	 * @var \TYPO3\Flow\I18n\Service
-	 * @Flow\Inject
-	 */
-	protected $i18nService;
 
 	/**
 	 * @var \TYPO3\Flow\Security\AccountRepository
@@ -71,17 +65,6 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	protected $policyService;
 
 	/**
-	 * Initializes the controller before invoking an action method.
-	 *
-	 * @return void
-	 * @api
-	 */
-	protected function initializeAction() {
-		$locale = new \TYPO3\Flow\I18n\Locale('en');
-		$this->i18nService->getConfiguration()->setCurrentLocale($locale);
-	}
-
-	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -103,6 +86,7 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 		$this->view->assignMultiple(array(
 			'currentAction' => $this->request->getControllerActionName(),
 			'forms' => $forms,
+			'languages' => $this->settings['languages'],
 		));
 	}
 
@@ -256,14 +240,6 @@ class AdminController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 		$this->flashMessageContainer->addMessage($message);
 
 		$this->redirect('accounts', 'Admin');
-	}
-
-	/**
-	 * Remove error FlashMessage
-	 * @return \TYPO3\Flow\Error\Message|void
-	 */
-	public function getErrorFlashMessage() {
-		return FALSE;
 	}
 
 }
