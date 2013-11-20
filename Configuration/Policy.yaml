@@ -6,11 +6,12 @@ resources:
     activateSubmissionForm: 'method(GIB\GradingTool\Controller\ProjectController->activateSubmissionFormAction())'
     deactivateSubmissionForm: 'method(GIB\GradingTool\Controller\ProjectController->deactivateSubmissionFormAction())'
     editDataSheet: 'method(GIB\GradingTool\Controller\ProjectController->editDataSheetAction())'
+    submission: 'method(GIB\GradingTool\Controller\ProjectController->submissionAction())'
 
-  entities:
-    'GIB\GradingTool\Domain\Model\Project':
-      GIB_GradingTool_Projects_All: 'current.securityContext.party != this.projectManager'
-      GIB_GradingTool_Projects_Own: 'current.securityContext.party == this.projectManager'
+  #entities:
+  #  'GIB\GradingTool\Domain\Model\Project':
+  #    GIB_GradingTool_Projects_All: 'current.securityContext.party != this.projectManager'
+  #    GIB_GradingTool_Projects_Own: 'current.securityContext.party == this.projectManager'
 
 roles:
   Administrator: []
@@ -25,11 +26,13 @@ acls:
       activateSubmissionForm: GRANT
       deactivateSubmissionForm: GRANT
       editDataSheet: GRANT
-    entities:
-      GIB_GradingTool_Projects_Own: GRANT
-      GIB_GradingTool_Projects_All: GRANT
+      submission: GRANT
+    #entities:
+     # GIB_GradingTool_Projects_Own: GRANT
+     # GIB_GradingTool_Projects_All: GRANT
   ProjectManager:
     methods:
       editDataSheet: GRANT
-    entities:
-      GIB_GradingTool_Projects_Own: GRANT
+      submission: GRANT
+    #entities:
+     # GIB_GradingTool_Projects_Own: GRANT

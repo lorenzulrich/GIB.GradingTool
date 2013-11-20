@@ -23,6 +23,12 @@ class ProjectController extends AbstractBaseController {
 	protected $notificationMailService;
 
 	/**
+	 * @var \TYPO3\Flow\Security\Context
+	 * @Flow\Inject
+	 */
+	protected $securityContext;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -60,6 +66,9 @@ class ProjectController extends AbstractBaseController {
 	 */
 	public function editDataSheetAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
+
 		$dataSheetContentArray = unserialize($project->getDataSheetContent());
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
@@ -94,6 +103,9 @@ class ProjectController extends AbstractBaseController {
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 */
 	public function submissionAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['submission']);
@@ -173,6 +185,23 @@ class ProjectController extends AbstractBaseController {
 		$this->flashMessageContainer->addMessage($message);
 
 		$this->redirect('index', 'Admin');
+	}
+
+	/**
+	 * Check if an administrator is logged in or the owner of a project and deny access if someone else is trying to access
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function checkOwnerOrAdministratorAndDenyIfNeeded(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		// check if the user has access to this project
+		if ($this->securityContext->getParty() !== $project->getProjectManager() &&
+			!array_key_exists('GIB.GradingTool:Administrator', $this->securityContext->getRoles())) {
+			// add a flash message
+			$message = new \TYPO3\Flow\Error\Message('Access denied.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('index', 'Standard');
+		}
 	}
 
 }
