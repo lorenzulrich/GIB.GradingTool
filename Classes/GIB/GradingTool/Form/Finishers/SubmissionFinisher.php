@@ -47,6 +47,12 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	protected $flashMessageContainer;
 
 	/**
+	 * @var \GIB\GradingTool\Service\NotificationMailService
+	 * @Flow\Inject
+	 */
+	protected $notificationMailService;
+
+	/**
 	 * Executes this finisher
 	 * @see AbstractFinisher::execute()
 	 *
@@ -75,6 +81,9 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		// add a flash message
 		$message = new \TYPO3\Flow\Error\Message('Your submission for project "%s" was successfully saved.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
 		$this->flashMessageContainer->addMessage($message);
+
+		// send notification mail
+		$this->notificationMailService->sendNotificationMail('newSubmissionNotification', $project, $project->getProjectManager());
 
 		// redirect to dashboard
 		$formRuntime = $this->finisherContext->getFormRuntime();

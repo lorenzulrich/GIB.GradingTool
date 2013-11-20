@@ -53,6 +53,7 @@ class NotificationMailService {
 		$emailView->assignMultiple(array(
 			'beforeContent' => $beforeContent,
 			'afterContent' => $afterContent,
+			'project' => $project,
 			'projectManager' => $projectManager,
 			'dataSheetContent' => $dataSheetContentArray,
 			'diffContent' => $diffContent,
@@ -64,7 +65,7 @@ class NotificationMailService {
 		$email->setFrom(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
 		// the recipient e-mail can be overridden by method arguments
 		if (!empty($recipientEmail)) {
-			$email->setTo(array($recipientEmail => $recipientName));
+			$email->setTo(array((string)$recipientEmail => (string)$recipientName));
 			// in this case, set a bcc to the GIB team
 			$email->setBcc(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
 		} else {
