@@ -12,6 +12,7 @@
 		<thead>
 			<tr>
 				<th>Project Title</th>
+				<th>Language</th>
 				<th>Project Manager</th>
 				<th>Created</th>
 				<th>Last Updated</th>
@@ -22,6 +23,7 @@
 		<f:for each="{projects}" as="project">
 			<tr>
 				<td>{project.projectTitle}</td>
+				<td>{project.language}</td>
 				<td><f:link.email title="Click to send e-mail" email="{project.projectManager.primaryElectronicAddress}">{project.projectManager.name}</f:link.email></td>
 				<td><f:format.date format="d.m.Y H:i">{project.created}</f:format.date></td>
 				<td><f:format.date format="d.m.Y H:i">{project.lastUpdated}</f:format.date></td>

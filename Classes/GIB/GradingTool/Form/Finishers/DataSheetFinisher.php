@@ -76,6 +76,12 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	protected $notificationMailService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\TemplateService
+	 * @Flow\Inject
+	 */
+	protected $templateService;
+
+	/**
 	 * The flash messages. Use $this->flashMessageContainer->addMessage(...) to add a new Flash
 	 * Message.
 	 *
@@ -146,14 +152,16 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			}
 			$diffContent .= '</table>';
 
-			// send a notification mail to the Administrator containing the changes
-			$this->notificationMailService->sendNotificationMail('editDataSheetNotification', $project, NULL, '', '', $diffContent);
-
 			// store changes to project
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			$project->setLanguage($formValueArray['language']);
 			$project->setDataSheetContent(serialize($formValueArray));
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
+
+			// send a notification mail to the Administrator containing the changes
+			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('editDataSheetNotification', $project);
+			$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, NULL, '', '', $diffContent);
 
 			// add a flash message
 			$message = new \TYPO3\Flow\Error\Message('Your data sheet for project "%s" was successfully edited.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
@@ -165,6 +173,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			$project->setLanguage($formValueArray['language']);
 
 			// store identifier=userName and password for later usage
 			$identifier = $formValueArray['userName'];
@@ -210,7 +219,8 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				$this->partyRepository->add($projectManager);
 
 				// send notification mail
-				$this->notificationMailService->sendNotificationMail('newDataSheetNotification', $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
+				$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
+				$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
 
 				if (!$this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
 					// authenticate user if no Administrator is authenticated

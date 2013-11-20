@@ -53,6 +53,12 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	protected $notificationMailService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\TemplateService
+	 * @Flow\Inject
+	 */
+	protected $templateService;
+
+	/**
 	 * Executes this finisher
 	 * @see AbstractFinisher::execute()
 	 *
@@ -83,7 +89,8 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$this->flashMessageContainer->addMessage($message);
 
 		// send notification mail
-		$this->notificationMailService->sendNotificationMail('newSubmissionNotification', $project, $project->getProjectManager());
+		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newSubmissionNotification', $project);
+		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $project->getProjectManager());
 
 		// redirect to dashboard
 		$formRuntime = $this->finisherContext->getFormRuntime();

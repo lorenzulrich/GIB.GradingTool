@@ -59,6 +59,11 @@ class Project {
 	protected $submissionContent = '';
 
 	/**
+	 * @var string
+	 */
+	protected $language;
+
+	/**
 	 * Sets the project manager of a project
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager The projectManager
@@ -161,6 +166,20 @@ class Project {
 	 */
 	public function getSubmissionContent() {
 		return $this->submissionContent;
+	}
+
+	/**
+	 * @param string $language
+	 */
+	public function setLanguage($language) {
+		$this->language = $language;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLanguage() {
+		return $this->language;
 	}
 
 }

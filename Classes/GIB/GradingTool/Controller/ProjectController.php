@@ -29,6 +29,12 @@ class ProjectController extends AbstractBaseController {
 	protected $securityContext;
 
 	/**
+	 * @var \GIB\GradingTool\Service\TemplateService
+	 * @Flow\Inject
+	 */
+	protected $templateService;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -161,7 +167,8 @@ class ProjectController extends AbstractBaseController {
 		$this->persistenceManager->persistAll();
 
 		// notify user that he was accepted for submission
-		$this->notificationMailService->sendNotificationMail('submissionActivatedNotification', $project, $project->getProjectManager(), $project->getProjectManager()->getName(), $project->getProjectManager()->getPrimaryElectronicAddress());
+		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('submissionActivatedNotification', $project);
+		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $project->getProjectManager(), $project->getProjectManager()->getName(), $project->getProjectManager()->getPrimaryElectronicAddress());
 
 		// add a flash message
 		$message = new \TYPO3\Flow\Error\Message('The submission form for the project "%s" is now active and the project manager was informed.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
