@@ -6,21 +6,39 @@
 
 	<f:render partial="Admin/Navigation" arguments="{currentAction:currentAction}"/>
 
-	<h2>Manage forms</h2>
-	<ul xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
-		<f:for each="{forms}" as="form">
-			<li><f:link.action package="TYPO3.FormBuilder" action="index" controller="editor" arguments="{formPersistenceIdentifier:form.persistenceIdentifier, presetName:settings.dataSheetPresetName}">{form.name}</f:link.action></li>
-		</f:for>
-	</ul>
-	<f:link.action class="btn btn-primary" action="index" controller="FormManager" package="TYPO3.FormBuilder"><i class="fa fa-gear"></i> Form Manager</f:link.action>
+	<h2>Forms</h2>
+	<p class="text-muted">Almost every form that is part of this tool is based on a FormBuilder form configuration. The FormBuilder allows you to adjust existing forms (e.g. by adding new fields, changing labels). Please keep in mind that you should not change the identifiers of form fields (e.g. the field "First name" of the Project Manager in the dataSheetForm has "projectManagerFirstName" as identifier) because some of the identifiers are hard-coded in the GIB Grading Tool to use the data for adding accounts etc.</p>
+	<p class="text-muted">In order to make the GIB Grading Tool use a translated form, the form identifier needs to be appended by the ISO code of the according language. E.g. if both "dataSheetForm" and "dataSheetFormEs" exist, "dataSheetFormEs" is used if someone uses to tool in Spanish language. The default language of the tool is english, forms for the default language must not have an ISO code suffix.</p>
 
+	<table class="table table-striped table-hover">
+		<thead>
+		<tr>
+			<th>Identifier</th>
+			<th>Name</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<f:for each="{forms}" as="form">
+			<tr>
+				<td>{form.persistenceIdentifier}</td>
+				<td>{form.name}</td>
+				<td>
+					<f:link.action class="btn btn-primary btn-sm" package="TYPO3.FormBuilder" action="index" controller="editor" arguments="{formPersistenceIdentifier:form.persistenceIdentifier, presetName:settings.dataSheetPresetName}"><i class="fa fa-edit"></i> Edit</f:link.action>
+				</td>
+			</tr>
+		</f:for>
+		</tbody>
+	</table>
+
+	<f:link.action class="btn btn-primary" action="index" controller="FormManager" package="TYPO3.FormBuilder"><i class="fa fa-gear"></i> Form Manager</f:link.action>
 
 	<h2>Available languages</h2>
 	<p class="text-muted">The languages available are configured in the Settings.yaml file of the package GIB.GradingTool.</p>
 	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
-				<th>ISO-Code</th>
+				<th>ISO code</th>
 				<th>Name</th>
 			</tr>
 		</thead>
