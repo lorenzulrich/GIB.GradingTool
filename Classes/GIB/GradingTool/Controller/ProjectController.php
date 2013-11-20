@@ -36,11 +36,12 @@ class ProjectController extends AbstractBaseController {
 	 *
 	 */
 	public function newDataSheetAction() {
+		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 
-		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['dataSheet']);
+		$formDefinition = $factory->build($overrideConfiguration);
 
 		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
 		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
@@ -64,7 +65,7 @@ class ProjectController extends AbstractBaseController {
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
-		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['dataSheet']);
+		$formDefinition = $factory->build($overrideConfiguration);
 
 		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
 			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
@@ -97,7 +98,7 @@ class ProjectController extends AbstractBaseController {
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['submission']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
-		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['submission']);
+		$formDefinition = $factory->build($overrideConfiguration);
 
 		// populate form with existing data
 		$submissionContent = $project->getSubmissionContent();

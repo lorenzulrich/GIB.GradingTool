@@ -36,10 +36,11 @@ class TemplateController extends AbstractBaseController {
 	 */
 	public function newAction() {
 
+		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['emailTemplate']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
-		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['emailTemplate']);
+		$formDefinition = $factory->build($overrideConfiguration);
 
 		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
 		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
@@ -64,7 +65,7 @@ class TemplateController extends AbstractBaseController {
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['emailTemplate']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
-		$formDefinition = $factory->build($overrideConfiguration, $this->settings['formPresets']['emailTemplate']);
+		$formDefinition = $factory->build($overrideConfiguration);
 
 		foreach ($templateContentArray as $templateField => $templateContent) {
 			$formDefinition->addElementDefaultValue($templateField, $templateContent);

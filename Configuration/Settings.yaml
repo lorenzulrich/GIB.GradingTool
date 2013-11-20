@@ -1,9 +1,9 @@
 GIB:
   GradingTool:
-    formPresets:
-      dataSheet: 'gibdefault'
-      submission: 'gibsubmission'
-      emailTemplate: 'gibdefault'
+    #formPresets:
+    #  dataSheet: 'gibdefault'
+    #  submission: 'gibsubmission'
+    #  emailTemplate: 'gibdefault'
 
     forms:
       dataSheet: 'dataSheetForm'
@@ -532,6 +532,7 @@ TYPO3:
             implementationClassName: 'GIB\GradingTool\Form\Finishers\SubmissionFinisher'
 
   FormBuilder:
+    defaultPreset: 'gibdefault'
     handlebarsTemplates:
       Finisher-GIB.GradingTool-DataSheetFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/DataSheetEditor.html'
       Finisher-GIB.GradingTool-SubmissionFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SubmissionEditor.html'
