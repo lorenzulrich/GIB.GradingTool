@@ -485,6 +485,18 @@ TYPO3:
                   propertyPath: 'properties.weighting'
                   sorting: 185
                   viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+                optOut:
+                  label: 'Opt-out question'
+                  propertyPath: 'properties.optOut'
+                  sorting: 190
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.SelectEditor'
+                  availableElements:
+                    0:
+                      value:
+                      label: No
+                    1:
+                      value: 1
+                      label: Yes
           'GIB.GradingTool:NotApplicableMultiLineText':
             superTypes: ['TYPO3.Form:FormElement', 'TYPO3.Form:TextMixin']
             formBuilder:
@@ -525,6 +537,11 @@ TYPO3:
                     'GIB.GradingTool:SubmissionFinisher':
                       label: 'Save Submission'
                       templateName: 'Finisher-GIB.GradingTool-SubmissionFinisher'
+
+          'TYPO3.Form:Page':
+            renderingOptions:
+              templatePathPattern: 'resource://GIB.GradingTool/Private/Form/SubmissionPage.html'
+
 
         ### FINISHERS ###
         finisherPresets:
