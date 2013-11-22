@@ -1,0 +1,11 @@
+<f:layout name="TYPO3.Form:FieldWithoutLabel" />
+<f:section name="field">
+	<div class="alert alert-warning">
+		Admin option:<br />
+		<div class="checkbox-inline" id="{element.uniqueIdentifier}">
+			<label class="{element.properties.elementClassAttribute}">
+				<f:form.checkbox property="{element.identifier}" id="{element.uniqueIdentifier}" class="{element.properties.elementClassAttribute}" value="{element.properties.value}" errorClass="{element.properties.elementErrorClassAttribute}" /> {element.label}
+			</label>
+		</div>
+	</div>
+</f:section>

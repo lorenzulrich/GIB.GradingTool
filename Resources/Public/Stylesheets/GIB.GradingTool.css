@@ -42,3 +42,5 @@ textarea.form-control { max-width: 100% !important; min-height: 130px; }
 
 /* hide conditional fields on initialization */
 fieldset.conditionalSection { display: none; }
+
+fieldset.hideCaption legend { display: none; }

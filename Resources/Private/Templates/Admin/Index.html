@@ -38,6 +38,7 @@
 						</f:else>
 					</f:if>
 					<f:link.action class="btn btn-primary btn-sm" action="submission" controller="Project" arguments="{project:project}"><i class="fa fa-list-ol"></i> Submission</f:link.action>
+					<f:link.action class="btn btn-primary btn-sm" action="reviewSubmission" controller="Project" arguments="{project:project}"><i class="fa fa-eye"></i> Review Submission</f:link.action>
 					<f:link.action additionalAttributes="{data-confirm: 'Are you sure you want to remove this project?'}" class="btn btn-danger btn-sm returnConfirm" action="remove" controller="Project" arguments="{project:project}"><i class="fa fa-times-circle"></i> Remove</f:link.action>
 				</td>
 			</tr>

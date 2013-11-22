@@ -35,6 +35,12 @@ class ProjectController extends AbstractBaseController {
 	protected $templateService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\SubmissionService
+	 * @Flow\Inject
+	 */
+	protected $submissionService;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -134,6 +140,29 @@ class ProjectController extends AbstractBaseController {
 
 		$this->view->assignMultiple(array(
 			'renderedForm' => $renderedForm,
+			'project' => $project,
+		));
+
+
+	}
+
+	/**
+	 * Review a submission
+	 *
+	 * The create action is missing because the project is added in the
+	 * SubmissionFinisher (see Form/Finishers)
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function reviewSubmissionAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
+
+		$submission = $this->submissionService->getProcessedSubmission($project);
+
+		$this->view->assignMultiple(array(
+			'submission' => $submission,
 			'project' => $project,
 		));
 

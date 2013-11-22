@@ -3,8 +3,6 @@ namespace GIB\GradingTool\Service;
 
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Utility\Files;
-use TYPO3\SwiftMailer\Message;
 
 class TemplateService {
 

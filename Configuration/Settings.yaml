@@ -492,10 +492,10 @@ TYPO3:
                   viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.SelectEditor'
                   availableElements:
                     0:
-                      value:
+                      value: '0'
                       label: No
                     1:
-                      value: 1
+                      value: '1'
                       label: Yes
           'GIB.GradingTool:NotApplicableMultiLineText':
             superTypes: ['TYPO3.Form:FormElement', 'TYPO3.Form:TextMixin']
@@ -503,6 +503,24 @@ TYPO3:
               group: input
               sorting: 220
               label: 'GIB Not Applicable Text'
+              editors:
+                questionIdentifier:
+                  label: 'Question identifier'
+                  propertyPath: 'properties.questionIdentifier'
+                  sorting: 200
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+          'GIB.GradingTool:OptOutAcceptedCheckbox':
+            superTypes: ['TYPO3.Form:Checkbox']
+            formBuilder:
+              group: select
+              sorting: 240
+              label: 'GIB Opt-Out Acceptance'
+              editors:
+                questionIdentifier:
+                  label: 'Question identifier'
+                  propertyPath: 'properties.questionIdentifier'
+                  sorting: 200
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
           'GIB.GradingTool:QuestionMixin':
             formBuilder:
               editors:
@@ -538,10 +556,14 @@ TYPO3:
                       label: 'Save Submission'
                       templateName: 'Finisher-GIB.GradingTool-SubmissionFinisher'
 
-          'TYPO3.Form:Page':
-            renderingOptions:
-              templatePathPattern: 'resource://GIB.GradingTool/Private/Form/SubmissionPage.html'
-
+          'TYPO3.Form:Section':
+            formBuilder:
+              editors:
+                threshold:
+                  label: 'Threshold'
+                  propertyPath: 'properties.threshold'
+                  sorting: 200
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
 
         ### FINISHERS ###
         finisherPresets:

@@ -1,0 +1,186 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+{namespace form=TYPO3\Form\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool</f:section>
+
+<f:section name="Content">
+	<script src="{f:uri.resource(path: 'JavaScripts/d3.v3.min.js')}"></script>
+	<script src="{f:uri.resource(path: 'JavaScripts/RadarChart.js')}"></script>
+
+	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<div class="col-md-12">
+			<h2>Review submission for project "{project.projectTitle}"</h2>
+			<h3>Overview</h3>
+		</div>
+	</div>
+	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<div class="col-md-4">
+			<ul class="list-group" style="width: 300px;">
+			<f:for each="{submission}" as="section" iteration="sectionIterator2">
+					<li class="list-group-item">
+						<span class="badge">
+							<f:if condition="{section.thresholdReached}">
+								<f:then>
+									<f:format.number decimals="2" decimalSeparator=".">{section.weightedScore}</f:format.number>
+								</f:then>
+								<f:else>
+									<i class="fa fa-exclamation"></i>
+								</f:else>
+							</f:if>
+						</span>
+						{section.label}
+					</li>
+			</f:for>
+			</ul>
+		</div>
+		<div class="col-md-4">
+			<div id="scoreChart"></div>
+		</div>
+	</div>
+	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<div class="col-md-12">
+			<f:for each="{submission}" as="section" iteration="sectionIterator">
+				<h3>{sectionIterator.cycle} {section.label}</h3>
+				<f:if condition="{section.thresholdReached}">
+					<f:else>
+						<div class="alert alert-danger">
+							The threshold for this section was not reached because too many questions were answered with "Not applicable".<br />
+							The threshold may be reached if you accept non-applicable opt-out questions.
+						</div>
+					</f:else>
+				</f:if>
+				<ul class="list-group" style="width: 300px;">
+					<li class="list-group-item">
+						<span class="badge">{section.questionCount}</span>
+						Number of questions
+					</li>
+					<li class="list-group-item">
+						<span class="badge">{section.notApplicableAnswerCount}</span>
+						Not applicable answers
+					</li>
+					<li class="list-group-item">
+						<span class="badge">{section.optOutAcceptedCount}</span>
+						Accepted opt out-questions
+					</li>
+					<li class="list-group-item">
+						<span class="badge">{section.threshold}</span>
+						Threshold
+					</li>
+				</ul>
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Question</th>
+							<th>Weighting</th>
+							<th>Opt-Out</th>
+							<th>Answer</th>
+							<th>Score</th>
+							<th>Comment</th>
+						</tr>
+					</thead>
+					<tbody>
+					<f:for each="{section.questions}" as="question" iteration="iterator">
+						<tr>
+							<td>{question.label}</td>
+							<td>{question.weighting}</td>
+							<td>
+								<f:if condition="{question.optOut} == 1">
+									<f:if condition="{question.optOutAccepted}">
+										<f:then>
+											<i title="Opt-out comment was accepted" class="text-success fa fa-check-square"></i>
+										</f:then>
+										<f:else>
+											<i title="Opt-out comment not (yet) accepted" class="text-danger fa fa-minus-square"></i>
+										</f:else>
+									</f:if>
+								</f:if>
+							</td>
+							<td>
+								<f:if condition="{question.optOut} == 0">
+									<f:then>
+										<f:if condition="{question.score} == 0">
+											<f:then>
+												<span class="text-danger">
+													<i class="fa fa-exclamation"></i> {question.value}
+												</span>
+											</f:then>
+											<f:else>
+												{question.value}
+											</f:else>
+										</f:if>
+									</f:then>
+									<f:else>
+										{question.value}
+									</f:else>
+								</f:if>
+							</td>
+							<td>{question.score}</td>
+							<td>{question.comment}</td>
+						</tr>
+					</f:for>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th>
+								<f:if condition="{section.weightingsSum} == 1">
+									<f:then>
+										{section.weightingsSum}
+									</f:then>
+									<f:else>
+										<span class="text-danger">
+											<i title="Error: Sums of weighting must equal 1" class="fa fa-exclamation"></i> {section.weightingsSum}
+										</span>
+									</f:else>
+								</f:if>
+							</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</tfoot>
+				</table>
+			</f:for>
+		</div>
+	</div>
+	<script>
+
+		var projectPerformance = new Array();
+		<f:for each="{submission}" as="section" iteration="iterator">
+			sectionPerformance = new Object();
+			sectionPerformance.axis = "{section.label}";
+			<f:if condition="{section.weightedScore}">
+				<f:then>
+					sectionPerformance.value = Math.round({section.weightedScore} * 100) / 100;
+				</f:then>
+				<f:else>
+					sectionPerformance.value = 0;
+				</f:else>
+			</f:if>
+			projectPerformance[{iterator.index}] = sectionPerformance;
+		</f:for>
+
+
+		//Data
+		var d = [
+			projectPerformance
+		];
+
+		var mycfg = {
+			color: function(){
+				return 'red'
+			},
+			w: 500,
+			h: 500,
+			maxValue: 4,
+			factor: 1
+		}
+
+		//Call function to draw the Radar chart
+		//Will expect that data is in %'s
+		RadarChart.draw("#scoreChart", d, mycfg);
+
+	</script>
+</f:section>
