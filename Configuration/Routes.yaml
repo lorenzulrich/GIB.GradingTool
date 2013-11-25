@@ -1,0 +1,40 @@
+-
+  name: 'GIB.GradingTool Home'
+  uriPattern: ''
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Standard'
+    '@action': 'index'
+
+-
+  name: 'GIB.GradingTool Project'
+  uriPattern: 'project/{@action}'
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Project'
+  appendExceedingArguments: true
+
+-
+  name: 'GIB.GradingTool Admin'
+  uriPattern: 'admin/{@action}'
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Admin'
+  appendExceedingArguments: true
+
+-
+  name: 'GIB.GradingTool Template'
+  uriPattern: 'template/{@action}'
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Template'
+  appendExceedingArguments: true
+
+#-
+#  name: 'GIB Export PDF'
+#  uriPattern: 'gib.gradingtool/standard/export.{@format}'
+#  defaults:
+#    '@package':    'GIB.GradingTool'
+#    '@controller': 'Standard'
+#    '@action':     'export'
+#    '@format':     'pdf'

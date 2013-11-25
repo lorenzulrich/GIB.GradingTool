@@ -30,7 +30,7 @@ class StandardController extends AbstractBaseController {
 		if ($this->authenticationManager->isAuthenticated()) {
 
 			if ($this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:ProjectManager')) {
-				$this->forward('dashboard');
+				$this->forward('dashboard', 'Standard');
 			}
 
 			if ($this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
