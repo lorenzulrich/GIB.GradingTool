@@ -166,7 +166,28 @@ class ProjectController extends AbstractBaseController {
 			'project' => $project,
 		));
 
+	}
 
+	/**
+	 * Change the state of a field in a submission
+	 * This is used for accepting opt-out question comments.
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 * @param string $fieldIdentifier
+	 * @param string $newState
+	 */
+	public function changeFieldStateForProjectSubmissionAction(\GIB\GradingTool\Domain\Model\Project $project, $fieldIdentifier, $newState) {
+
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
+
+		$submissionContentArray = unserialize($project->getSubmissionContent());
+		$submissionContentArray[$fieldIdentifier] = $newState;
+		$project->setSubmissionContent(serialize($submissionContentArray));
+		$this->projectRepository->update($project);
+		$this->persistenceManager->persistAll();
+
+		$this->redirect('reviewSubmission', NULL, NULL, array('project' => $project));
 	}
 
 	/**

@@ -37,7 +37,6 @@ class SubmissionService {
 		// we don't overlay the form here because we need to review the submission in english
 		// todo overlay if needed
 		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
-		//\TYPO3\Flow\var_dump($submissionFormDefinition);
 
 		$submission = array();
 		$submission['errorCount'] = 0;
@@ -83,6 +82,7 @@ class SubmissionService {
 						if ($submissionContentArray[$field['identifier']] == 1) {
 							$optOutAcceptedCount++;
 						}
+						$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAcceptedFieldIdentifier'] = $field['identifier'];
 						$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAccepted'] = $submissionContentArray[$field['identifier']];
 					}
 				}

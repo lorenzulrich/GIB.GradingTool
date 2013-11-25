@@ -81,10 +81,10 @@
 						<tr>
 							<th>Question</th>
 							<th>Weighting</th>
-							<th>Opt-Out</th>
 							<th>Answer</th>
 							<th>Score</th>
 							<th>Comment</th>
+							<th>Opt-Out</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -92,18 +92,6 @@
 						<tr>
 							<td>{question.label}</td>
 							<td>{question.weighting}</td>
-							<td>
-								<f:if condition="{question.optOut} == 1">
-									<f:if condition="{question.optOutAccepted}">
-										<f:then>
-											<i title="Opt-out comment was accepted" class="text-success fa fa-check-square"></i>
-										</f:then>
-										<f:else>
-											<i title="Opt-out comment not (yet) accepted" class="text-danger fa fa-minus-square"></i>
-										</f:else>
-									</f:if>
-								</f:if>
-							</td>
 							<td>
 								<f:if condition="{question.optOut} == 0">
 									<f:then>
@@ -125,6 +113,22 @@
 							</td>
 							<td>{question.score}</td>
 							<td>{question.comment}</td>
+							<td>
+								<f:if condition="{question.optOut} == 1">
+									<f:if condition="{question.optOutAccepted}">
+										<f:then>
+											<f:link.action action="changeFieldStateForProjectSubmission" arguments="{project:project, fieldIdentifier:question.optOutAcceptedFieldIdentifier, newState:0}">
+												<i title="Opt-out comment was accepted. Click to reject." class="text-success fa fa-check-square"></i>
+											</f:link.action>
+										</f:then>
+										<f:else>
+											<f:link.action action="changeFieldStateForProjectSubmission" arguments="{project:project, fieldIdentifier:question.optOutAcceptedFieldIdentifier, newState:1}">
+												<i title="Opt-out comment not (yet) accepted. Click to accept." class="text-danger fa fa-minus-square"></i>
+											</f:link.action>
+										</f:else>
+									</f:if>
+								</f:if>
+							</td>
 						</tr>
 					</f:for>
 					</tbody>
@@ -143,11 +147,11 @@
 									</f:else>
 								</f:if>
 							</th>
-							<th></th>
 							<th>Weighted Score:</th>
 							<th>
 								<f:format.number decimals="2" decimalSeparator=".">{section.weightedScore}</f:format.number>
 							</th>
+							<th></th>
 							<th></th>
 						</tr>
 					</tfoot>
@@ -157,6 +161,7 @@
 	</div>
 	<script>
 
+		/* Radar chart */
 		var projectPerformance = new Array();
 		<f:for each="{submission.sections}" as="section" iteration="iterator">
 			sectionPerformance = new Object();
@@ -174,7 +179,7 @@
 
 
 		//Data
-		var d = [
+		var data = [
 			projectPerformance
 		];
 
@@ -188,10 +193,9 @@
 			factor: 1
 		}
 
-		//Call function to draw the Radar chart
-		//Will expect that data is in %'s
-		RadarChart.draw("#scoreChart", d, mycfg);
+		RadarChart.draw("#scoreChart", data, mycfg);
 
+		// Scroll to section
 		$(function() {
 			$('li[data-section]').on('click', function(e) {
 				e.preventDefault();
