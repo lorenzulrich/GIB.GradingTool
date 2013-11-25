@@ -30,10 +30,15 @@
 <body>
 <div class="container">
 
-	<div class="header" id="siteHeader">
-		<h1>
+	<div class="header clearfix" id="siteHeader">
+		<h1 style="float: left;">
 			<f:render section="Title"/>
 		</h1>
+		<f:security.ifHasRole role="GIB.GradingTool:Administrator">
+			<div class="pull-right">
+				<f:link.action action="index" controller="Standard" class="btn btn-default btn-sm"><i class="fa fa-home"></i> Dashboard</f:link.action>
+			</div>
+		</f:security.ifHasRole>
 	</div>
 
 	<div class="row">

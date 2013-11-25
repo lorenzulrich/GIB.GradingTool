@@ -28,17 +28,27 @@
 				<td><f:format.date format="d.m.Y H:i">{project.created}</f:format.date></td>
 				<td><f:format.date format="d.m.Y H:i">{project.lastUpdated}</f:format.date></td>
 				<td>
+
 					<f:link.action class="btn btn-primary btn-sm" action="editDataSheet" controller="Project" arguments="{project:project}"><i class="fa fa-edit"></i> Edit Data Sheet</f:link.action>
-					<f:if condition="{project.submissionFormAccess}">
-						<f:then>
-							<f:link.action additionalAttributes="{data-confirm: 'Are you sure?'}" class="btn btn-sm btn-info returnConfirm" arguments="{project:project}" action="deactivateSubmissionForm" controller="Project"><i class="fa fa-eye-slash"></i> Deactivate Submission</f:link.action>
-						</f:then>
-						<f:else>
-							<f:link.action additionalAttributes="{data-confirm: 'This will send a notification e-mail to the user. Are you sure?'}" class="btn btn-sm btn-info returnConfirm" arguments="{project:project}" action="activateSubmissionForm" controller="Project"><i class="fa fa-eye"></i> Activate Submission</f:link.action>
-						</f:else>
-					</f:if>
-					<f:link.action class="btn btn-primary btn-sm" action="submission" controller="Project" arguments="{project:project}"><i class="fa fa-list-ol"></i> Submission</f:link.action>
-					<f:link.action class="btn btn-primary btn-sm" action="reviewSubmission" controller="Project" arguments="{project:project}"><i class="fa fa-eye"></i> Review Submission</f:link.action>
+					<div class="btn-group">
+						<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+							Submission <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<f:if condition="{project.submissionFormAccess}">
+								<f:then>
+									<li><f:link.action additionalAttributes="{data-confirm: 'Are you sure?'}" class="returnConfirm" arguments="{project:project}" action="deactivateSubmissionForm" controller="Project"><i class="fa fa-eye-slash"></i> Deactivate Submission</f:link.action></li>
+								</f:then>
+								<f:else>
+									<li><f:link.action additionalAttributes="{data-confirm: 'This will send a notification e-mail to the user. Are you sure?'}" class="returnConfirm" arguments="{project:project}" action="activateSubmissionForm" controller="Project"><i class="fa fa-eye"></i> Activate Submission</f:link.action></li>
+								</f:else>
+							</f:if>
+							<li><f:link.action action="submission" controller="Project" arguments="{project:project}"><i class="fa fa-list-ol"></i> Edit Submission</f:link.action></li>
+							<f:if condition="{project.submissionContent}">
+								<li><f:link.action action="reviewSubmission" controller="Project" arguments="{project:project}"><i class="fa fa-eye"></i> Review Submission</f:link.action></li>
+							</f:if>
+						</ul>
+					</div>
 					<f:link.action additionalAttributes="{data-confirm: 'Are you sure you want to remove this project?'}" class="btn btn-danger btn-sm returnConfirm" action="remove" controller="Project" arguments="{project:project}"><i class="fa fa-times-circle"></i> Remove</f:link.action>
 				</td>
 			</tr>
