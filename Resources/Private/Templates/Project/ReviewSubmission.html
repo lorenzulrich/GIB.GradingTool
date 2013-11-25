@@ -5,6 +5,9 @@
 <f:section name="Title">GIB Grading Tool</f:section>
 
 <f:section name="Content">
+	<f:render partial="Admin/Navigation" arguments="{currentAction:'index'}"/>
+
+
 	<script src="{f:uri.resource(path: 'JavaScripts/d3.v3.min.js')}"></script>
 	<script src="{f:uri.resource(path: 'JavaScripts/RadarChart.js')}"></script>
 
@@ -12,13 +15,18 @@
 		<div class="col-md-12">
 			<h2>Review submission for project "{project.projectTitle}"</h2>
 			<h3>Overview</h3>
+			<f:if condition="{submission.errorCount} > 0">
+				<div class="alert alert-danger">
+					The threshold for some sections of this submission was not reached. Therefore the project dossier cannot be exported.
+				</div>
+			</f:if>
 		</div>
 	</div>
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-4">
-			<ul class="list-group" style="width: 300px;">
-			<f:for each="{submission}" as="section" iteration="sectionIterator2">
-					<li class="list-group-item">
+			<ul class="project-submission-overview list-group" style="width: 300px;">
+			<f:for each="{submission.sections}" as="section" iteration="sectionIterator2">
+					<li data-section="section{sectionIterator2.cycle}" class="list-group-item {f:if(condition: '{section.thresholdReached}', then:'', else:'danger')}">
 						<span class="badge">
 							<f:if condition="{section.thresholdReached}">
 								<f:then>
@@ -40,8 +48,8 @@
 	</div>
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
-			<f:for each="{submission}" as="section" iteration="sectionIterator">
-				<h3>{sectionIterator.cycle} {section.label}</h3>
+			<f:for each="{submission.sections}" as="section" iteration="sectionIterator">
+				<h3 id="section{sectionIterator.cycle}">{sectionIterator.cycle} {section.label}</h3>
 				<f:if condition="{section.thresholdReached}">
 					<f:else>
 						<div class="alert alert-danger">
@@ -150,7 +158,7 @@
 	<script>
 
 		var projectPerformance = new Array();
-		<f:for each="{submission}" as="section" iteration="iterator">
+		<f:for each="{submission.sections}" as="section" iteration="iterator">
 			sectionPerformance = new Object();
 			sectionPerformance.axis = "{section.label}";
 			<f:if condition="{section.weightedScore}">
@@ -183,6 +191,14 @@
 		//Call function to draw the Radar chart
 		//Will expect that data is in %'s
 		RadarChart.draw("#scoreChart", d, mycfg);
+
+		$(function() {
+			$('li[data-section]').on('click', function(e) {
+				e.preventDefault();
+				var requestedSection = $(e.target).attr('data-section');
+				$('html,body').animate({scrollTop: $("#" + requestedSection).offset().top}, 'slow');
+			});
+		})
 
 	</script>
 </f:section>

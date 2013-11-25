@@ -44,3 +44,6 @@ textarea.form-control { max-width: 100% !important; min-height: 130px; }
 fieldset.conditionalSection { display: none; }
 
 fieldset.hideCaption legend { display: none; }
+
+.project-submission-overview li { cursor: pointer; }
+li.danger { background-color: #f2dede; }

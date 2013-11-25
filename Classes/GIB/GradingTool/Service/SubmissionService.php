@@ -39,6 +39,8 @@ class SubmissionService {
 		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
 		//\TYPO3\Flow\var_dump($submissionFormDefinition);
 
+		$submission = array();
+		$submission['errorCount'] = 0;
 		$formSections = array();
 		foreach ($submissionFormDefinition['renderables'] as $page) {
 			// a form page
@@ -94,13 +96,16 @@ class SubmissionService {
 					$formSections[$section['identifier']]['weightedScore'] = $this->calculateWeightedScoreForSection($formSections[$section['identifier']]['questions']);
 				} else {
 					$formSections[$section['identifier']]['weightedScore'] = FALSE;
+					$submission['errorCount']++;
 				}
 
 			}
 
 		}
 
-		return $formSections;
+		$submission['sections'] = $formSections;
+
+		return $submission;
 
 	}
 
