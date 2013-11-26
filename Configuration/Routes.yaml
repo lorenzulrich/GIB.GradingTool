@@ -7,12 +7,62 @@
     '@action': 'index'
 
 -
-  name: 'GIB.GradingTool Project'
-  uriPattern: 'project/{@action}'
+  name: 'GIB.GradingTool :: Project'
+  uriPattern: 'project/newdatasheet'
   defaults:
     '@package': 'GIB.GradingTool'
     '@controller': 'Project'
+    '@action': 'newDataSheet'
   appendExceedingArguments: true
+
+-
+  name: 'GIB.GradingTool :: Project :: Edit Data Sheet'
+  uriPattern: 'project/{project}/editdatasheet'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'editDataSheet'
+
+-
+  name: 'GIB.GradingTool :: Project :: Remove Project'
+  uriPattern: 'project/{project}/remove'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'remove'
+
+-
+  name: 'GIB.GradingTool :: Project :: Deactivate Submission'
+  uriPattern: 'project/{project}/deactivatesubmission'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'deactivateSubmissionForm'
+
+-
+  name: 'GIB.GradingTool :: Project :: Activate Submission'
+  uriPattern: 'project/{project}/activatesubmission'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'activateSubmissionForm'
+
+
+-
+  name: 'GIB.GradingTool :: Project :: Edit Submission'
+  uriPattern: 'project/{project}/submission'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'submission'
+
+-
+  name: 'GIB.GradingTool :: Project :: Review Submission'
+  uriPattern: 'project/{project}/reviewsubmission'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'reviewSubmission'
 
 -
   name: 'GIB.GradingTool Admin'
