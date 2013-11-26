@@ -123,7 +123,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			// we need to update the data sheet, we assume that the person is authenticated because a data sheet can only be edited by a authenticated user
 
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
-			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project')['__identity']);
+			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project'));
 
 			$currentDataSheetContent = unserialize($project->getDataSheetContent());
 
