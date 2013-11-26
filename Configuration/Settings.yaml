@@ -18,6 +18,7 @@ GIB:
       zh: '中国话'
 
     email:
+      activateNotifications: FALSE
       beforeContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/BeforeContent.html'
       afterContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/AfterContent.html'
 
@@ -96,7 +97,6 @@ TYPO3:
                 BW: Botswana
                 BV: 'Bouvet Island'
                 BR: Brazil
-                BQ: 'British Antarctic Territory'
                 IO: 'British Indian Ocean Territory'
                 VG: 'British Virgin Islands'
                 BN: Brunei
@@ -106,7 +106,6 @@ TYPO3:
                 KH: Cambodia
                 CM: Cameroon
                 CA: Canada
-                CT: 'Canton and Enderbury Islands'
                 CV: 'Cape Verde'
                 KY: 'Cayman Islands'
                 CF: 'Central African Republic'
@@ -130,8 +129,6 @@ TYPO3:
                 DJ: Djibouti
                 DM: Dominica
                 DO: 'Dominican Republic'
-                NQ: 'Dronning Maud Land'
-                DD: 'East Germany'
                 EC: Ecuador
                 EG: Egypt
                 SV: 'El Salvador'
@@ -147,7 +144,6 @@ TYPO3:
                 GF: 'French Guiana'
                 PF: 'French Polynesia'
                 TF: 'French Southern Territories'
-                FQ: 'French Southern and Antarctic Territories'
                 GA: Gabon
                 GM: Gambia
                 GE: Georgia
@@ -181,7 +177,6 @@ TYPO3:
                 JM: Jamaica
                 JP: Japan
                 JE: Jersey
-                JT: 'Johnston Island'
                 JO: Jordan
                 KZ: Kazakhstan
                 KE: Kenya
@@ -210,10 +205,8 @@ TYPO3:
                 MR: Mauritania
                 MU: Mauritius
                 YT: Mayotte
-                FX: 'Metropolitan France'
                 MX: Mexico
                 FM: Micronesia
-                MI: 'Midway Islands'
                 MD: Moldova
                 MC: Monaco
                 MN: Mongolia
@@ -227,7 +220,6 @@ TYPO3:
                 NP: Nepal
                 NL: Netherlands
                 AN: 'Netherlands Antilles'
-                NT: 'Neutral Zone'
                 NC: 'New Caledonia'
                 NZ: 'New Zealand'
                 NI: Nicaragua
@@ -236,19 +228,15 @@ TYPO3:
                 NU: Niue
                 NF: 'Norfolk Island'
                 KP: 'North Korea'
-                VD: 'North Vietnam'
                 MP: 'Northern Mariana Islands'
                 NO: Norway
                 OM: Oman
-                PC: 'Pacific Islands Trust Territory'
                 PK: Pakistan
                 PW: Palau
                 PS: 'Palestinian Territories'
                 PA: Panama
-                PZ: 'Panama Canal Zone'
                 PG: 'Papua New Guinea'
                 PY: Paraguay
-                YD: 'People''s Democratic Republic of Yemen'
                 PE: Peru
                 PH: Philippines
                 PN: 'Pitcairn Islands'
@@ -308,7 +296,6 @@ TYPO3:
                 TC: 'Turks and Caicos Islands'
                 TV: Tuvalu
                 UM: 'U.S. Minor Outlying Islands'
-                PU: 'U.S. Miscellaneous Pacific Islands'
                 VI: 'U.S. Virgin Islands'
                 UG: Uganda
                 UA: Ukraine
@@ -322,7 +309,6 @@ TYPO3:
                 VA: 'Vatican City'
                 VE: Venezuela
                 VN: Vietnam
-                WK: 'Wake Island'
                 WF: 'Wallis and Futuna'
                 EH: 'Western Sahara'
                 YE: Yemen

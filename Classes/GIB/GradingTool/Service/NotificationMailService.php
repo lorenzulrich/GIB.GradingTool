@@ -36,6 +36,10 @@ class NotificationMailService {
 	 * @param string $diffContent
 	 */
 	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $diffContent = '') {
+		if ($this->settings['email']['activateNotifications'] === FALSE) {
+			return TRUE;
+		}
+
 		/** @var \GIB\GradingTool\Domain\Model\Template $template */
 		$template = $this->templateRepository->findOneByTemplateIdentifier($templateIdentifier);
 		$templateContentArray = unserialize($template->getContent());
