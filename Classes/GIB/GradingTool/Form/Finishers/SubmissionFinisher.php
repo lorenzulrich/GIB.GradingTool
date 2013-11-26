@@ -71,7 +71,7 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$formRuntime = $this->finisherContext->getFormRuntime();
 
 		// The corresponding project
-		$projectIdentifier = $formRuntime->getRequest()->getParentRequest()->getArgument('project')['__identity'];
+		$projectIdentifier = $formRuntime->getRequest()->getParentRequest()->getArgument('project');
 		/** @var \GIB\GradingTool\Domain\Model\Project $project */
 		$project = $this->projectRepository->findByIdentifier($projectIdentifier);
 
