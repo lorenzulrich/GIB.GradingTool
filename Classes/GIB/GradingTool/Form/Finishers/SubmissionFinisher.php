@@ -67,7 +67,7 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	 * @see AbstractFinisher::execute()
 	 *
 	 * @return void
-	 * @throws \TYPO3\Form\Exception\FinisherException
+	 * @throws \TYPO3\Flow\Mvc\Exception\StopActionException();
 	 */
 	protected function executeInternal() {
 
