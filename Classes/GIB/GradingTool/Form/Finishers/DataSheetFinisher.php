@@ -237,13 +237,15 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				$projectManager->addProject($project);
 				$this->partyRepository->update($projectManager);
 			}
+
+			// send notification mail
+			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
+			$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
+
 		}
 
 		$this->persistenceManager->persistAll();
 
-		// send notification mail
-		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
-		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
 
 
 		// redirect to dashboard
