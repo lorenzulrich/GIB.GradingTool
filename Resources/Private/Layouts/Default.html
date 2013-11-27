@@ -84,15 +84,17 @@
 				<secure:account propertyPath="party.name" /> |
 				<f:link.action action="logout" package="Flow.Login" controller="Login">Logout</f:link.action>
 				<div class="pull-right">
-					<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
+					<f:comment><f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/></f:comment>
 					<f:link.action action="index" controller="Standard" class="btn btn-primary btn-sm"><i class="fa fa-home"></i> Dashboard</f:link.action>
 				</div>
 			</f:then>
 			<f:else>
 				<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
+				<f:comment>
 				<div class="pull-right">
 					<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
 				</div>
+				</f:comment>
 			</f:else>
 		</f:security.ifAuthenticated>
 	</footer>
