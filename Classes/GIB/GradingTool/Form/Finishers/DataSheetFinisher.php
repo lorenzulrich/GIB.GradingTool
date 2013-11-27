@@ -218,10 +218,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				// finally add the complete ProjectManager
 				$this->partyRepository->add($projectManager);
 
-				// send notification mail
-				$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
-				$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
-
 				if (!$this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator')) {
 					// authenticate user if no Administrator is authenticated
 					$authenticationTokens = $this->securityContext->getAuthenticationTokensOfType('TYPO3\Flow\Security\Authentication\Token\UsernamePassword');
@@ -244,6 +240,11 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		}
 
 		$this->persistenceManager->persistAll();
+
+		// send notification mail
+		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
+		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
+
 
 		// redirect to dashboard
 		$formRuntime = $this->finisherContext->getFormRuntime();
