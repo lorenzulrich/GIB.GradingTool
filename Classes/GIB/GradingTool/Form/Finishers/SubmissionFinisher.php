@@ -20,7 +20,6 @@ use TYPO3\Flow\Annotations as Flow;
 
 /**
  * Class SubmissionFinisher
- * @Flow\Scope("session")
  */
 class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
