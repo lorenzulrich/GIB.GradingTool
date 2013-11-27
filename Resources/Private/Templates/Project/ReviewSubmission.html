@@ -80,7 +80,7 @@
 					<thead>
 						<tr>
 							<th>Question</th>
-							<th>Weighting</th>
+							<f:comment><th>Weighting</th></f:comment>
 							<th>Answer</th>
 							<th>Score</th>
 							<th>Comment</th>
@@ -91,7 +91,7 @@
 					<f:for each="{section.questions}" as="question" iteration="iterator">
 						<tr>
 							<td>{question.label}</td>
-							<td>{question.weighting}</td>
+							<f:comment><td>{question.weighting}</td></f:comment>
 							<td>
 								<f:if condition="{question.optOut} == 0">
 									<f:then>
@@ -137,19 +137,21 @@
 					<tfoot>
 						<tr>
 							<th></th>
+							<f:comment>
 							<th>
-								<f:if condition="{section.weightingsSum} == 1">
+								<f:if condition="{section.weightingAverage} == 1">
 									<f:then>
-										{section.weightingsSum}
+										{section.weightingAverage}
 									</f:then>
 									<f:else>
 										<span class="text-danger">
-											<i title="Error: Sums of weighting must equal 1" class="fa fa-exclamation"></i> {section.weightingsSum}
+											<i title="Error: Sums of weighting must equal 1" class="fa fa-exclamation"></i> {section.weightingAverage}
 										</span>
 									</f:else>
 								</f:if>
 							</th>
-							<th>Weighted Score:</th>
+							</f:comment>
+							<th>Score:</th>
 							<th>
 								<f:format.number decimals="2" decimalSeparator=".">{section.weightedScore}</f:format.number>
 							</th>

@@ -89,11 +89,11 @@ class SubmissionService {
 				$formSections[$section['identifier']]['notApplicableAnswerCount'] = $notApplicableAnswerCount;
 				$formSections[$section['identifier']]['questionCount'] = $questionCount;
 				$formSections[$section['identifier']]['optOutAcceptedCount'] = $optOutAcceptedCount;
-				$formSections[$section['identifier']]['weightingsSum'] = $weightingsSum;
+				$formSections[$section['identifier']]['weightingAverage'] = $weightingsSum / $questionCount;
 				$formSections[$section['identifier']]['thresholdReached'] = $questionCount - $notApplicableAnswerCount + $optOutAcceptedCount < $section['properties']['threshold'] ? FALSE : TRUE;
 
 				if ($formSections[$section['identifier']]['thresholdReached']) {
-					$formSections[$section['identifier']]['weightedScore'] = $this->calculateWeightedScoreForSection($formSections[$section['identifier']]['questions']);
+					$formSections[$section['identifier']]['weightedScore'] = $this->calculateScoreForSection($formSections[$section['identifier']]['questions']);
 				} else {
 					$formSections[$section['identifier']]['weightedScore'] = FALSE;
 					$submission['errorCount']++;
@@ -109,6 +109,12 @@ class SubmissionService {
 
 	}
 
+	/**
+	 * It was decided not to use weighting of scores when it was already developed. In case the product owner changes his mind again, we leave the stuff here
+	 *
+	 * @param $questions
+	 * @return float
+	 */
 	public function calculateWeightedScoreForSection($questions) {
 		$missingWeighting = 0;
 		$questionScoreWeightingArray = array();
@@ -144,7 +150,36 @@ class SubmissionService {
 			$sectionScore = $sectionScore + ($questionScoreAndWeighting['score'] * $questionScoreAndWeighting['weighting']);
 		}
 
-		return $sectionScore;
+		return $sectionScore / $applicableQuestionCount;
+
+		//\TYPO3\Flow\var_dump($sectionScore, 'sectionScore');
+
+
+	}
+
+	/**
+	 * @param $questions
+	 * @return float
+	 */
+	public function calculateScoreForSection($questions) {
+		$questionScoreArray = array();
+		$applicableQuestionCount = 0;
+		foreach ($questions as $question) {
+			if ($question['score'] !== 'N/A') {
+				$applicableQuestionCount++;
+				$questionScoreArray[] = array('score' => $question['score']);
+			}
+		}
+
+		//\TYPO3\Flow\var_dump($questionScoreWeightingArray, 'questionScWeArrayAfter');
+
+		$sectionScoreSum = 0;
+		foreach ($questionScoreArray as $questionScore) {
+			$sectionScoreSum = $sectionScoreSum + $questionScore['score'];
+		}
+		$sectionScoreAverage = $sectionScoreSum / $applicableQuestionCount;
+
+		return $sectionScoreAverage;
 
 		//\TYPO3\Flow\var_dump($sectionScore, 'sectionScore');
 
