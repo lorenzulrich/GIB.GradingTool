@@ -89,7 +89,7 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$this->persistenceManager->persistAll();
 
 		// add a flash message
-		$message = new \TYPO3\Flow\Error\Message('Your submission for project "%s" was successfully saved.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
+		$message = new \TYPO3\Flow\Error\Message('Your submission for project "%s" was successfully saved. You will receive your grading in the next days.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
 		$this->flashMessageContainer->addMessage($message);
 
 		// send notification mail

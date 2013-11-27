@@ -34,6 +34,8 @@ TYPO3:
         stylesheets:
           bootstrap:
             source: 'resource://GIB.GradingTool/Public/Stylesheets/bootstrap.min.css'
+          gibgradingtool:
+            source: 'resource://GIB.GradingTool/Public/Stylesheets/GIB.GradingTool.css'
         javaScripts: []
 
         ########### DEFAULT FORM ELEMENT DEFINITIONS ###########

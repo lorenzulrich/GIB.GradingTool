@@ -70,3 +70,78 @@ li.danger { background-color: #f2dede; }
 .flyover-bottom {
     bottom: 10px;
 }
+
+.hidden { display: none; }
+
+ul#submissionPageOverview {
+    list-style-type: none;
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+ul#submissionPageOverview li {
+    float: left;
+    width: 28%;
+    margin: 0 5% 10px 0;
+    font-size: 14px;
+    padding: 0;
+    height: 24px;
+}
+
+ul#submissionPageOverview li span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+ul#submissionPageOverview li .stepNumber {
+    font-size: 24px;
+    margin-right: 10px;
+    width: 25px;
+}
+
+ul.submissionAnswer {
+    list-style: none;
+    margin: 0 0 40px 0;
+    padding: 0;
+}
+
+ul.submissionAnswer li {
+    width: 16%;
+    margin-right: 5%;
+    min-height: 150px;
+    height: 110%;
+    float: left;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border: 5px solid #3276b1;
+}
+ul.submissionAnswer li.answerSelected {
+    background-color: #3276b1;
+    color: #fff;
+    -webkit-transition: all 200ms ;
+    -moz-transition: all 200ms ;
+    -ms-transition: all 200ms ;
+    -o-transition: all 200ms ;
+    transition: all 200ms ;
+}
+ul.submissionAnswer li:last-child { margin-right: 0; }
+ul.submissionAnswer li input[type=radio] {
+    position: absolute;
+    left: -999em;
+}
+ul.submissionAnswer label {
+    padding: 10px;
+    display: block;
+    height: 100%;
+    width: 100%;
+    font-size: 12px;
+    cursor: pointer;
+    position: relative;
+}
+ul.submissionAnswer span {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    font-size: 16px;
+}
