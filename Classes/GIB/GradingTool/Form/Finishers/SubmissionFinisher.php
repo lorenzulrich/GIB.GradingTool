@@ -18,6 +18,10 @@ namespace GIB\GradingTool\Form\Finishers;
 
 use TYPO3\Flow\Annotations as Flow;
 
+/**
+ * Class SubmissionFinisher
+ * @Flow\Scope("session")
+ */
 class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 	/**
@@ -109,6 +113,7 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		};
 		$mainResponse->setStatus(303);
 		$mainResponse->setHeader('Location', (string)$uri);
+		throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
 
 	}
 

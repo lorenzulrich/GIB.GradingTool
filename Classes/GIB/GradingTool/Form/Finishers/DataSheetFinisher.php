@@ -262,7 +262,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		};
 		$mainResponse->setStatus(303);
 		$mainResponse->setHeader('Location', (string)$uri);
-
+		throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
 	}
 
 }
