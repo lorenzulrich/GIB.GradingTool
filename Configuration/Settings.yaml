@@ -550,7 +550,16 @@ TYPO3:
                   propertyPath: 'properties.threshold'
                   sorting: 200
                   viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
-
+                goodPerformanceReferenceScore:
+                  label: 'Good score'
+                  propertyPath: 'properties.goodPerformanceReferenceScore'
+                  sorting: 220
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+                modestPerformanceReferenceScore:
+                  label: 'Modest score'
+                  propertyPath: 'properties.modestPerformanceReferenceScore'
+                  sorting: 230
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
         ### FINISHERS ###
         finisherPresets:
           'GIB.GradingTool:SubmissionFinisher':

@@ -59,6 +59,12 @@ class AdminController extends AbstractBaseController {
 	protected $hashService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\SubmissionService
+	 * @Flow\Inject
+	 */
+	protected $submissionService;
+
+	/**
 	 * @var \TYPO3\Flow\Security\Policy\PolicyService
 	 * @Flow\Inject
 	 */
@@ -87,6 +93,7 @@ class AdminController extends AbstractBaseController {
 			'currentAction' => $this->request->getControllerActionName(),
 			'forms' => $forms,
 			'languages' => $this->settings['languages'],
+			'scoreData' => $this->submissionService->getScoreData(),
 		));
 	}
 

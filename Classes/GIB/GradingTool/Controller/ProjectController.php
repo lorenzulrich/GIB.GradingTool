@@ -87,21 +87,21 @@ class ProjectController extends AbstractBaseController {
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration);
-
 		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
 			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
 		}
 
 		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
 		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
-
 		$renderedForm = $form->render();
 
-
+		// uri for autosave
+		$ajaxUri = $this->controllerContext->getUriBuilder()->setCreateAbsoluteUri(TRUE)->uriFor('saveProjectDataValue', array('project' => $project, 'form' => 'dataSheet'), 'Project');
 
 		$this->view->assignMultiple(array(
 			'renderedForm' => $renderedForm,
 			'project' => $project,
+			'ajaxUri' => $ajaxUri,
 		));
 
 	}
@@ -135,14 +135,49 @@ class ProjectController extends AbstractBaseController {
 
 		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
 		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
-
 		$renderedForm = $form->render();
+
+		// uri for autosave
+		$ajaxUri = $this->controllerContext->getUriBuilder()->setCreateAbsoluteUri(TRUE)->uriFor('saveProjectDataValue', array('project' => $project, 'form' => 'submission'), 'Project');
 
 		$this->view->assignMultiple(array(
 			'renderedForm' => $renderedForm,
 			'project' => $project,
+			'ajaxUri' => $ajaxUri,
 		));
 
+	}
+
+	/**
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 * @param string $form
+	 * @param string $formData
+	 * @return string
+	 */
+	public function saveProjectDataValueAction(\GIB\GradingTool\Domain\Model\Project $project, $form, $formData) {
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
+
+		if (!in_array($form, array('submission', 'dataSheet'))) {
+			// security: only allow data changes to submission and dataSheet form
+			return FALSE;
+		}
+
+		$decodedFormData = urldecode($formData);
+		preg_match("/\[(.*?)\]/", $decodedFormData, $matches);
+		$fieldIdentifier = $matches[1];
+
+		$fieldValue = explode('=', $decodedFormData)[1];
+
+		$contentGetter = 'get' . ucfirst($form) . 'Content';
+		$contentSetter = 'set' . ucfirst($form) . 'Content';
+		$contentArray = unserialize($project->$contentGetter());
+		$contentArray[$fieldIdentifier] = $fieldValue;
+		$project->$contentSetter(serialize($contentArray));
+		$this->projectRepository->update($project);
+		$this->persistenceManager->persistAll();
+
+		return 'Saved.';
 
 	}
 
@@ -164,6 +199,7 @@ class ProjectController extends AbstractBaseController {
 		$this->view->assignMultiple(array(
 			'submission' => $submission,
 			'project' => $project,
+			'scoreData' => $this->submissionService->getScoreData(),
 		));
 
 	}

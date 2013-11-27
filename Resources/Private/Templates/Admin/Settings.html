@@ -52,5 +52,26 @@
 			</f:for>
 		</tbody>
 	</table>
-
+	<h2>Score overview</h2>
+	<p class="text-muted">The master data (Modest Performance Score and Good Performance Score) are defined in each section of the Submission Form and can be adjusted there.</p>
+	<table class="table table-striped table-hover">
+		<thead>
+		<tr>
+			<th>Category</th>
+			<th>Modest Performance Score</th>
+			<th>Good Performance Score</th>
+			<th>Current average score (TBD)</th>
+		</tr>
+		</thead>
+		<tbody>
+		<f:for each="{scoreData}" as="scoreItem">
+			<tr>
+				<td>{scoreItem.categoryName}</td>
+				<td>{scoreItem.modestScore}</td>
+				<td>{scoreItem.goodScore}</td>
+				<td>{scoreItem.currentAverageScore}</td>
+			</tr>
+		</f:for>
+		</tbody>
+	</table>
 </f:section>

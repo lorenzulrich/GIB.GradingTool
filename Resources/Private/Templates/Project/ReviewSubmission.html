@@ -179,16 +179,31 @@
 			projectPerformance[{iterator.index}] = sectionPerformance;
 		</f:for>
 
+		var modestPerformanceReference = new Array();
+		var goodPerformanceReference = new Array();
+		<f:for each="{scoreData}" as="section" iteration="iterator2">
+			goodPerformance = new Object();
+			goodPerformance.axis = "{section.categoryName}";
+			goodPerformance.value = Math.round({section.goodScore} * 100) / 100;
+			goodPerformanceReference[{iterator2.index}] = goodPerformance;
+			modestPerformance = new Object();
+			modestPerformance.axis = "";
+			modestPerformance.value = Math.round({section.modestScore} * 100) / 100;
+			modestPerformanceReference[{iterator2.index}] = modestPerformance;
+		</f:for>
+
 
 		//Data
 		var data = [
+			goodPerformanceReference,
+			modestPerformanceReference,
 			projectPerformance
 		];
 
 		var mycfg = {
-			color: function(){
-				return 'red'
-			},
+			/*color: function(){
+				return 'red,blue';
+			},*/
 			w: 500,
 			h: 500,
 			maxValue: 4,

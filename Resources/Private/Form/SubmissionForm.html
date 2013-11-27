@@ -1,6 +1,7 @@
 {namespace form=TYPO3\Form\ViewHelpers}
 {namespace gib=GIB\GradingTool\ViewHelpers}
 <script src="{f:uri.resource(path: 'JavaScripts/jquery.autosize.min.js', package: 'GIB.GradingTool')}"></script>
+<script src="{f:uri.resource(path: 'JavaScripts/jquery.autosave.min.js', package: 'GIB.GradingTool')}"></script>
 <form:form action="index" object="{form}" method="post" id="{form.identifier}" enctype="multipart/form-data">
 	<ul id="submissionPageOverview" class="clearfix">
 	<f:for each="{form.pages}" as="page">
@@ -72,6 +73,48 @@
 
 		// autosize textareas
 		$('textarea').autosize({append: "\n"});
+
+		function submissionFormAutoSaved(status) {
+			if (status == 'success') {
+				var message = "Answer was saved successfully!";
+				var classes = 'flyover flyover-bottom alert alert-success';
+			} else {
+				var message = "Answer could not be saved.";
+				var classes = 'flyover flyover-bottom alert alert-danger';
+			}
+
+			$('<div>')
+				.attr('id', 'alertMessage')
+				.html('<p>' + message  + '</p>')
+				.addClass(classes)
+				.appendTo($('.container'));
+
+			if (!$('#alertMessage').is( '.in' )) {
+				$('#alertMessage').addClass('in');
+
+				setTimeout(function() {
+					$('#alertMessage').removeClass('in');
+				}, 1500);
+			}
+
+		}
+
+		$("form").autosave({
+			callbacks: {
+				save: function(options, formData) {
+					$.ajax({
+						url: ajaxUri,
+						data: { formData: formData },
+						type: 'post',
+						complete: function(jqXHR, status) {
+							submissionFormAutoSaved(status);
+						}
+
+					});
+					return false;
+				}
+			}
+		});
 
 	});
 </script>

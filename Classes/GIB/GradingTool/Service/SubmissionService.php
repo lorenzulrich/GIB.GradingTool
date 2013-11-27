@@ -151,4 +151,25 @@ class SubmissionService {
 
 	}
 
+	public function getScoreData() {
+		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
+
+		$scoreData = array();
+
+		foreach ($submissionFormDefinition['renderables'] as $key => $page) {
+			// a form page
+			foreach ($page['renderables'] as $section) {
+
+				$scoreData[$key]['categoryName'] = $section['label'];
+				$scoreData[$key]['goodScore'] = $section['properties']['goodPerformanceReferenceScore'];
+				$scoreData[$key]['modestScore'] = $section['properties']['modestPerformanceReferenceScore'];
+				$scoreData[$key]['currentAverageScore'] = 0;
+
+			}
+
+		}
+
+		return $scoreData;
+	}
+
 }
