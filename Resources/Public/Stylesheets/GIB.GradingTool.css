@@ -6,9 +6,26 @@ html {
 
 #siteHeader {
     padding: 20px;
-    background-color: #d3d3d3;
+    background-color: #eaeaea;
     border-radius: 0 0 10px 10px;
     margin-bottom: 20px;
+}
+
+#gib-logo {
+    width: 155px;
+    height: 140px;
+    background: url('../Images/logo_gib.png') no-repeat;
+    display: inline-block;
+    float: left;
+    margin-right: 40px;
+}
+
+.siteTitle {
+    float: left;
+    display: inline-block;
+    margin: 40px 0 0 0;
+    padding: 0;
+    white-space: normal;
 }
 
 #siteFooter {
