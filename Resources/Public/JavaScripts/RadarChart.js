@@ -2,8 +2,8 @@ var RadarChart = {
     draw: function(id, d, options){
         var cfg = {
             radius: 5,
-            w: 600,
-            h: 600,
+            w: 500,
+            h: 500,
             factor: .95,
             factorLegend: 1,
             levels: 3,
@@ -11,7 +11,9 @@ var RadarChart = {
             radians: 2 * Math.PI,
             opacityArea: 0.2,
             color: d3.scale.category20(),
-            fontSize: 11
+            fontSize: 11,
+            ExtraWidthX: 0,
+            ExtraWidthY: 0
         };
         if('undefined' !== typeof options){
             for(var i in options){
@@ -25,12 +27,14 @@ var RadarChart = {
         var total = allAxis.length;
         var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
         d3.select(id).select("svg").remove();
-        var g = d3.select(id).append("svg").attr("width", cfg.w).attr("height", cfg.h).append("g");
+        var g = d3.select(id).append("svg").attr("width", cfg.w+cfg.ExtraWidthX).attr("height", cfg.h+cfg.ExtraWidthY).append("g");
 
         var tooltip;
         function getPosition(i, range, factor, func){
             factor = typeof factor !== 'undefined' ? factor : 1;
-            return range * (1 - factor * func(i * cfg.radians / total));
+            // make it clockwise
+            return range * (1 - factor * func((total - i) * cfg.radians / total));
+            /*return range * (1 - factor * func(i * cfg.radians / total));*/
         }
         function getHorizontalPosition(i, range, factor){
             return getPosition(i, range, factor, Math.sin);
@@ -38,7 +42,7 @@ var RadarChart = {
         function getVerticalPosition(i, range, factor){
             return getPosition(i, range, factor, Math.cos);
         }
-console.log(cfg.levels);
+
         for(var j=0; j<cfg.levels; j++){
             /* outer line */
             var levelFactor = radius*((j+1)/cfg.levels);
@@ -88,9 +92,8 @@ console.log(cfg.levels);
                 });
             series++;
         });
+
         series=0;
-
-
         d.forEach(function(y, x){
             g.selectAll(".nodes")
                 .data(y).enter()
@@ -126,6 +129,7 @@ console.log(cfg.levels);
 
             series++;
         });
+
         var axis = g.selectAll(".axis").data(allAxis).enter().append("g").attr("class", "axis");
 
         axis.append("line")
@@ -150,7 +154,8 @@ console.log(cfg.levels);
             .attr("x", function(d, i){return getHorizontalPosition(i, cfg.w / 2, cfg.factorLegend);})
             .attr("y", function(d, i){return getVerticalPosition(i, cfg.h / 2, cfg.factorLegend);});
 
-        //Tooltip
+        // Tooltip
         tooltip = g.append('text').style('opacity', 0).style('font-family', 'sans-serif').style('font-size', '13px');
+
     }
 };
