@@ -557,11 +557,6 @@ TYPO3:
                   propertyPath: 'properties.naAcceptanceLevel'
                   sorting: 199
                   viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
-                threshold:
-                  label: 'Threshold'
-                  propertyPath: 'properties.threshold'
-                  sorting: 200
-                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
                 goodPerformanceReferenceScore:
                   label: 'Good score'
                   propertyPath: 'properties.goodPerformanceReferenceScore'
