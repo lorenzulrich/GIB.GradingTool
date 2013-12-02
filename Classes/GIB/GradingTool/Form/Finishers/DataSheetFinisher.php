@@ -226,7 +226,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 						$authenticationTokens[0]->setAuthenticationStatus(\TYPO3\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
 					}
 					// add a flash message
-					$message = new \TYPO3\Flow\Error\Message('An account "%s" was created and you were successfully logged in.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($identifier));
+					$message = new \TYPO3\Flow\Error\Message('The account "%s" was created and you were successfully logged in.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($identifier));
 					$this->flashMessageContainer->addMessage($message);
 				}
 
