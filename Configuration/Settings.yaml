@@ -473,6 +473,11 @@ TYPO3:
                   propertyPath: 'properties.weighting'
                   sorting: 185
                   viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+                abstract:
+                  label: 'Abstract'
+                  propertyPath: 'properties.abstract'
+                  sorting: 187
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
                 optOut:
                   label: 'Opt-out question'
                   propertyPath: 'properties.optOut'
