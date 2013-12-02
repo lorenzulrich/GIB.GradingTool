@@ -7,6 +7,9 @@ resources:
     deactivateSubmissionForm: 'method(GIB\GradingTool\Controller\ProjectController->deactivateSubmissionFormAction())'
     editDataSheet: 'method(GIB\GradingTool\Controller\ProjectController->editDataSheetAction())'
     submission: 'method(GIB\GradingTool\Controller\ProjectController->submissionAction())'
+    formBuilderEditorController: 'class(TYPO3\FormBuilder\Controller\EditorController)'
+    formBuilderFormManagerController: 'class(TYPO3\FormBuilder\Controller\FormManagerController)'
+    formBuilderStandardController: 'class(TYPO3\FormBuilder\Controller\StandardController)'
 
   #entities:
   #  'GIB\GradingTool\Domain\Model\Project':
@@ -27,6 +30,9 @@ acls:
       deactivateSubmissionForm: GRANT
       editDataSheet: GRANT
       submission: GRANT
+      formBuilderEditorController: GRANT
+      formBuilderFormManagerController: GRANT
+      formBuilderStandardController: GRANT
     #entities:
      # GIB_GradingTool_Projects_Own: GRANT
      # GIB_GradingTool_Projects_All: GRANT
