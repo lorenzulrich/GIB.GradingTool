@@ -552,6 +552,11 @@ TYPO3:
           'TYPO3.Form:Section':
             formBuilder:
               editors:
+                naAcceptanceLevel:
+                  label: 'N/A Acceptance Level'
+                  propertyPath: 'properties.naAcceptanceLevel'
+                  sorting: 199
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
                 threshold:
                   label: 'Threshold'
                   propertyPath: 'properties.threshold'

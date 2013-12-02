@@ -47,7 +47,7 @@ class SubmissionService {
 
 				// a form section, containing the questions
 				$formSections[$section['identifier']]['label'] = $section['label'];
-				$formSections[$section['identifier']]['threshold'] = $section['properties']['threshold'];
+				$formSections[$section['identifier']]['naAcceptanceLevel'] = $section['properties']['naAcceptanceLevel'];
 				$notApplicableAnswerCount = 0;
 				$questionCount = 0;
 				$optOutAcceptedCount = 0;
@@ -90,7 +90,11 @@ class SubmissionService {
 				$formSections[$section['identifier']]['questionCount'] = $questionCount;
 				$formSections[$section['identifier']]['optOutAcceptedCount'] = $optOutAcceptedCount;
 				$formSections[$section['identifier']]['weightingAverage'] = $weightingsSum / $questionCount;
-				$formSections[$section['identifier']]['thresholdReached'] = $questionCount - $notApplicableAnswerCount + $optOutAcceptedCount < $section['properties']['threshold'] ? FALSE : TRUE;
+
+				// how many questions must be answered based on the N/A acceptance level
+				$formSections[$section['identifier']]['threshold'] = ceil($questionCount - ($questionCount * $formSections[$section['identifier']]['naAcceptanceLevel']));
+
+				$formSections[$section['identifier']]['thresholdReached'] = $questionCount - $notApplicableAnswerCount + $optOutAcceptedCount < $formSections[$section['identifier']]['threshold'] ? FALSE : TRUE;
 
 				if ($formSections[$section['identifier']]['thresholdReached']) {
 					$formSections[$section['identifier']]['weightedScore'] = $this->calculateScoreForSection($formSections[$section['identifier']]['questions']);
