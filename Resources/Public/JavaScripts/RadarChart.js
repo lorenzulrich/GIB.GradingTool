@@ -8,6 +8,7 @@ var RadarChart = {
             factorLegend: 1,
             levels: 3,
             maxValue: 0,
+            minValue: 0,
             radians: 2 * Math.PI,
             opacityArea: 0.2,
             color: d3.scale.category20(),
@@ -23,6 +24,8 @@ var RadarChart = {
             }
         }
         cfg.maxValue = Math.max(cfg.maxValue, d3.max(d, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+        var scale = d3.scale.linear().domain([cfg.minValue, cfg.maxValue])
+
         var allAxis = (d[0].map(function(i, j){return i.axis}));
         var total = allAxis.length;
         var radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
@@ -43,16 +46,15 @@ var RadarChart = {
             return getPosition(i, range, factor, Math.cos);
         }
 
-        for(var j=0; j<cfg.levels; j++){
+        for (var j=0; j<cfg.levels; j++){
             /* outer line */
-            var levelFactor = radius*((j+1)/cfg.levels);
+            var levelFactor = scale(j+1)*radius;
             g.selectAll(".levels").data(allAxis).enter().append("svg:line")
                 .attr("x1", function(d, i){return getHorizontalPosition(i, levelFactor);})
                 .attr("y1", function(d, i){return getVerticalPosition(i, levelFactor);})
                 .attr("x2", function(d, i){return getHorizontalPosition(i+1, levelFactor);})
                 .attr("y2", function(d, i){return getVerticalPosition(i+1, levelFactor);})
                 .attr("class", "line").style("stroke", "grey").style("stroke-width", "0.5px").attr("transform", "translate(" + (cfg.w/2-levelFactor) + ", " + (cfg.h/2-levelFactor) + ")");
-
         }
 
         series = 0;
@@ -61,8 +63,8 @@ var RadarChart = {
             g.selectAll(".nodes")
                 .data(y, function(j, i){
                     dataValues.push([
-                        getHorizontalPosition(i, cfg.w/2, (parseFloat(Math.max(j.value, 0))/cfg.maxValue)*cfg.factor),
-                        getVerticalPosition(i, cfg.h/2, (parseFloat(Math.max(j.value, 0))/cfg.maxValue)*cfg.factor)
+                        getHorizontalPosition(i, cfg.w/2, (scale(parseFloat(Math.max(j.value, 0))))*cfg.factor),
+                        getVerticalPosition(i, cfg.h/2, (scale(parseFloat(Math.max(j.value, 0))))*cfg.factor)
                     ]);
                 });
             dataValues.push(dataValues[0]);
@@ -102,13 +104,13 @@ var RadarChart = {
                 .attr("alt", function(j){return Math.max(j.value, 0)})
                 .attr("cx", function(j, i){
                     dataValues.push([
-                        getHorizontalPosition(i, cfg.w/2, (parseFloat(Math.max(j.value, 0))/cfg.maxValue)*cfg.factor),
-                        getVerticalPosition(i, cfg.h/2, (parseFloat(Math.max(j.value, 0))/cfg.maxValue)*cfg.factor)
+                        getHorizontalPosition(i, cfg.w/2, (scale(parseFloat(Math.max(j.value, 0))))*cfg.factor),
+                        getVerticalPosition(i, cfg.h/2, (scale(parseFloat(Math.max(j.value, 0))))*cfg.factor)
                     ]);
-                    return getHorizontalPosition(i, cfg.w/2, (Math.max(j.value, 0)/cfg.maxValue)*cfg.factor);
+                    return getHorizontalPosition(i, cfg.w/2, (scale(Math.max(j.value, 0)))*cfg.factor);
                 })
                 .attr("cy", function(j, i){
-                    return getVerticalPosition(i, cfg.h/2, (Math.max(j.value, 0)/cfg.maxValue)*cfg.factor);
+                    return getVerticalPosition(i, cfg.h/2, (scale(Math.max(j.value, 0)))*cfg.factor);
                 })
                 .attr("data-id", function(j){return j.axis})
                 .style("fill", cfg.color(series)).style("fill-opacity", .9)
