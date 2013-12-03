@@ -80,6 +80,14 @@
     '@controller': 'Template'
   appendExceedingArguments: true
 
+-
+  name: 'GIB.GradingTool Database'
+  uriPattern: 'database/{@action}'
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Database'
+  appendExceedingArguments: true
+
 #-
 #  name: 'GIB Export PDF'
 #  uriPattern: 'gib.gradingtool/standard/export.{@format}'

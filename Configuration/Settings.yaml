@@ -22,6 +22,9 @@ GIB:
       beforeContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/BeforeContent.html'
       afterContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/AfterContent.html'
 
+    projectDatabase:
+      itemsPerPage: 2
+
 TYPO3:
   Form:
     presets:

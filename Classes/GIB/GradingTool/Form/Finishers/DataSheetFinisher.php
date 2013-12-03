@@ -133,20 +133,19 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				if (empty($fieldValue) && empty($currentDataSheetContent[$fieldIdentifier])) {
 					// we don't show empty fields in diff
 					continue;
-				} elseif ($fieldValue === $currentDataSheetContent[$fieldIdentifier]) {
+				} elseif (isset($currentDataSheetContent[$fieldIdentifier]) && $fieldValue === $currentDataSheetContent[$fieldIdentifier]) {
 					// we don't show unchanged fields
 					continue;
 				}
 				else {
-					if (is_string($fieldValue)) {
+					if (is_string($fieldValue) && isset($currentDataSheetContent[$fieldIdentifier])) {
 						// use StringDiffUtility
 						$diffContent .= '<tr><td colspan="2"><strong>' . ucfirst($fieldIdentifier) . '</strong></td></tr>';
 						$diffContent .= StringDiffUtility::toTable(StringDiffUtility::compare($currentDataSheetContent[$fieldIdentifier], $fieldValue));
-					} elseif (is_array($fieldValue)) {
+					} elseif (is_array($fieldValue) && is_array($currentDataSheetContent[$fieldIdentifier])) {
 						// use ArrayDiffUtility
 						$diffContent .= '<tr><td colspan="2"><strong>' . ucfirst($fieldIdentifier) . '</strong></td></tr>';
 						$diffContent .= ArrayDiffUtility::compare($currentDataSheetContent[$fieldIdentifier], $fieldValue);
-
 					}
 				}
 			}
@@ -155,6 +154,12 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			// store changes to project
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
 			$project->setLanguage($formValueArray['language']);
+			// TODO $project->setRegion($formValueArray['language']);
+			if (!empty($formValueArray['categories'])) {
+				$project->setCategories(implode($formValueArray['categories']));
+			}
+			$project->setCost($formValueArray['cost']);
+			$project->setCountryCode($formValueArray['country']);
 			$project->setDataSheetContent(serialize($formValueArray));
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
@@ -174,6 +179,12 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
 			$project->setLanguage($formValueArray['language']);
+			// TODO $project->setRegion($formValueArray['language']);
+			if (!empty($formValueArray['categories'])) {
+				$project->setCategories(implode($formValueArray['categories']));
+			}
+			$project->setCost($formValueArray['cost']);
+			$project->setCountryCode($formValueArray['country']);
 
 			// store identifier=userName and password for later usage
 			$identifier = $formValueArray['userName'];

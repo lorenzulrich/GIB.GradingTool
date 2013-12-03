@@ -15,6 +15,18 @@ use Doctrine\ORM\Mapping as ORM;
 class Project {
 
 	/**
+	 * @var \GIB\GradingTool\Service\CldrService
+	 * @Flow\Inject
+	 */
+	protected $cldrService;
+
+	/**
+	 * @var \TYPO3\Flow\I18n\Cldr\CldrRepository
+	 * @Flow\Inject
+	 */
+	protected $cldrRepository;
+
+	/**
 	 * @var \GIB\GradingTool\Domain\Model\ProjectManager
 	 * @ORM\ManyToOne(inversedBy="projects")
 	 */
@@ -27,6 +39,14 @@ class Project {
 	 * @ORM\Column(type="text")
 	 */
 	protected $dataSheetContent;
+
+	/**
+	 * Data Sheet Content
+	 *
+	 * @var array
+	 * @Flow\Transient
+	 */
+	protected $dataSheetContentArray;
 
 	/**
 	 * @var string
@@ -64,6 +84,33 @@ class Project {
 	protected $language;
 
 	/**
+	 * @var string
+	 */
+	protected $countryCode;
+
+	/**
+	 * @var string
+	 * @Flow\Transient
+	 */
+	protected $country;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="text")
+	 */
+	protected $categories;
+
+	/**
+	 * @var string
+	 */
+	protected $cost;
+
+	/**
+	 * @var string
+	 */
+	protected $region;
+
+	/**
 	 * Sets the project manager of a project
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager The projectManager
@@ -95,6 +142,13 @@ class Project {
 	 */
 	public function setDataSheetContent($dataSheetContent) {
 		$this->dataSheetContent = $dataSheetContent;
+	}
+
+	public function getDataSheetContentArray() {
+		if ($this->dataSheetContentArray === NULL) {
+			$this->dataSheetContentArray = unserialize($this->getDataSheetContent());
+		}
+		return $this->dataSheetContentArray;
 	}
 
 	/**
@@ -180,6 +234,71 @@ class Project {
 	 */
 	public function getLanguage() {
 		return $this->language;
+	}
+
+	/**
+	 * @param string $countryCode
+	 */
+	public function setCountryCode($countryCode) {
+		$this->countryCode = $countryCode;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCountryCode() {
+		return $this->countryCode;
+	}
+
+	/**
+	 * The textual representation of a country
+	 *
+	 * @return string
+	 */
+	public function getCountry() {
+		return $this->cldrService->getCountryNameForIsoCode($this->getCountryCode());
+	}
+
+	/**
+	 * @param string $cost
+	 */
+	public function setCost($cost)	{
+		$this->cost = $cost;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCost()	{
+		return $this->cost;
+	}
+
+	/**
+	 * @param string $categories
+	 */
+	public function setCategories($categories)	{
+		$this->categories = $categories;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCategories()	{
+		return $this->categories;
+	}
+
+	/**
+	 * @param mixed $region
+	 */
+	public function setRegion($region)	{
+		$this->region = $region;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRegion()	{
+		return $this->region;
 	}
 
 }

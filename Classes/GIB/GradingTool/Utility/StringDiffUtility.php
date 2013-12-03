@@ -35,7 +35,6 @@ class StringDiffUtility {
    */
   public static function compare(
       $string1, $string2, $compareCharacters = false){
-
     // initialise the sequences and comparison start and end positions
     $start = 0;
     if ($compareCharacters){
