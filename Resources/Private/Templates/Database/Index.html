@@ -1,0 +1,242 @@
+<f:layout name="Default" />
+
+<f:section name="Title">GIB Grading Tool</f:section>
+
+<f:section name="Content">
+	<script src="{f:uri.resource(path: 'JavaScripts/ammap/ammap.js')}"></script>
+	<script src="{f:uri.resource(path: 'JavaScripts/ammap/maps/js/worldHigh.js')}"></script>
+	<link rel="stylesheet" href="{f:uri.resource(path: 'JavaScripts/ammap/ammap.css')}">
+	<link rel="stylesheet" href="{f:uri.resource(path: 'Stylesheets/GIB.Database.css')}">
+
+
+	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<div class="col-md-12">
+			<div id="filterBar" class="navbar navbar-default">
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="navbar-header">
+						<span class="navbar-brand">Filter by</span>
+					</div>
+					<f:form id="filter-form" action="list" controller="Database">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Category <b class="caret"></b></a>
+								<ul id="navbar-categories" class="dropdown-menu dropdown-menu-form">
+									<f:for each="{categories}" as="category" iteration="categoriesIterator">
+										<li>
+											<f:form.checkbox id="category{categoriesIterator.cycle}" value="{category._key}" name="demand[filter][categories][]" /> <label for="category{categoriesIterator.cycle}">{category._value}</label>
+										</li>
+									</f:for>
+									<li>
+										<f:form.button disabled="disabled" class="applyButton btn btn-primary">Apply</f:form.button>
+									</li>
+								</ul>
+							</li>
+						</ul>
+
+						<f:comment>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Search">
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</f:comment>
+						<f:form.hidden id="countryFilter" name="demand[filter][country]" />
+					</f:form>
+					<div class="pull-right">
+						<button type="button" disabled="disabled" class="btn btn-danger navbar-btn" id="clear-filters">Clear filter</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<div class="col-md-12">
+			<div id="map"></div>
+
+			<script>
+				var mapAjaxUri = '<f:uri.action absolute="TRUE" controller="Database" action="getMapData" />';
+				var projectsAjaxUri = '<f:uri.action absolute="TRUE" controller="Database" action="list" />';
+				$(function() {
+					// load map (initial state)
+					$.getJSON(
+						mapAjaxUri,
+						function (data) {
+							drawMap(data);
+						}
+					);
+					// display projects (initial state)
+					$.get(
+						projectsAjaxUri,
+						function (projectsData) {
+							$('#projectsList').html(projectsData).slideDown('slow');
+							bindProjectsNavigation();
+						}
+					);
+
+					// prevent the dropdown menu from closing on selecting an option
+					$('.dropdown-menu').click(function(e) {
+						e.stopPropagation();
+						var parentDropdownId = $(e.target).closest('dropdown-menu').attr('id');
+						var selectedOptionsCount = $('input:checked', parentDropdownId).length;
+						if (selectedOptionsCount > 0) {
+							$('button', this).closest('button').attr('disabled', false);
+						} else {
+							$('button', this).closest('button').attr('disabled', true);
+						}
+					});
+
+					// filter the results and the map by the criteria given
+					var $filterForm = $('#filter-form');
+					$filterForm.submit(function(e) {
+						e.preventDefault();
+						var formData = $filterForm.serialize();
+						filterProjectsByDemand(formData);
+						filterMapByDemand(formData);
+						// close dropdown
+						$('.navbar-nav li.open', e.target).removeClass('open');
+						// allow clearing the filter
+						$("#clear-filters").attr('disabled', false);
+					});
+
+					// clear all filters and reload map and projects
+					$("#clear-filters").click(function(e) {
+						e.preventDefault();
+						var $filterForm = $('#filter-form');
+						$filterForm.find('input:checkbox').removeAttr('checked').removeAttr('selected');
+						$(this).attr('disabled', true);
+						filterProjectsByDemand(null);
+						filterMapByDemand(null);
+					})
+
+				});
+
+				// remove a value from filter and refresh project list
+				function bindRemoveFromFilter() {
+					$(".removeFromFilter").click(function(e) {
+						e.preventDefault();
+						var valueToUncheck = $(e.target).parent().attr('data-target-value');
+						var fieldTypeToUncheck = $(e.target).parent().attr('data-target-type');
+						if (fieldTypeToUncheck == 'checkbox') {
+							$("input:checkbox[value='" + valueToUncheck + "']").attr('checked', false);
+						} else {
+							console.log('hier');
+							console.log($("input[value='" + valueToUncheck + "']"));
+							$("input[value='" + valueToUncheck + "']").val('');
+						}
+						// number of options selected
+						var selectedOptionsCount = $('#filter-form :checked').length;
+						// length of the county field (if > 0, a country is set)
+						var countryLenght = $('#countryFilter').val().length;
+						if (selectedOptionsCount + countryLenght > 0) {
+							var $filterForm = $('#filter-form');
+							var formData = $filterForm.serialize();
+							filterProjectsByDemand(formData);
+							filterMapByDemand(formData);
+						} else {
+							filterProjectsByDemand(null);
+							filterMapByDemand(null);
+							$("#clear-filters").attr('disabled', true);
+						}
+					})
+				}
+
+				function bindProjectsNavigation() {
+					$('a', '.page-navigation').click(function(e) {
+						e.preventDefault();
+						var $projectsList = $('#projectsList');
+						$projectsList.hide();
+						var uri = $(e.target).attr('href');
+						$.get(
+							uri,
+							function (projectsData) {
+								$projectsList.html(projectsData).slideDown('slow');
+								bindProjectsNavigation();
+							}
+						);
+					})
+				}
+
+				// country map object
+				var map = new AmCharts.AmMap();
+
+				// draw the map initially
+				function drawMap(mapData) {
+					map.pathToImages = "/_Resources/Static/Packages/GIB.GradingTool/JavaScripts/ammap/images/";
+					map.backgroundColor = '#98bcda';
+					map.backgroundAlpha = 1;
+					map.mouseWheelZoomEnabled = true;
+					map.developerMode = true;
+					map.zoomControl.panControlEnabled = false;
+					map.zoomControl.buttonCornerRadius = 5;
+					map.zoomControl.buttonFillColor = "#015DCC";
+					map.zoomControl.buttonRollOverColor = "#014495";
+					map.zoomControl.buttonBorderThickness = 0;
+					map.zoomControl.buttonBorderAlpha = 0;
+
+					var dataProvider = {
+						mapVar: AmCharts.maps.worldHigh,
+						areas: mapData
+					};
+					map.dataProvider = dataProvider;
+
+					map.areasSettings = {
+						//autoZoom: true,
+						selectedColor: "#CC0000",
+						unlistedAreasColor: "#eae8dd",
+						rollOverColor: "#014495",
+						rollOverOutlineColor: "#014495",
+						color: "#4E9EFF",
+						colorSolid: "#015DCC",
+						selectable: true
+					};
+
+					map.addListener("clickMapObject", function(e) {
+						var countryCode = e.mapObject.id;
+						$('#countryFilter').attr('value', countryCode);
+						var $filterForm = $('#filter-form');
+						var formData = $filterForm.serialize();
+						filterProjectsByDemand(formData);
+						// allow clearing the filter
+						$("#clear-filters").attr('disabled', false);
+					});
+
+					map.write("map");
+				};
+
+				/* Update a map displaying the countries and projects demanded */
+				function filterMapByDemand(demand) {
+					$.getJSON(
+						mapAjaxUri + '/?' + demand,
+						function (mapData) {
+							map.dataProvider = {
+								mapVar: AmCharts.maps.worldHigh,
+								areas: mapData
+							};
+							map.validateData();
+						}
+					);
+				}
+
+				/* Filter the projects list to display the countries and projects demanded */
+				function filterProjectsByDemand(demand) {
+					var $projectsList = $('#projectsList');
+					$projectsList.hide();
+					$.get(
+						projectsAjaxUri + '/?' + demand,
+						function (projectsData) {
+							$projectsList.html(projectsData).slideDown('slow');
+							bindProjectsNavigation();
+							bindRemoveFromFilter();
+						}
+					);
+				}
+
+			</script>
+
+		</div>
+	</div>
+	<div id="projectsList" style="display: none;">
+	</div>
+
+</f:section>
