@@ -2,6 +2,16 @@ html {
     overflow-y: scroll;
 }
 
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto;
+    /* Negative indent footer by its height */
+    margin: 0 auto -60px;
+    /* Pad bottom by footer height */
+    padding: 0 0 60px;
+}
+
 .btn-primary {
     background-color: #014495;
     border-color: #014495;
@@ -52,10 +62,7 @@ a {
 }
 
 #siteFooter {
-    margin-top: 20px;
-    background-color: #eaeaea;
-    padding: 20px;
-    border-radius: 10px 10px 0 0;
+    padding: 20px 0;
 }
 
 .pager .previous>button {

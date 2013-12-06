@@ -28,7 +28,7 @@
 	<script src="{f:uri.resource(path: 'JavaScripts/jquery.cookie.js')}"></script>
 </head>
 <body>
-<div class="container">
+<div id="wrap" class="container">
 
 	<div class="header clearfix" id="siteHeader">
 		<div id="gib-logo">
@@ -81,28 +81,38 @@
 
 	<f:render section="Content"/>
 
-	<footer id="siteFooter">
-		<f:security.ifAuthenticated>
-			<f:then>
-				<secure:account propertyPath="party.name" /> |
-				<f:link.action action="logout" package="Flow.Login" controller="Login">Logout</f:link.action>
-				<div class="pull-right">
-					<f:comment><f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/></f:comment>
-					<f:link.action action="index" controller="Standard" class="btn btn-primary btn-sm"><i class="fa fa-home"></i> Dashboard</f:link.action>
-				</div>
-			</f:then>
-			<f:else>
-				<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
-				<f:comment>
-				<div class="pull-right">
-					<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
-				</div>
-				</f:comment>
-			</f:else>
-		</f:security.ifAuthenticated>
+
+</div>
+
+<div class="navbar navbar-default navbar-fixed-bottom">
+
+	<footer class="container" id="siteFooter">
+		<div class="row">
+			<div class="col-md-12">
+				<f:security.ifAuthenticated>
+					<f:then>
+						<secure:account propertyPath="party.name" /> |
+						<f:link.action action="logout" package="Flow.Login" controller="Login">Logout</f:link.action>
+						<div class="pull-right">
+							<f:comment><f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/></f:comment>
+							<f:link.action action="index" controller="Standard" class="btn btn-primary btn-sm"><i class="fa fa-home"></i> Dashboard</f:link.action>
+						</div>
+					</f:then>
+					<f:else>
+						<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
+						<f:comment>
+							<div class="pull-right">
+								<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
+							</div>
+						</f:comment>
+					</f:else>
+				</f:security.ifAuthenticated>
+			</div>
+		</div>
 	</footer>
 
 </div>
+
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <script src="{f:uri.resource(path: 'JavaScripts/bootbox.min.js')}"></script>
 <script>
