@@ -107,6 +107,7 @@ class Project {
 
 	/**
 	 * @var string
+	 * @ORM\Column(nullable=true)
 	 */
 	protected $region;
 
