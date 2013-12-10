@@ -120,7 +120,7 @@ class ProjectController extends AbstractBaseController {
 		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['submission']);
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['submission'], $project->getLanguage());
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration);
 

@@ -77,9 +77,15 @@ abstract class AbstractBaseController extends \TYPO3\Flow\Mvc\Controller\ActionC
 	 * Check if a form has a localized version and deliver it if available
 	 *
 	 * @param $formName
+	 * @param $localeOverride
 	 * @return string
 	 */
-	public function getFormNameRespectingLocale($formName) {
+	public function getFormNameRespectingLocale($formName, $localeOverride = '') {
+		// if we override the locale anyway, we return early
+		if (!empty($localeOverride)) {
+			return $formName . $localeOverride;
+		}
+
 		$currentLanguage = $this->i18nService->getConfiguration()->getCurrentLocale()->getLanguage();
 
 		/*
