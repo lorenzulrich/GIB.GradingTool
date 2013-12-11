@@ -19,7 +19,7 @@
 					<f:form id="filter-form" action="list" controller="Database">
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Category <b class="caret"></b></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sector <b class="caret"></b></a>
 								<ul id="navbar-categories" class="dropdown-menu dropdown-menu-form">
 									<f:for each="{categories}" as="category" iteration="categoriesIterator">
 										<li>
@@ -53,7 +53,12 @@
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
 			<div id="map"></div>
-
+			<div class="map-folding">
+				<button type="button" class="btn btn-default btn-xs" id="mapSizeToggle">
+					<span id="foldButton"><i class="fa fa-caret-square-o-up"></i> Fold map</span>
+					<span id="openButton" style="display: none;"><i class="fa fa-caret-square-o-down"></i> Open map</span>
+				</button>
+			</div>
 			<script>
 				var mapAjaxUri = '<f:uri.action absolute="TRUE" controller="Database" action="getMapData" />';
 				var projectsAjaxUri = '<f:uri.action absolute="TRUE" controller="Database" action="list" />';
@@ -107,6 +112,21 @@
 						$(this).attr('disabled', true);
 						filterProjectsByDemand(null);
 						filterMapByDemand(null);
+					})
+
+					// Toggle map siez
+					$("#mapSizeToggle").click(function(e) {
+						$map = $('#map');
+						$map.toggleClass('map-folded').promise().done(function () {
+							$trigger = $(e.target);
+							if ($map.hasClass('map-folded')) {
+								$('#foldButton').hide();
+								$('#openButton').show();
+							} else {
+								$('#openButton').hide();
+								$('#foldButton').show();
+							}
+						});
 					})
 
 				});

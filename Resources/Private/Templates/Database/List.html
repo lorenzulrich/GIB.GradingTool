@@ -13,7 +13,7 @@
 			<f:if condition="{demand.filter.categories}">
 				<div class="col-md-4">
 					<p class="navbar-text">
-						<strong>Categories:</strong><br />
+						<strong>Sectors:</strong><br />
 						<f:for each="{demand.filter.categories}" as="category">
 							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{category}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> {category}<br />
 						</f:for>
@@ -30,49 +30,48 @@
 		<div class="project row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 			<div class="col-md-7">
 				<h2>{project.dataSheetContentArray.projectTitle}</h2>
-				<h3>{project.dataSheetContentArray.projectSubtitle}</h3>
-				<p>{project.dataSheetContentArray.description}</p>
+				<f:if condition="{project.dataSheetContentArray.projectSubtitle}">
+					<h3>{project.dataSheetContentArray.projectSubtitle}</h3>
+				</f:if>
+				<p>
+					<f:format.crop maxCharacters="500">
+						<f:format.nl2br>{project.dataSheetContentArray.description}</f:format.nl2br>
+					</f:format.crop>
+				</p>
 			</div>
 			<div class="col-md-5">
-				<table class="table table-striped table-condensed">
+				<table class="table table-striped table-condensed table-smalltext">
 					<tbody>
-						<f:if condition="{project.country}">
-							<tr>
-								<th style="width: 120px">
-									Country:
-								</th>
-								<td>
-									{project.country}
-								</td>
-							</tr>
-						</f:if>
-						<f:if condition="{project.dataSheetContentArray.categories}">
-							<tr>
-								<th>
-									Categories:
-								</th>
-								<td>
-									<f:for each="{project.dataSheetContentArray.categories}" as="category" iteration="categoryIterator">
-										<f:if condition="{categoryIterator.isLast}">
-											<f:then>
-												{category}
-											</f:then>
-											<f:else>
-												{category}<br />
-											</f:else>
-										</f:if>
+					<f:if condition="{project.dataSheetContentArray.categories}">
+						<tr>
+							<th>
+								Sectors:
+							</th>
+							<td>
+								<f:for each="{project.dataSheetContentArray.categories}" as="category" iteration="categoryIterator">
+									<f:if condition="{categoryIterator.isLast}">
+										<f:then>
+											{category}
+										</f:then>
+										<f:else>
+											{category}<br />
+										</f:else>
+									</f:if>
 
-									</f:for>
-								</td>
-							</tr>
-						</f:if>
-						<f:if condition="{project.dataSheetContentArray.cost}">
+								</f:for>
+							</td>
+						</tr>
+					</f:if>
+					<f:if condition="{project.country}">
 							<tr>
-								<th>
-									Project Cost:
+								<th style="width: 135px">
+									Location:
 								</th>
 								<td>
-									<f:format.currency currencySign="US $">{project.dataSheetContentArray.cost}</f:format.currency>
+									<f:if condition="{project.dataSheetContentArray.city}">
+										{project.dataSheetContentArray.city},
+									</f:if>
+									{project.country}
 								</td>
 							</tr>
 						</f:if>
@@ -83,6 +82,36 @@
 								</th>
 								<td>
 									<f:format.date>{project.dataSheetContentArray.startingDate}</f:format.date>
+								</td>
+							</tr>
+						</f:if>
+						<f:if condition="{project.dataSheetContentArray.implementationTimeframe}">
+							<tr>
+								<th>
+									Project duration:
+								</th>
+								<td>
+									<f:format.date>{project.dataSheetContentArray.implementationTimeframe}</f:format.date>
+								</td>
+							</tr>
+						</f:if>
+						<f:if condition="{project.dataSheetContentArray.cost}">
+							<tr>
+								<th>
+									Total investment:
+								</th>
+								<td>
+									US $ {project.dataSheetContentArray.cost} Mio.
+								</td>
+							</tr>
+						</f:if>
+						<f:if condition="{project.dataSheetContentArray.fundingAmountRequested}">
+							<tr>
+								<th>
+									Required investment:
+								</th>
+								<td>
+									US $ {project.dataSheetContentArray.fundingAmountRequested} Mio.
 								</td>
 							</tr>
 						</f:if>
