@@ -81,8 +81,8 @@ abstract class AbstractBaseController extends \TYPO3\Flow\Mvc\Controller\ActionC
 	 * @return string
 	 */
 	public function getFormNameRespectingLocale($formName, $localeOverride = '') {
-		// if we override the locale anyway, we return early
-		if (!empty($localeOverride)) {
+		// if we override the locale anyway (and it isn't english), we return early
+		if (!empty($localeOverride) && $localeOverride !== 'en') {
 			return $formName . ucfirst($localeOverride);
 		}
 
