@@ -16,6 +16,7 @@ namespace GIB\GradingTool\Form\Finishers;
  *
  */
 
+use GIB\GradingTool\Utility\DiffUtility;
 use GIB\GradingTool\Utility\StringDiffUtility;
 use GIB\GradingTool\Utility\ArrayDiffUtility;
 use TYPO3\Flow\Annotations as Flow;
@@ -128,28 +129,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$currentDataSheetContent = unserialize($project->getDataSheetContent());
 
 			// make a HTML representation of a diff of the old and new data
-			$diffContent = '<table class="diff">';
-			foreach ($formValueArray as $fieldIdentifier => $fieldValue) {
-				if (empty($fieldValue) && empty($currentDataSheetContent[$fieldIdentifier])) {
-					// we don't show empty fields in diff
-					continue;
-				} elseif (isset($currentDataSheetContent[$fieldIdentifier]) && $fieldValue === $currentDataSheetContent[$fieldIdentifier]) {
-					// we don't show unchanged fields
-					continue;
-				}
-				else {
-					if (is_string($fieldValue) && isset($currentDataSheetContent[$fieldIdentifier])) {
-						// use StringDiffUtility
-						$diffContent .= '<tr><td colspan="2"><strong>' . ucfirst($fieldIdentifier) . '</strong></td></tr>';
-						$diffContent .= StringDiffUtility::toTable(StringDiffUtility::compare($currentDataSheetContent[$fieldIdentifier], $fieldValue));
-					} elseif (is_array($fieldValue) && is_array($currentDataSheetContent[$fieldIdentifier])) {
-						// use ArrayDiffUtility
-						$diffContent .= '<tr><td colspan="2"><strong>' . ucfirst($fieldIdentifier) . '</strong></td></tr>';
-						$diffContent .= ArrayDiffUtility::compare($currentDataSheetContent[$fieldIdentifier], $fieldValue);
-					}
-				}
-			}
-			$diffContent .= '</table>';
+			$diffContent = DiffUtility::arrayDiffRecursive($currentDataSheetContent, $formValueArray);
 
 			// store changes to project
 			$project->setProjectTitle($formValueArray[$sourceLabelField]);
