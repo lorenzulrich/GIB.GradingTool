@@ -8,14 +8,19 @@
 	<link rel="stylesheet" href="{f:uri.resource(path: 'JavaScripts/ammap/ammap.css')}">
 	<link rel="stylesheet" href="{f:uri.resource(path: 'Stylesheets/GIB.Database.css')}">
 
-
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
 			<div id="filterBar" class="navbar navbar-default">
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<div class="navbar-header">
-						<span class="navbar-brand">Filter by</span>
-					</div>
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#filter-navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<span class="navbar-brand">Filter by</span>
+				</div>
+				<div class="collapse navbar-collapse" id="filter-navbar">
 					<f:form id="filter-form" action="list" controller="Database">
 						<ul class="nav navbar-nav">
 							<li>
@@ -58,7 +63,6 @@
 								</ul>
 							</li>
 						</ul>
-
 						<f:comment>
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Search">
