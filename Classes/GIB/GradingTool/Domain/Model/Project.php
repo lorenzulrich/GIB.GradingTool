@@ -150,10 +150,28 @@ class Project {
 	}
 
 	/**
+	 * Set dataSheetContent but also the flattened part of it
+	 *
 	 * @param string, $dataSheetContent
 	 * @return void
 	 */
 	public function setDataSheetContent($dataSheetContent) {
+		if (isset($dataSheetContent['projectTitle'])) {
+			$this->setProjectTitle($dataSheetContent['projectTitle']);
+		}
+		if (isset($dataSheetContent['language'])) {
+			$this->setLanguage($dataSheetContent['language']);
+		}
+		// todo setRegion
+		if (isset($dataSheetContent['categories'])) {
+			$this->setCategories(implode($dataSheetContent['categories']));
+		}
+		if (isset($dataSheetContent['cost'])) {
+			$this->setCost($dataSheetContent['cost']);
+		}
+		if (isset($dataSheetContent['country'])) {
+			$this->setCountryCode($dataSheetContent['country']);
+		}
 		$this->dataSheetContent = serialize($dataSheetContent);
 	}
 

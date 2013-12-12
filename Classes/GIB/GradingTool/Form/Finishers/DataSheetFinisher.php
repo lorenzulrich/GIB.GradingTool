@@ -125,20 +125,10 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project'));
 
-			$currentDataSheetContent = $project->getDataSheetContentArray();
-
 			// make a HTML representation of a diff of the old and new data
-			$diffContent = DiffUtility::arrayDiffRecursive($currentDataSheetContent, $formValueArray);
+			$diffContent = DiffUtility::arrayDiffRecursive($project->getDataSheetContentArray(), $formValueArray);
 
 			// store changes to project
-			$project->setProjectTitle($formValueArray['projectTitle']);
-			$project->setLanguage($formValueArray['language']);
-			// TODO $project->setRegion($formValueArray['language']);
-			if (!empty($formValueArray['categories'])) {
-				$project->setCategories(implode($formValueArray['categories']));
-			}
-			$project->setCost($formValueArray['cost']);
-			$project->setCountryCode($formValueArray['country']);
 			$project->setDataSheetContent($formValueArray);
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
@@ -156,14 +146,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = new \GIB\GradingTool\Domain\Model\Project();
-			$project->setProjectTitle($formValueArray[$sourceLabelField]);
-			$project->setLanguage($formValueArray['language']);
-			// TODO $project->setRegion($formValueArray['language']);
-			if (!empty($formValueArray['categories'])) {
-				$project->setCategories(implode($formValueArray['categories']));
-			}
-			$project->setCost($formValueArray['cost']);
-			$project->setCountryCode($formValueArray['country']);
+			$project->setProjectTitle($formValueArray['projectTitle']);
 
 			// store identifier=userName and password for later usage
 			$identifier = $formValueArray['userName'];
@@ -234,8 +217,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		}
 
 		$this->persistenceManager->persistAll();
-
-
 
 		// redirect to dashboard
 		$formRuntime = $this->finisherContext->getFormRuntime();
