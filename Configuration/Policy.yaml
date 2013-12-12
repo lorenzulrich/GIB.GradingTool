@@ -42,5 +42,6 @@ acls:
     methods:
       editDataSheet: GRANT
       submission: GRANT
+      databaseController: GRANT
     #entities:
      # GIB_GradingTool_Projects_Own: GRANT
