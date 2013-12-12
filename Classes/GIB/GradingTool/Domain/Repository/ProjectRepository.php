@@ -14,6 +14,10 @@ use TYPO3\Flow\Persistence\Repository;
  */
 class ProjectRepository extends Repository {
 
+	protected $defaultOrderings = array(
+		'created' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING,
+		'projectTitle' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING
+	);
 
 	/**
 	 * @var array
@@ -92,6 +96,17 @@ class ProjectRepository extends Repository {
 			}
 			$constraints[] = $query->logicalOr(
 				$categories
+			);
+		}
+
+		// Filter by stages
+		if (isset($demand['filter']['stages']) && !empty($demand['filter']['stages'])) {
+			$stages = array();
+			foreach($demand['filter']['stages'] as $stage) {
+				$stages[] = $query->like('stage', '%' . strtoupper($stage) . '%');
+			}
+			$constraints[] = $query->logicalOr(
+				$stages
 			);
 		}
 

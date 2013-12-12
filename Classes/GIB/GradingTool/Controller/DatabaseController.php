@@ -35,10 +35,12 @@ class DatabaseController extends AbstractBaseController {
 		$categories = $dataSheetFormDefinition['renderables'][0]['renderables'][3]['properties']['options'];
 
 		$budgetBrackets = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+		$stages = $this->settings['projectDatabase']['filters']['stage'];
 
 		$this->view->assignMultiple(array(
 			'categories' => $categories,
 			'budgetBrackets' => $budgetBrackets,
+			'stages' => $stages,
 		));
 	}
 
@@ -71,7 +73,7 @@ class DatabaseController extends AbstractBaseController {
 		}
 
 		// return not only the budget bracket keys, but also the minimum and maximum value
-		if (is_array($demand) && isset($demand['filter']['budgetBrackets'])) {
+		if (is_array($demand) && is_array($demand['filter']['budgetBrackets'])) {
 			$bracketsRequested = $demand['filter']['budgetBrackets'];
 			unset($demand['filter']['budgetBrackets']);
 			$budgetBracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];

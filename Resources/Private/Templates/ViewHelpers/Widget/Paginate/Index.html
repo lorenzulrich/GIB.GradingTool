@@ -1,6 +1,6 @@
 <f:if condition="{configuration.insertAbove}">
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
-		<div class="col-md-12">
+		<div class="col-md-7">
 			<f:if condition="{pagination.numberOfPages}">
 				<f:then>
 					<p><strong>Results {pagination.firstResultOfCurrentPage} - {pagination.lastResultOfCurrentPage} of {pagination.numberOfObjects}</strong></p>
@@ -9,6 +9,9 @@
 					<p><strong>No results for current selection.</strong></p>
 				</f:else>
 			</f:if>
+		</div>
+		<div class="col-md-5">
+			Sort by:
 		</div>
 	</div>
 </f:if>

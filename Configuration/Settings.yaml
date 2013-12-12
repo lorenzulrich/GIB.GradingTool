@@ -42,6 +42,12 @@ GIB:
             4:
               minimum: 500
               maximum: 900
+        stage:
+          0: 'Project Identification'
+          1: 'Pre-Feasibility'
+          2: Feasibility
+          3: 'Ready to invest'
+          4: Implementation
 
 TYPO3:
   Form:

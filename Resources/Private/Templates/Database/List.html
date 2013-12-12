@@ -3,7 +3,7 @@
 	<div class="navbar navbar-default">
 		<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 			<f:if condition="{demand.filter.country.isoCode}">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<p class="navbar-text">
 						<strong>Country:</strong><br />
 						<a class="removeFromFilter" data-target-type="text" data-target-value="{demand.filter.country.isoCode}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> {demand.filter.country.name}
@@ -11,7 +11,7 @@
 				</div>
 			</f:if>
 			<f:if condition="{demand.filter.categories}">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<p class="navbar-text">
 						<strong>Sectors:</strong><br />
 						<f:for each="{demand.filter.categories}" as="category">
@@ -20,8 +20,18 @@
 					</p>
 				</div>
 			</f:if>
+			<f:if condition="{demand.filter.stages}">
+				<div class="col-md-3">
+					<p class="navbar-text">
+						<strong>Stages:</strong><br />
+						<f:for each="{demand.filter.stages}" as="stage">
+							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{stage}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> {stage}<br />
+						</f:for>
+					</p>
+				</div>
+			</f:if>
 			<f:if condition="{demand.filter.budgetBrackets}">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<p class="navbar-text">
 						<strong>Budget:</strong><br />
 						<f:for each="{demand.filter.budgetBrackets}" as="bracket">
