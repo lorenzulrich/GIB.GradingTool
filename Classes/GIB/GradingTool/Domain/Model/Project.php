@@ -74,17 +74,19 @@ class Project {
 	 * Serialized representation of Submission
 	 *
 	 * @var string
-	 * @ORM\Column(type="text")
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $submissionContent = '';
 
 	/**
 	 * @var string
+	 * @ORM\Column(nullable=true)
 	 */
 	protected $language;
 
 	/**
 	 * @var string
+	 * @ORM\Column(nullable=true)
 	 */
 	protected $countryCode;
 
@@ -102,6 +104,7 @@ class Project {
 
 	/**
 	 * @var string
+	 * @ORM\Column(nullable=true)
 	 */
 	protected $cost;
 
@@ -110,6 +113,12 @@ class Project {
 	 * @ORM\Column(nullable=true)
 	 */
 	protected $region;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	protected $stage;
 
 	/**
 	 * Sets the project manager of a project
@@ -163,6 +172,9 @@ class Project {
 			$this->setLanguage($dataSheetContent['language']);
 		}
 		// todo setRegion
+		if (isset($dataSheetContent['stage'])) {
+			$this->setStage(implode($dataSheetContent['stage']));
+		}
 		if (isset($dataSheetContent['categories'])) {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}
@@ -323,6 +335,20 @@ class Project {
 	 */
 	public function getRegion()	{
 		return $this->region;
+	}
+
+	/**
+	 * @param string $stage
+	 */
+	public function setStage($stage) {
+		$this->stage = $stage;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStage() {
+		return $this->stage;
 	}
 
 }
