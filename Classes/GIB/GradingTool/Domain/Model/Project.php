@@ -138,18 +138,23 @@ class Project {
 	}
 
 	/**
-	 * @param string, $dataSheetContent
-	 * @return void
+	 * Return the unserialized data sheet content
+	 * 
+	 * @return array|mixed
 	 */
-	public function setDataSheetContent($dataSheetContent) {
-		$this->dataSheetContent = $dataSheetContent;
-	}
-
 	public function getDataSheetContentArray() {
 		if ($this->dataSheetContentArray === NULL) {
 			$this->dataSheetContentArray = unserialize($this->getDataSheetContent());
 		}
 		return $this->dataSheetContentArray;
+	}
+
+	/**
+	 * @param string, $dataSheetContent
+	 * @return void
+	 */
+	public function setDataSheetContent($dataSheetContent) {
+		$this->dataSheetContent = $dataSheetContent;
 	}
 
 	/**

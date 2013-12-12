@@ -126,7 +126,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project = $this->projectRepository->findByIdentifier($formRuntime->getRequest()->getParentRequest()->getArgument('project'));
 
-			$currentDataSheetContent = unserialize($project->getDataSheetContent());
+			$currentDataSheetContent = $project->getDataSheetContentArray();
 
 			// make a HTML representation of a diff of the old and new data
 			$diffContent = DiffUtility::arrayDiffRecursive($currentDataSheetContent, $formValueArray);

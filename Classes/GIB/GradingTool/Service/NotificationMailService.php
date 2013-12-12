@@ -48,9 +48,6 @@ class NotificationMailService {
 		$beforeContent = Files::getFileContents($this->settings['email']['beforeContentTemplate']);
 		$afterContent = Files::getFileContents($this->settings['email']['afterContentTemplate']);
 
-		// every variable of the data sheet needs to be available in Fluid
-		$dataSheetContentArray = unserialize($project->getDataSheetContent());
-
 		/** @var \TYPO3\Fluid\View\StandaloneView $emailView */
 		$emailView = new \TYPO3\Fluid\View\StandaloneView();
 		$emailView->setTemplateSource('<f:format.raw>' . $beforeContent . $templateContentArray['content'] . $afterContent . '</f:format.raw>');
@@ -59,7 +56,7 @@ class NotificationMailService {
 			'afterContent' => $afterContent,
 			'project' => $project,
 			'projectManager' => $projectManager,
-			'dataSheetContent' => $dataSheetContentArray,
+			'dataSheetContent' => $project->getDataSheetContentArray(),
 			'diffContent' => $diffContent,
 		));
 		$emailBody = $emailView->render();

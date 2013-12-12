@@ -34,8 +34,7 @@ class ProjectRepository extends Repository {
 		$countryIndex = 0;
 		$lastUsedCountry = '';
 		foreach ($projects as $project) {
-			$dataSheetContent = unserialize($project->getDataSheetContent());
-			$currentCountry = $dataSheetContent['country'];
+			$currentCountry = $project->getDataSheetContentArray()['country'];
 
 			if ($currentCountry !== $lastUsedCountry && !empty($lastUsedCountry)) {
 				$countryIndex++;
@@ -46,7 +45,7 @@ class ProjectRepository extends Repository {
 			} else {
 				$countries[$countryIndex]['value'] = 1;
 			}
-			$countries[$countryIndex]['id'] = $dataSheetContent['country'];
+			$countries[$countryIndex]['id'] = $project->getDataSheetContentArray()['country'];
 			$countries[$countryIndex]['balloonText'] = '<strong>[[title]]</strong><br /> [[value]] projects';
 		}
 

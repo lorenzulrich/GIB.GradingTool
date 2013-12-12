@@ -81,13 +81,11 @@ class ProjectController extends AbstractBaseController {
 		// access check
 		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
 
-		$dataSheetContentArray = unserialize($project->getDataSheetContent());
-
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration);
-		foreach ($dataSheetContentArray as $dataSheetField => $dataSheetContent) {
+		foreach ($project->getDataSheetContentArray() as $dataSheetField => $dataSheetContent) {
 			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
 		}
 
