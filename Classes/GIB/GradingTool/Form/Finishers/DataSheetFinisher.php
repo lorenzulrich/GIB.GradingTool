@@ -140,7 +140,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			}
 			$project->setCost($formValueArray['cost']);
 			$project->setCountryCode($formValueArray['country']);
-			$project->setDataSheetContent(serialize($formValueArray));
+			$project->setDataSheetContent($formValueArray);
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->update($project);
 
@@ -174,8 +174,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			unset($formValueArray['userName']);
 			unset($formValueArray['password']);
 
-			// serialize all form content and set dataSheetContent
-			$project->setDataSheetContent(serialize($formValueArray));
+			$project->setDataSheetContent($formValueArray);
 			$project->setCreated(new \TYPO3\Flow\Utility\Now);
 			$this->projectRepository->add($project);
 

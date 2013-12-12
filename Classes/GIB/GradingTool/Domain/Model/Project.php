@@ -154,7 +154,7 @@ class Project {
 	 * @return void
 	 */
 	public function setDataSheetContent($dataSheetContent) {
-		$this->dataSheetContent = $dataSheetContent;
+		$this->dataSheetContent = serialize($dataSheetContent);
 	}
 
 	/**
