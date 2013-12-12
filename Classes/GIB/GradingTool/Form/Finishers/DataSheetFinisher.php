@@ -117,7 +117,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$formRuntime = $this->finisherContext->getFormRuntime();
 
 		$formValueArray = $formRuntime->getFormState()->getFormValues();
-		$sourceLabelField = $this->parseOption('labelFormFieldIdentifier');
 
 
 		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
@@ -132,7 +131,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$diffContent = DiffUtility::arrayDiffRecursive($currentDataSheetContent, $formValueArray);
 
 			// store changes to project
-			$project->setProjectTitle($formValueArray[$sourceLabelField]);
+			$project->setProjectTitle($formValueArray['projectTitle']);
 			$project->setLanguage($formValueArray['language']);
 			// TODO $project->setRegion($formValueArray['language']);
 			if (!empty($formValueArray['categories'])) {
