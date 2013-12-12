@@ -24,6 +24,24 @@ GIB:
 
     projectDatabase:
       itemsPerPage: 2
+      filters:
+        budget:
+          brackets:
+            0:
+              minimum: 5
+              maximum: 49
+            1:
+              minimum: 50
+              maximum: 99
+            2:
+              minimum: 100
+              maximum: 299
+            3:
+              minimum: 300
+              maximum: 499
+            4:
+              minimum: 500
+              maximum: 900
 
 TYPO3:
   Form:

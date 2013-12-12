@@ -14,6 +14,20 @@ use TYPO3\Flow\Persistence\Repository;
  */
 class ProjectRepository extends Repository {
 
+
+	/**
+	 * @var array
+	 */
+	protected $settings;
+
+	/**
+	 * @param array $settings
+	 * @return void
+	 */
+	public function injectSettings(array $settings) {
+		$this->settings = $settings;
+	}
+
 	/**
 	 * Find all countries and return an array with their ISO code and the number of projects
 	 *
@@ -78,6 +92,21 @@ class ProjectRepository extends Repository {
 			}
 			$constraints[] = $query->logicalOr(
 				$categories
+			);
+		}
+
+		// Filter by budget brackets
+		if (isset($demand['filter']['budgetBrackets']) && !empty($demand['filter']['budgetBrackets'])) {
+			$budgetBrackets = array();
+			$budgetBracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+			foreach($demand['filter']['budgetBrackets'] as $bracket) {
+				$budgetBrackets[] = $query->logicalAnd(
+					$query->greaterThanOrEqual('cost', $budgetBracketSettings[$bracket]['minimum']),
+					$query->lessThanOrEqual('cost', $budgetBracketSettings[$bracket]['maximum'])
+				);
+			}
+			$constraints[] = $query->logicalOr(
+				$budgetBrackets
 			);
 		}
 

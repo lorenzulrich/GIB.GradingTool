@@ -21,6 +21,10 @@
     width: 350px;
 }
 
+#navbar-budget-brackets {
+    width: 200px;
+}
+
 .dropdown-menu {
     background-color: rgba(255,255,255,0.7);
 }

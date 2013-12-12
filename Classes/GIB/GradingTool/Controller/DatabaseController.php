@@ -34,8 +34,11 @@ class DatabaseController extends AbstractBaseController {
 		$dataSheetFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
 		$categories = $dataSheetFormDefinition['renderables'][0]['renderables'][3]['properties']['options'];
 
+		$budgetBrackets = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+
 		$this->view->assignMultiple(array(
 			'categories' => $categories,
+			'budgetBrackets' => $budgetBrackets,
 		));
 	}
 
@@ -65,6 +68,18 @@ class DatabaseController extends AbstractBaseController {
 			unset($demand['filter']['country']);
 			$demand['filter']['country']['name'] = $this->cldrService->getCountryNameForIsoCode($isoCode);
 			$demand['filter']['country']['isoCode'] = $isoCode;
+		}
+
+		// return not only the budget bracket keys, but also the minimum and maximum value
+		if (is_array($demand) && isset($demand['filter']['budgetBrackets'])) {
+			$bracketsRequested = $demand['filter']['budgetBrackets'];
+			unset($demand['filter']['budgetBrackets']);
+			$budgetBracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+			foreach ($bracketsRequested as $bracket) {
+				$demand['filter']['budgetBrackets'][$bracket]['key'] = $bracket;
+				$demand['filter']['budgetBrackets'][$bracket]['minimum'] = $budgetBracketSettings[$bracket]['minimum'];
+				$demand['filter']['budgetBrackets'][$bracket]['maximum'] = $budgetBracketSettings[$bracket]['maximum'];
+			}
 		}
 
 		$this->view->assignMultiple(array(
