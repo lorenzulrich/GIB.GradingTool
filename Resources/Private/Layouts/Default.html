@@ -95,16 +95,18 @@
 						<f:link.action action="logout" package="Flow.Login" controller="Login">Logout</f:link.action>
 						<div class="pull-right">
 							<f:comment><f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/></f:comment>
-							<f:link.action action="index" controller="Standard" class="btn btn-primary btn-sm"><i class="fa fa-home"></i> Dashboard</f:link.action>
+							<a href="http://www.globalinfrastructurebasel.com/" target="_blank" class="btn btn-default btn-sm">Global Infrastructure Basel</a>
+							<f:link.action action="index" controller="Standard" class="btn btn-default btn-sm returnConfirm" additionalAttributes="{data-confirm: 'Are you sure? Unsaved data will be lost.'}" ><i class="fa fa-home"></i> Dashboard</f:link.action>
 						</div>
 					</f:then>
 					<f:else>
 						<a class="login-panel" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
-						<f:comment>
 							<div class="pull-right">
-								<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
+								<a href="http://www.globalinfrastructurebasel.com/" target="_blank" class="btn btn-default btn-sm">Global Infrastructure Basel</a>
+								<f:comment>
+									<f:render partial="LanguageNavigation" arguments="{languages:languages, currentLanguage:currentLanguage}"/>
+								</f:comment>
 							</div>
-						</f:comment>
 					</f:else>
 				</f:security.ifAuthenticated>
 			</div>
