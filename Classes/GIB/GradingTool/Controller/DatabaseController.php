@@ -7,11 +7,6 @@ namespace GIB\GradingTool\Controller;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
-
-
-use Tokk\pChartBundle\pData;
-use Tokk\pChartBundle\pImage;
-use Tokk\pChartBundle\pRadar;
 use GIB\GradingTool\Utility\Arrays;
 
 class DatabaseController extends AbstractBaseController {
@@ -92,6 +87,13 @@ class DatabaseController extends AbstractBaseController {
 			'projects' => $projects,
 			'demand' => $demand
 		));
+	}
+
+	/**
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function showAction($project) {
+		$this->view->assign('project', $project);
 	}
 
 }

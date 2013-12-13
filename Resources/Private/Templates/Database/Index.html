@@ -161,7 +161,14 @@
 								$('#foldButton').show();
 							}
 						});
-					})
+					});
+
+					// Remove data from modal on closing it
+					$('.modal').on('hidden.bs.modal', function() {
+						$(this).removeData('bs.modal');
+						$(this).empty();
+						$(this).removeAttr('style');
+					});
 
 				});
 
@@ -174,8 +181,6 @@
 						if (fieldTypeToUncheck == 'checkbox') {
 							$("input:checkbox[value='" + valueToUncheck + "']").attr('checked', false);
 						} else {
-							console.log('hier');
-							console.log($("input[value='" + valueToUncheck + "']"));
 							$("input[value='" + valueToUncheck + "']").val('');
 						}
 						// number of options selected
@@ -309,6 +314,8 @@
 		</div>
 	</div>
 	<div id="projectsList" style="display: none;">
+	</div>
+	<div class="modal fade" id="projectDetails" tabindex="-1" role="dialog" aria-labelledby="Project details for {project.projectTitle}" aria-hidden="true">
 	</div>
 
 </f:section>

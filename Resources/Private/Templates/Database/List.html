@@ -58,6 +58,11 @@
 						<f:format.nl2br>{project.dataSheetContentArray.description}</f:format.nl2br>
 					</f:format.crop>
 				</p>
+				<p>
+					<a class="btn btn-primary btn-sm" href="{f:uri.action(action:'show', absolute: true, arguments: {project:project})}" data-toggle="modal" data-target="#projectDetails">
+						<i class="fa fa-plus-circle"></i> Details
+					</a>
+				</p>
 			</div>
 			<div class="col-md-5">
 				<table class="table table-striped table-condensed table-smalltext">

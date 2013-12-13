@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="myModalLabel">
+				{project.projectTitle}
+			</h4>
+		</div>
+		<div class="modal-body">
+			<f:if condition="{project.dataSheetContentArray.projectSubtitle}">
+				<h5>{project.dataSheetContentArray.projectSubtitle}</h5>
+			</f:if>
+			<p>
+				<f:format.nl2br>{project.dataSheetContentArray.description}</f:format.nl2br>
+			</p>
+		</div>
+	</div>
+</div>
