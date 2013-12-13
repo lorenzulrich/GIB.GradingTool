@@ -45,6 +45,11 @@ a {
     display: inline-block;
     float: left;
     margin-right: 40px;
+    background-size: contain;
+}
+
+.svg #gib-logo {
+    background-image: url('../Images/logo_gib.svg');
 }
 
 #gib-logo a {
