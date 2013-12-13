@@ -1,5 +1,5 @@
 {namespace gib=GIB\GradingTool\ViewHelpers}
-<f:if condition="{demand}">
+<f:if condition="{demand.filter}">
 	<div class="navbar navbar-default">
 		<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 			<f:if condition="{demand.filter.country.isoCode}">

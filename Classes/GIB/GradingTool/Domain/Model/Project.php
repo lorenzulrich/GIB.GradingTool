@@ -103,7 +103,7 @@ class Project {
 	protected $categories;
 
 	/**
-	 * @var string
+	 * @var integer
 	 * @ORM\Column(nullable=true)
 	 */
 	protected $cost;

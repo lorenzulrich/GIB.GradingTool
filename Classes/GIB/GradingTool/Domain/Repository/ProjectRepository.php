@@ -132,6 +132,23 @@ class ProjectRepository extends Repository {
 			);
 		}
 
+		// apply sorting
+		if (isset($demand['sorting']) && !empty($demand['sorting'])) {
+			$validSortingProperties = array('cost');
+			if (in_array($demand['sorting']['property'], $validSortingProperties)) {
+				$validOrderings = array('ascending', 'descending');
+				if (in_array($demand['sorting']['order'], $validOrderings)) {
+					$sortingOrder = \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING;
+					if ($demand['sorting']['order'] === 'ascending') {
+						$sortingOrder = \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING;
+					}
+					$query->setOrderings(array(
+						$demand['sorting']['property'] => $sortingOrder
+					));
+				}
+			}
+		}
+
 		return $query->execute();
 
 	}

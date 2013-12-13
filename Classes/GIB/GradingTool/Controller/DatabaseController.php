@@ -12,6 +12,7 @@ use TYPO3\Flow\Annotations as Flow;
 use Tokk\pChartBundle\pData;
 use Tokk\pChartBundle\pImage;
 use Tokk\pChartBundle\pRadar;
+use GIB\GradingTool\Utility\Arrays;
 
 class DatabaseController extends AbstractBaseController {
 
@@ -59,34 +60,37 @@ class DatabaseController extends AbstractBaseController {
 	public function listAction($demand = NULL) {
 
 		if (is_array($demand)) {
+			$demand = Arrays::removeEmptyElementsRecursively($demand);
 			$projects = $this->projectRepository->findByDemand($demand);
+
+			// return not only the country code, but also the country name for filter display
+			if (isset($demand['filter']['country'])) {
+				$isoCode = $demand['filter']['country'];
+				unset($demand['filter']['country']);
+				$demand['filter']['country']['name'] = $this->cldrService->getCountryNameForIsoCode($isoCode);
+				$demand['filter']['country']['isoCode'] = $isoCode;
+			}
+
+			// return not only the budget bracket keys, but also the minimum and maximum value
+			if (isset($demand['filter']['budgetBrackets']) && is_array($demand['filter']['budgetBrackets'])) {
+				$bracketsRequested = $demand['filter']['budgetBrackets'];
+				unset($demand['filter']['budgetBrackets']);
+				$budgetBracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+				foreach ($bracketsRequested as $bracket) {
+					$demand['filter']['budgetBrackets'][$bracket]['key'] = $bracket;
+					$demand['filter']['budgetBrackets'][$bracket]['minimum'] = $budgetBracketSettings[$bracket]['minimum'];
+					$demand['filter']['budgetBrackets'][$bracket]['maximum'] = $budgetBracketSettings[$bracket]['maximum'];
+				}
+			}
+
+
 		} else {
 			$projects = $this->projectRepository->findAll();
 		}
 
-		// return not only the country code, but also the country name for filter display
-		if (is_array($demand) && isset($demand['filter']['country'])) {
-			$isoCode = $demand['filter']['country'];
-			unset($demand['filter']['country']);
-			$demand['filter']['country']['name'] = $this->cldrService->getCountryNameForIsoCode($isoCode);
-			$demand['filter']['country']['isoCode'] = $isoCode;
-		}
-
-		// return not only the budget bracket keys, but also the minimum and maximum value
-		if (is_array($demand) && is_array($demand['filter']['budgetBrackets'])) {
-			$bracketsRequested = $demand['filter']['budgetBrackets'];
-			unset($demand['filter']['budgetBrackets']);
-			$budgetBracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
-			foreach ($bracketsRequested as $bracket) {
-				$demand['filter']['budgetBrackets'][$bracket]['key'] = $bracket;
-				$demand['filter']['budgetBrackets'][$bracket]['minimum'] = $budgetBracketSettings[$bracket]['minimum'];
-				$demand['filter']['budgetBrackets'][$bracket]['maximum'] = $budgetBracketSettings[$bracket]['maximum'];
-			}
-		}
-
 		$this->view->assignMultiple(array(
 			'projects' => $projects,
-			'demand' => $demand,
+			'demand' => $demand
 		));
 	}
 

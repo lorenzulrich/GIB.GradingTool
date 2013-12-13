@@ -69,7 +69,9 @@
 							</div>
 							<button type="submit" class="btn btn-default">Submit</button>
 						</f:comment>
-						<f:form.hidden id="countryFilter" name="demand[filter][country]" />
+						<f:form.hidden class="hiddenFilterField" id="countryFilter" name="demand[filter][country]" />
+						<f:form.hidden class="hiddenFilterField" id="sortingProperty" name="demand[sorting][property]" />
+						<f:form.hidden class="hiddenFilterField" id="sortingOrder" name="demand[sorting][order]" />
 					</f:form>
 					<div class="pull-right">
 						<button type="button" disabled="disabled" class="btn btn-danger navbar-btn" id="clear-filters">Clear filter</button>
@@ -106,6 +108,7 @@
 						function (projectsData) {
 							$('#projectsList').html(projectsData).slideDown('slow');
 							bindProjectsNavigation();
+							bindSorting();
 						}
 					);
 
@@ -139,12 +142,13 @@
 						e.preventDefault();
 						var $filterForm = $('#filter-form');
 						$filterForm.find('input:checkbox').removeAttr('checked').removeAttr('selected');
+						$filterForm.find('input.hiddenFilterField').val('');
 						$(this).attr('disabled', true);
 						filterProjectsByDemand(null);
 						filterMapByDemand(null);
 					})
 
-					// Toggle map siez
+					// Toggle map size
 					$("#mapSizeToggle").click(function(e) {
 						$map = $('#map');
 						$map.toggleClass('map-folded').promise().done(function () {
@@ -205,6 +209,23 @@
 							}
 						);
 					})
+				}
+
+				function bindSorting() {
+					$('.sortingTrigger').click(function(e) {
+						e.preventDefault();
+						var sortingTrigger = $(e.target);
+						var sortingProperty = sortingTrigger.attr('data-property');
+						var sortingOrder = sortingTrigger.attr('data-sortingorder');
+						$('#sortingProperty').attr('value', sortingProperty);
+						$('#sortingOrder').attr('value', sortingOrder);
+						var $filterForm = $('#filter-form');
+						var formData = $filterForm.serialize();
+						filterProjectsByDemand(formData);
+						filterMapByDemand(formData);
+						// allow clearing the filter
+						$("#clear-filters").attr('disabled', false);
+					});
 				}
 
 				// country map object
@@ -278,6 +299,7 @@
 							$projectsList.html(projectsData).slideDown('slow');
 							bindProjectsNavigation();
 							bindRemoveFromFilter();
+							bindSorting();
 						}
 					);
 				}
