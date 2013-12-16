@@ -161,7 +161,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$this->projectRepository->add($project);
 
 			// add a flash message
-			$message = new \TYPO3\Flow\Error\Message('Your data sheet for project "%s" was successfully submitted.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($formValueArray[$sourceLabelField]));
+			$message = new \TYPO3\Flow\Error\Message('Your data sheet for project "%s" was successfully submitted.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($formValueArray['projectTitle']));
 			$this->flashMessageContainer->addMessage($message);
 
 			if (!$this->authenticationManager->isAuthenticated() || ($this->authenticationManager->isAuthenticated() && $this->authenticationManager->getSecurityContext()->hasRole('GIB.GradingTool:Administrator'))) {
