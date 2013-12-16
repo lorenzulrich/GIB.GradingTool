@@ -172,10 +172,10 @@ class Project {
 			$this->setLanguage($dataSheetContent['language']);
 		}
 		// todo setRegion
-		if (isset($dataSheetContent['stage'])) {
+		if (isset($dataSheetContent['stage']) && is_array($dataSheetContent['stage'])) {
 			$this->setStage(implode($dataSheetContent['stage']));
 		}
-		if (isset($dataSheetContent['categories'])) {
+		if (isset($dataSheetContent['categories']) && is_array($dataSheetContent['categories'])) {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}
 		if (isset($dataSheetContent['cost'])) {
