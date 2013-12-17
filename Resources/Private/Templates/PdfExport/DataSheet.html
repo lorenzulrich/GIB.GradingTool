@@ -1,0 +1,54 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Facts and Figures', 1: 0})}" />
+<h2>Facts and Figures</h2>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Overview', 1: 1})}" />
+<h3>Overview</h3>
+<f:if condition="{dataSheet.projectTitle.value}">
+	<p>
+		<strong>{dataSheet.projectTitle.label}</strong><br />
+		{dataSheet.projectTitle.value}
+	</p>
+</f:if>
+<f:if condition="{dataSheet.projectSubtitle.value}">
+	<p>
+		<strong>{dataSheet.projectSubtitle.label}</strong><br />
+		{dataSheet.projectSubtitle.value}
+	</p>
+</f:if>
+<f:if condition="{dataSheet.categories.value}">
+	<p>
+		<strong>{dataSheet.categories.label}</strong><br />
+		<f:for each="{dataSheet.categories.value}" as="category" iteration="categoryIterator">
+			<f:if condition="categoryIterator.isLast">
+				<f:then>
+					{category}
+				</f:then>
+				<f:else>
+					{category}<br />
+				</f:else>
+			</f:if>
+		</f:for>
+	</p>
+</f:if>
+<f:if condition="{dataSheet.city.value}">
+	<p>
+		<strong>{dataSheet.city.label}</strong><br />
+		{dataSheet.city.value}
+	</p>
+</f:if>
+<f:if condition="{project.country}">
+	<p>
+		<strong>{dataSheet.country.label}</strong><br />
+		{project.country}
+	</p>
+</f:if>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Project Owner', 1: 1})}" />
+<h3>Project Owner</h3>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Project Manager', 1: 1})}" />
+<h3>Project Manager</h3>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Project Information', 1: 1})}" />
+<h3>Project Information</h3>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Roadmap', 1: 1})}" />
+<h3>Roadmap</h3>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Finances', 1: 1})}" />
+<h3>Finances</h3>

@@ -41,6 +41,12 @@ class ProjectController extends AbstractBaseController {
 	protected $submissionService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\DataSheetService
+	 * @Flow\Inject
+	 */
+	protected $dataSheetService;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -293,6 +299,109 @@ class ProjectController extends AbstractBaseController {
 			$this->flashMessageContainer->addMessage($message);
 			$this->redirect('index', 'Standard');
 		}
+	}
+
+	/**
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function exportReportAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		$dataSheet = $this->dataSheetService->getProcessedDataSheet($project);
+
+		$pdf = new \TYPO3\TcPdf\Pdf();
+
+		$pdf->SetPrintHeader(FALSE);
+		$pdf->SetPrintFooter(FALSE);
+
+		// set document information
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetAuthor('Global Infrastructure Basel');
+		$pdf->SetTitle($project->getProjectTitle());
+
+		// set margins
+		$pdf->SetMargins(25, 45);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// set font
+		$pdf->SetFont('dejavusans', '', 10);
+
+		// Must be an Illustrator 3 file
+		$epsLogoResource = 'resource://GIB.GradingTool/Private/Images/logo_gib_print.eps';
+
+		// The processed submission
+		$submission = $this->submissionService->getProcessedSubmission($project);
+
+		/*** DATA SHEET ***/
+		$pdf->addPage();
+		/** @var \TYPO3\Fluid\View\StandaloneView $emailView */
+		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
+		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/DataSheet.html');
+		$standAloneView->assignMultiple(array(
+			'dataSheet' => $dataSheet,
+			'project' => $project,
+		));
+		$html = $standAloneView->render();
+		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+
+
+		/*** GRADING TOOL ***/
+		$pdf->addPage();
+		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
+		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/Submission.html');
+		$standAloneView->assignMultiple(array(
+			'submission' => $submission,
+			'project' => $project,
+			'scoreData' => $this->submissionService->getScoreData(),
+		));
+		$html = $standAloneView->render();
+		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+
+		/*** ANALYSIS ***/
+		$pdf->addPage();
+		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
+		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/Analysis.html');
+		$radarChartFileName = $this->submissionService->getRadarImage($project);
+		$lineGraphFileName = $this->submissionService->getLineGraphImage($project);
+		$answerLevelGraphFileName = $this->submissionService->getAnswerLevelBarChartImage($project);
+		$standAloneView->assignMultiple(array(
+			'radarChartFileName' => $radarChartFileName,
+			'lineGraphFileName' => $lineGraphFileName,
+			'answerLevelGraphFileName' => $answerLevelGraphFileName,
+			'submission' => $submission,
+		));
+		$html = $standAloneView->render();
+		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+
+		$pdf->lastPage();
+
+
+		/*** TOC PAGE ***/
+		$pdf->addTOCPage();
+
+		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
+		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/Front.html');
+		$standAloneView->assignMultiple(array(
+			'dataSheet' => $dataSheet,
+			'project' => $project,
+			'epsLogoResource' => $epsLogoResource
+		));
+		$html = $standAloneView->render();
+		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+
+		$bookmark_templates = array();
+		$bookmark_templates[0] = '<table border="0" cellpadding="0" cellspacing="0"><tr><td width="90%"><span style="font-weight:bold;font-size:10pt;">#TOC_DESCRIPTION#</span></td><td width="10%"><span style="font-weight:bold;font-size:10pt;font-family:courier" align="right">#TOC_PAGE_NUMBER#</span></td></tr></table>';
+		$bookmark_templates[1] = '<table border="0" cellpadding="0" cellspacing="0"><tr><td width="5%"></td><td width="85%"><span style="font-size:10pt;">#TOC_DESCRIPTION#</span></td><td width="10%"><span style="font-size:10pt;font-family:courier" align="right">#TOC_PAGE_NUMBER#</span></td></tr></table>';
+
+		$pdf->addHTMLTOC(1, 'INDEX', $bookmark_templates, TRUE, 'B', array(128,0,0));
+
+		$pdf->endTOCPage();
+
+		$pdf->Output('export.pdf', 'I');
 	}
 
 }

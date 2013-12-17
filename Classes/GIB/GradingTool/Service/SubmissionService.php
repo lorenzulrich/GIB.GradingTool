@@ -3,7 +3,9 @@ namespace GIB\GradingTool\Service;
 
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Utility\Arrays;
+use Tokk\pChartBundle\pData;
+use Tokk\pChartBundle\pImage;
+use Tokk\pChartBundle\pRadar;
 
 class SubmissionService {
 
@@ -67,6 +69,8 @@ class SubmissionService {
 									$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] =  $option['score'];
 									$formSections[$section['identifier']]['questions'][$field['identifier']]['key'] = $option['_key'];
 									$formSections[$section['identifier']]['questions'][$field['identifier']]['value'] = $option['_value'];
+									$formSections[$section['identifier']]['questions'][$field['identifier']]['bestPractiseText'] = (int)$option['score'] === 4 ? $field['properties']['abstract'] : NULL;
+									$formSections[$section['identifier']]['questions'][$field['identifier']]['lowPerformanceText'] = (int)$option['score'] === 1 ? $field['properties']['abstract'] : NULL;
 									if ($option['score'] == 0) {
 										$notApplicableAnswerCount++;
 										$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] = 'N/A';
@@ -98,7 +102,18 @@ class SubmissionService {
 				// how many questions must be answered based on the N/A acceptance level
 				$formSections[$section['identifier']]['threshold'] = ceil($questionCount - ($questionCount * $formSections[$section['identifier']]['naAcceptanceLevel']));
 
-				$formSections[$section['identifier']]['thresholdReached'] = $questionCount - $notApplicableAnswerCount + $optOutAcceptedCount < $formSections[$section['identifier']]['threshold'] ? FALSE : TRUE;
+				$neededAnswerCount = $questionCount - $optOutAcceptedCount;
+				$answeredQuestionCount = $questionCount - $notApplicableAnswerCount + $optOutAcceptedCount;
+				$answeredQuestionRatio = $answeredQuestionCount / $neededAnswerCount;
+
+				// float: how many question were answered (accepted opt-out questions don't count)
+				$formSections[$section['identifier']]['answeredQuestionRatio'] = $answeredQuestionRatio;
+
+				// float: how many questions need to be answered
+				$formSections[$section['identifier']]['thresholdRatio'] = 1 - $formSections[$section['identifier']]['naAcceptanceLevel'];
+
+				// TRUE if the threshold was reached
+				$formSections[$section['identifier']]['thresholdReached'] = $answeredQuestionRatio < (1 - $formSections[$section['identifier']]['naAcceptanceLevel']) ? FALSE : TRUE;
 
 				if ($formSections[$section['identifier']]['thresholdReached']) {
 					$formSections[$section['identifier']]['weightedScore'] = $this->calculateScoreForSection($formSections[$section['identifier']]['questions']);
@@ -197,9 +212,13 @@ class SubmissionService {
 
 		//\TYPO3\Flow\var_dump($sectionScore, 'sectionScore');
 
-
 	}
 
+	/**
+	 * Get score basis data
+	 *
+	 * @return array
+	 */
 	public function getScoreData() {
 		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
 
@@ -212,6 +231,8 @@ class SubmissionService {
 				$scoreData[$key]['categoryName'] = $section['label'];
 				$scoreData[$key]['goodScore'] = $section['properties']['goodPerformanceReferenceScore'];
 				$scoreData[$key]['modestScore'] = $section['properties']['modestPerformanceReferenceScore'];
+				$scoreData[$key]['modestScore'] = $section['properties']['modestPerformanceReferenceScore'];
+				// todo average score
 				$scoreData[$key]['currentAverageScore'] = 0;
 
 			}
@@ -219,6 +240,335 @@ class SubmissionService {
 		}
 
 		return $scoreData;
+	}
+
+	/**
+	 * Get the score data of a project for pChart usage
+	 *
+	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @return pData
+	 */
+	public function getScoreDataForGraph($project) {
+		/* Create and populate the pData object */
+		$data = new pData();
+
+		// get and process the basis score data
+		$basisScoreData = $this->getScoreData();
+		$goodScoreData = array();
+		$modestScoreData = array();
+		$axisLabels = array();
+		foreach ($basisScoreData as $category) {
+			$goodScoreData[] = $category['goodScore'];
+			$modestScoreData[] = $category['modestScore'];
+			$axisLabels[] = $category['categoryName'];
+		}
+
+		// get the project score
+		$scoreData = $this->getProcessedSubmission($project);
+		$projectScoreData = array();
+		foreach ($scoreData['sections'] as $section) {
+			$projectScoreData[] = number_format($section['weightedScore'], 2, '.', '\'');
+		}
+
+		// Data for good performance
+		$data->addPoints(
+			$goodScoreData,
+			'GoodPerformance'
+		);
+		$data->setSerieDescription('GoodPerformance', 'Good Performance');
+		$data->setPalette('GoodPerformance', array('R' => 31, 'G' => 119, 'B' => 180));
+
+		// Data for modest performance
+		$data->addPoints(
+			$modestScoreData,
+			'ModestPerformance'
+		);
+		$data->setSerieDescription('ModestPerformance', 'Modest Performance');
+		$data->setPalette('ModestPerformance', array('R' => 174, 'G' => 199, 'B'=>232));
+
+		// Actual performance
+		$data->addPoints(
+			$projectScoreData,
+			'Score'
+		);
+		$data->setAxisXY(1);
+		$data->setSerieDescription('Score', 'Project Performance');
+		$data->setPalette('Score', array('R' => 255, 'G' => 127, 'B' => 14));
+		$data->setSerieWeight('Score', 4);
+
+		/* Define the absissa serie */
+		$data->addPoints(
+			$axisLabels,
+			'Categories'
+		);
+		$data->setAbscissa('Categories');
+
+		return $data;
+	}
+
+	/**
+	 * Render a radar from the project score
+	 *
+	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @return string The filename of the radar file
+	 */
+	public function getRadarImage($project) {
+
+		/** @var pData $data */
+		$data = $this->getScoreDataForGraph($project);
+
+		/* Create the pChart object */
+		$image = new pImage(1800,1300, $data);
+
+		/* Set the default font properties */
+		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/verdana.ttf';
+		$image->setFontProperties(array('FontName'=>$fontPath, 'FontSize'=>20, 'R'=>0, 'G'=>0, 'B'=>0));
+
+		/* Create the pRadar object */
+		$splitChart = new pRadar();
+
+		/* Draw a radar chart */
+		$image->setGraphArea(40, 20, 1160, 1180);
+		$radarOptions = array(
+			'DrawPoly' => TRUE,
+			'WriteValues' => TRUE,
+			'ValueFontSize' => 11,
+			'BackgroundR' => 255,
+			'BackgroundB' => 255,
+			'BackgroundG' => 255,
+			'SegmentHeight' => 1,
+			'Segments' => 4,
+			'AxisRotation' => -90,
+			'FixedMax' => 4
+		);
+
+		$splitChart->drawRadar($image, $data, $radarOptions);
+
+		$legendOptions = array(
+			'Style' => LEGEND_BOX,
+			'Mode' => LEGEND_VERTICAL,
+			'FontSize' => 30,
+			'R' => 255,
+			'G' => 255,
+			'B' => 255,
+			'IconAreaWidth' => 50,
+			'IconAreaHeight' => 50,
+			'BoxWidth' => 25,
+			'BoxHeight' => 25,
+		);
+		$image->drawLegend(1300, 525, $legendOptions);
+
+		$temporaryRadarFile = tempnam(NULL, 'radarchart');
+		$image->render($temporaryRadarFile);
+
+		return $temporaryRadarFile;
+
+	}
+
+	/**
+	 * Render a line graph from the project score
+	 *
+	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @return string The filename of the file
+	 */
+	public function getLineGraphImage($project) {
+
+		/** @var pData $data */
+		$data = $this->getScoreDataForGraph($project);
+
+		/* Create the pChart object */
+		$image = new pImage(1800, 1000, $data);
+
+		/* Set the default font properties */
+		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/verdana.ttf';
+		$image->setFontProperties(array(
+			'FontName' => $fontPath,
+			'FontSize' => 20,
+			'R' => 0,
+			'G' => 0,
+			'B' => 0
+		));
+
+		/* Create the chart */
+		$image->setGraphArea(60, 60, 1740, 440);
+		$scaleSettings = array(
+			'XMargin' => 20,
+			'YMargin' => 0,
+			'Factors' => array(1),
+			'LabelRotation' => 70,
+			'Floating' => TRUE,
+			'DrawSubTicks' => TRUE,
+			'CycleBackground' => TRUE,
+			'Mode' => SCALE_MODE_MANUAL,
+			'ManualScale' => array(
+				0 => array(
+					'Min' => 1,
+					'Max' => 4
+				)
+			),
+		);
+		$image->drawScale($scaleSettings);
+		$image->setShadow(TRUE, array('X' => 1,'Y' => 1,'R' => 0,'G' => 0,'B' => 0,'Alpha' => 10));
+
+		/* Create the area chart for the basis data */
+		$data->setSerieDrawable('Score', FALSE);
+		$data->setSerieDrawable('ModestPerformance', TRUE);
+		$data->setSerieDrawable('GoodPerformance', TRUE);
+		$image->drawAreaChart();
+
+		/* Create the line chart for the project score */
+		$data->setSerieDrawable('Score', TRUE);
+		$data->setSerieDrawable('GoodPerformance', FALSE);
+		$data->setSerieDrawable('ModestPerformance', FALSE);
+		$image->drawLineChart(array('DisplayValues'=>TRUE, 'DisplayOffset' => 25, 'DisplayColor' => DISPLAY_AUTO));
+		$image->drawPlotChart(array('PlotBorder'=>TRUE, 'PlotSize'=>10, 'BorderSize'=>1, 'Surrounding' => -60, 'BorderAlpha' => 80));
+		$image->setShadow(FALSE);
+
+		/* Create a legend */
+		$data->setSerieDrawable('GoodPerformance', TRUE);
+		$data->setSerieDrawable('ModestPerformance', TRUE);
+		$legendOptions = array(
+			'Style' => LEGEND_BOX,
+			'Mode' => LEGEND_HORIZONTAL,
+			'FontSize' => 30,
+			'R' => 255,
+			'G' => 255,
+			'B' => 255,
+			'IconAreaWidth' => 50,
+			'IconAreaHeight' => 50,
+			'BoxWidth' => 25,
+			'BoxHeight' => 25,
+		);
+		$image->drawLegend(0, 900, $legendOptions);
+
+		$temporaryRadarFile = tempnam(NULL, 'linegraph');
+		$image->render($temporaryRadarFile);
+
+
+		return $temporaryRadarFile;
+
+	}
+
+	/**
+	 * Render a answer level bar chart from the project score
+	 *
+	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @return string The filename of the file
+	 */
+	public function getAnswerLevelBarChartImage($project) {
+
+		/* Create and populate the pData object */
+		$data = new pData();
+
+		// get and process the basis score data
+		$basisScoreData = $this->getScoreData();
+		$axisLabels = array();
+		foreach ($basisScoreData as $category) {
+			$axisLabels[] = $category['categoryName'];
+		}
+
+		// get the project score
+		$scoreData = $this->getProcessedSubmission($project);
+		$projectScoreData = array();
+		$answeredQuestionRatios = array();
+		$thresholdRatios = array();
+		foreach ($scoreData['sections'] as $section) {
+			$projectScoreData[] = number_format($section['weightedScore'], 2, '.', '\'');
+			$answeredQuestionRatios[] = number_format($section['answeredQuestionRatio'] * 100, 0);
+			$thresholdRatios[] = number_format($section['thresholdRatio'] * 100, 0);
+		}
+
+		// Data for good performance
+		$data->addPoints(
+			$answeredQuestionRatios,
+			'answeredQuestionRatio'
+		);
+		$data->setSerieDescription('answeredQuestionRatio', 'Answer Level');
+		$data->setPalette('answeredQuestionRatio', array('R' => 31, 'G' => 119, 'B' => 180));
+
+		// Data for modest performance
+		$data->addPoints(
+			$thresholdRatios,
+			'thresholdRatio'
+		);
+		$data->setSerieDescription('thresholdRatio', 'Threshold');
+		$data->setPalette('thresholdRatio', array('R' => 215, 'G' => 32, 'B' => 49));
+		$data->setSerieWeight('thresholdRatio', 4);
+
+		/* Define the absissa serie */
+		$data->addPoints(
+			$axisLabels,
+			'Categories'
+		);
+		$data->setAbscissa('Categories');
+		$data->setAxisUnit(0, '%');
+
+		/* Create the pChart object */
+		$image = new pImage(1800, 1000, $data);
+
+		/* Set the default font properties */
+		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/verdana.ttf';
+		$image->setFontProperties(array(
+			'FontName' => $fontPath,
+			'FontSize' => 20,
+			'R' => 0,
+			'G' => 0,
+			'B' => 0
+		));
+
+		/* Create the chart */
+		$image->setGraphArea(80, 60, 1720, 540);
+		$scaleSettings = array(
+			'XMargin' => 20,
+			'YMargin' => 0,
+			'Factors' => array(1),
+			'LabelRotation' => 70,
+			'Floating' => TRUE,
+			'DrawSubTicks' => TRUE,
+			'CycleBackground' => TRUE,
+			'Mode' => SCALE_MODE_MANUAL,
+			'ManualScale' => array(
+				0 => array(
+					'Min' => 0,
+					'Max' => 100
+				)
+			),
+		);
+		$image->drawScale($scaleSettings);
+		$image->setShadow(TRUE, array('X' => 1,'Y' => 1,'R' => 0,'G' => 0,'B' => 0,'Alpha' => 10));
+
+		/* Create the bar chart for the answered question ratio */
+		$data->setSerieDrawable('answeredQuestionRatio', TRUE);
+		$data->setSerieDrawable('thresholdRatio', FALSE);
+		$image->drawBarChart(array('Interleave' => 2));
+
+		/* Create the line chart for the threshold ratio */
+		$data->setSerieDrawable('answeredQuestionRatio', FALSE);
+		$data->setSerieDrawable('thresholdRatio', TRUE);
+		$image->drawLineChart(array('DisplayColor' => DISPLAY_AUTO));
+		$image->setShadow(FALSE);
+
+		/* Create a legend */
+		$data->setSerieDrawable('answeredQuestionRatio', TRUE);
+		$data->setSerieDrawable('thresholdRatio', TRUE);
+		$legendOptions = array(
+			'Style' => LEGEND_BOX,
+			'Mode' => LEGEND_HORIZONTAL,
+			'FontSize' => 30,
+			'R' => 255,
+			'G' => 255,
+			'B' => 255,
+			'IconAreaWidth' => 50,
+			'IconAreaHeight' => 50,
+			'BoxWidth' => 25,
+			'BoxHeight' => 25,
+		);
+		$image->drawLegend(0, 900, $legendOptions);
+
+		$temporaryBarChartFile = tempnam(NULL, 'barchart');
+		$image->render($temporaryBarChartFile);
+		return $temporaryBarChartFile;
+
 	}
 
 }

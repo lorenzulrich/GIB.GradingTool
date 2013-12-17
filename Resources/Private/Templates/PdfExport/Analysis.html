@@ -1,0 +1,71 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Analysis', 1: 0})}" />
+<h2>Analysis</h2>
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Spider Graph', 1: 1})}" />
+<h3>Spider Graph</h3>
+<img src="{radarChartFileName}" align="left" /><br />
+<img src="{lineGraphFileName}" align="left" />
+
+
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Answer-Level Graph', 1: 1})}" />
+<h3>Answer-Level Graph</h3>
+<img src="{answerLevelGraphFileName}" align="left" />
+
+<tcpdf method="AddPage" />
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Detailed Performance', 1: 1})}" />
+<h3>Detailed Performance</h3>
+
+<style>
+	table { border: 1px solid black; }
+	table td { border: 1px solid black; padding: 5px; }
+	table th { border: 1px solid black; padding: 5px; }
+</style>
+
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			<th align="center">Best Practise</th>
+			<th align="center">Low Performance</th>
+		</tr>
+	</thead>
+	<tbody>
+		<f:for each="{submission.sections}" as="section">
+			<tr>
+				<th>{section.label}</th>
+				<td>
+					<f:for each="{section.questions}" as="question" iteration="bpIterator">
+						<f:if condition="{bpIterator.isLast}">
+							<f:then>
+								<f:if condition="{question.bestPractiseText}">
+									{question.bestPractiseText}
+								</f:if>
+							</f:then>
+							<f:else>
+								<f:if condition="{question.bestPractiseText}">
+									{question.bestPractiseText}<br />
+								</f:if>
+							</f:else>
+						</f:if>
+					</f:for>
+				</td>
+				<td>
+					<f:for each="{section.questions}" as="question" iteration="lpIterator">
+						<f:if condition="{lpIterator.isLast}">
+							<f:then>
+								<f:if condition="{question.lowPerformanceText}">
+									{question.lowPerformanceText}
+								</f:if>
+							</f:then>
+							<f:else>
+								<f:if condition="{question.lowPerformanceText}">
+									{question.lowPerformanceText}<br />
+								</f:if>
+							</f:else>
+						</f:if>
+					</f:for>
+				</td>
+			</tr>
+		</f:for>
+	</tbody>
+</table>

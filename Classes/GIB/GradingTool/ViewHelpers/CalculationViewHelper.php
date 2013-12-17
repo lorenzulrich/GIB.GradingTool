@@ -79,7 +79,7 @@ class CalculationViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 	*	@return array multidimensional array with numbers, operators and subarrays (nested)
 	*/
 	function buildExpressionArray($splitArray, $nestingLevel = 0){
-		$expresionArray = array();
+		$expressionArray = array();
 
 		foreach($splitArray as $key => $splitPart){
 			$splitPart = trim($splitPart);
@@ -101,10 +101,12 @@ class CalculationViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 	}
 	
 	/**
-	*	will try to evaluate the calculation and return a final value
-	*	@param array $expressionArray array to be calculated
+	 *	will try to evaluate the calculation and return a final value
+	 *
+	 * @param array $expressionArray array to be calculated
+	 * @return mixed
 	*/
-	function evaluateExpressionArray($expressionArray = array()){
+	function evaluateExpressionArray($expressionArray = array()) {
 		$subExpressionsEliminated = FALSE;
 		// eliminate sub expressions, this is recursive, so after first run, all sub expressions should be eliminated
 		if($subExpressionsEliminated === FALSE){
@@ -132,27 +134,27 @@ class CalculationViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 					}
 							
 					if(is_numeric($prev) && is_numeric($next)){
-							switch($mathData){
-								case '-':
-									$eval = $prev - $next;
-									break;
-								case '+':
-									$eval = $prev + $next;
-									break;
-								case '*':
-									$eval = $prev * $next;
-									break;
-								case '/': 
-									$eval = $prev / $next;
-									break;
-								case '%': 
-									$eval = $prev % $next;
-									break;
-							}
-							unset($expressionArray[$prev_key]);
-							unset($expressionArray[$next_key]);
-							$expressionArray[$key] = $eval;
-							break;
+						switch($mathData){
+							case '-':
+								$eval = $prev - $next;
+								break;
+							case '+':
+								$eval = $prev + $next;
+								break;
+							case '*':
+								$eval = $prev * $next;
+								break;
+							case '/':
+								$eval = $prev / $next;
+								break;
+							case '%':
+								$eval = $prev % $next;
+								break;
+						}
+						unset($expressionArray[$prev_key]);
+						unset($expressionArray[$next_key]);
+						$expressionArray[$key] = $eval;
+						break;
 					} elseif ($prev !== NULL && array_key_exists($prev, $this->operatorsWithPrecedenceValue) && is_numeric($next) && $mathData === '-') {
 						
 						$expressionArray[$key] = 0 - $next;
@@ -172,7 +174,7 @@ class CalculationViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 		}
 		if (count($expressionArray) == 1) {
 			return reset($expressionArray);
-		} else{
+		} else {
 			return '';
 		}
 		
@@ -180,11 +182,12 @@ class CalculationViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 	
 	/**
 	* find next valid key of (calculation) array (not easy as values get deleted)
+	 *
 	* @param array $array the array to find a next key
 	* @param integer $keyFrom the key for which you want the next
-	* @return 
+	* @return string
 	*/
-	function findNextValidKey($array,$keyFrom){
+	function findNextValidKey($array, $keyFrom){
 		$i = 0;
 		$key = NULL;
 		while($key == NULL && $i < 99){

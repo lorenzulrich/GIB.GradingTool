@@ -7,6 +7,7 @@ resources:
     deactivateSubmissionForm: 'method(GIB\GradingTool\Controller\ProjectController->deactivateSubmissionFormAction())'
     editDataSheet: 'method(GIB\GradingTool\Controller\ProjectController->editDataSheetAction())'
     submission: 'method(GIB\GradingTool\Controller\ProjectController->submissionAction())'
+    exportReport: 'method(GIB\GradingTool\Controller\ProjectController->exportReportAction())'
     formBuilderEditorController: 'class(TYPO3\FormBuilder\Controller\EditorController)'
     formBuilderFormManagerController: 'class(TYPO3\FormBuilder\Controller\FormManagerController)'
     formBuilderStandardController: 'class(TYPO3\FormBuilder\Controller\StandardController)'
@@ -31,6 +32,7 @@ acls:
       deactivateSubmissionForm: GRANT
       editDataSheet: GRANT
       submission: GRANT
+      exportReport: GRANT
       formBuilderEditorController: GRANT
       formBuilderFormManagerController: GRANT
       formBuilderStandardController: GRANT

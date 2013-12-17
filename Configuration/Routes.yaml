@@ -65,6 +65,14 @@
     '@action':     'reviewSubmission'
 
 -
+  name: 'GIB.GradingTool :: Project :: Export Report'
+  uriPattern: 'project/{project}/exportreport'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'exportReport'
+
+-
   name: 'GIB.GradingTool Admin'
   uriPattern: 'admin/{@action}'
   defaults:

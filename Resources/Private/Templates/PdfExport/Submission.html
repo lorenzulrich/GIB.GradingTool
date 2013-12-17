@@ -1,0 +1,19 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Assessment', 1: 0})}" />
+<h2>Assessment</h2>
+
+<f:for each="{submission.sections}" as="section" iteration="sectionIterator">
+
+	<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: section.label, 1: 1})}" />
+	<h3>{section.label}</h3>
+
+	<f:for each="{section.questions}" as="question" iteration="iterator">
+		<p>
+			<strong>{question.label}</strong><br />
+			{question.value}
+			<f:if condition="{question.comment}">
+				<br /><em>{question.comment}</em>
+			</f:if>
+		</p>
+	</f:for>
+</f:for>
