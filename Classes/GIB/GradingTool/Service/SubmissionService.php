@@ -60,30 +60,34 @@ class SubmissionService {
 						$formSections[$section['identifier']]['questions'][$field['identifier']]['weighting'] =  $field['properties']['weighting'];
 						$weightingsSum = $weightingsSum + $field['properties']['weighting'];
 						$formSections[$section['identifier']]['questions'][$field['identifier']]['optOut'] =  $field['properties']['optOut'];
-
-						$key = $submissionContentArray[$field['identifier']];
-						foreach ($field['properties']['options'] as $option) {
-							if ($option['_key'] == $key) {
-								$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] =  $option['score'];
-								$formSections[$section['identifier']]['questions'][$field['identifier']]['key'] = $option['_key'];
-								$formSections[$section['identifier']]['questions'][$field['identifier']]['value'] = $option['_value'];
-								if ($option['score'] == 0) {
-									$notApplicableAnswerCount++;
-									$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] = 'N/A';
+						if (isset($submissionContentArray[$field['identifier']])) {
+							$key = $submissionContentArray[$field['identifier']];
+							foreach ($field['properties']['options'] as $option) {
+								if ($option['_key'] == $key) {
+									$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] =  $option['score'];
+									$formSections[$section['identifier']]['questions'][$field['identifier']]['key'] = $option['_key'];
+									$formSections[$section['identifier']]['questions'][$field['identifier']]['value'] = $option['_value'];
+									if ($option['score'] == 0) {
+										$notApplicableAnswerCount++;
+										$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] = 'N/A';
+									}
 								}
-
 							}
 						}
 					} elseif ($field['type'] === 'GIB.GradingTool:NotApplicableMultiLineText') {
-						// comment for opt-out questions
-						$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['comment'] = $submissionContentArray[$field['identifier']];
-					} elseif ($field['type'] === 'GIB.GradingTool:OptOutAcceptedCheckbox') {
-						// opt-out question was accepted (or not)
-						if ($submissionContentArray[$field['identifier']] == 1) {
-							$optOutAcceptedCount++;
+						if (isset($formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['comment'])) {
+							// comment for opt-out questions
+							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['comment'] = $submissionContentArray[$field['identifier']];
 						}
-						$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAcceptedFieldIdentifier'] = $field['identifier'];
-						$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAccepted'] = $submissionContentArray[$field['identifier']];
+					} elseif ($field['type'] === 'GIB.GradingTool:OptOutAcceptedCheckbox') {
+						if (isset($submissionContentArray[$field['identifier']])) {
+							// opt-out question was accepted (or not)
+							if ($submissionContentArray[$field['identifier']] == 1) {
+								$optOutAcceptedCount++;
+							}
+							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAcceptedFieldIdentifier'] = $field['identifier'];
+							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAccepted'] = $submissionContentArray[$field['identifier']];
+						}
 					}
 				}
 				$formSections[$section['identifier']]['notApplicableAnswerCount'] = $notApplicableAnswerCount;
@@ -169,7 +173,7 @@ class SubmissionService {
 		$questionScoreArray = array();
 		$applicableQuestionCount = 0;
 		foreach ($questions as $question) {
-			if ($question['score'] !== 'N/A') {
+			if (isset($question['score']) && $question['score'] !== 'N/A') {
 				$applicableQuestionCount++;
 				$questionScoreArray[] = array('score' => $question['score']);
 			}
@@ -177,11 +181,17 @@ class SubmissionService {
 
 		//\TYPO3\Flow\var_dump($questionScoreWeightingArray, 'questionScWeArrayAfter');
 
-		$sectionScoreSum = 0;
-		foreach ($questionScoreArray as $questionScore) {
-			$sectionScoreSum = $sectionScoreSum + $questionScore['score'];
+		// worst score=1
+		$sectionScoreAverage = 1;
+		if ($applicableQuestionCount > 0) {
+
+			$sectionScoreSum = 0;
+			foreach ($questionScoreArray as $questionScore) {
+				$sectionScoreSum = $sectionScoreSum + $questionScore['score'];
+			}
+			$sectionScoreAverage = $sectionScoreSum / $applicableQuestionCount;
+
 		}
-		$sectionScoreAverage = $sectionScoreSum / $applicableQuestionCount;
 
 		return $sectionScoreAverage;
 
