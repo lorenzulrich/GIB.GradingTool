@@ -131,6 +131,14 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			// store changes to project
 			$project->setDataSheetContent($formValueArray);
 			$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
+
+			// update e-mail address (could have changed in the data sheet)
+			$projectManagerElectronicAddress = new \TYPO3\Party\Domain\Model\ElectronicAddress();
+			$projectManagerElectronicAddress->setIdentifier($formValueArray['projectManagerEmail']);
+			$projectManagerElectronicAddress->setType(\TYPO3\Party\Domain\Model\ElectronicAddress::TYPE_EMAIL);
+			$project->getProjectManager()->setPrimaryElectronicAddress($projectManagerElectronicAddress);
+			$this->partyRepository->update($project->getProjectManager());
+
 			$this->projectRepository->update($project);
 
 			// send a notification mail to the Administrator containing the changes
