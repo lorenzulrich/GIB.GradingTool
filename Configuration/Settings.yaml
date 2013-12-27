@@ -5,6 +5,9 @@ GIB:
     #  submission: 'gibsubmission'
     #  emailTemplate: 'gibdefault'
 
+    toolName: 'GIB Project Hub'
+    databaseName: 'GIB Project Finder'
+
     forms:
       dataSheet: 'dataSheetForm'
       submission: 'submissionForm'
@@ -15,7 +18,7 @@ GIB:
       en: English
       fr: Français
       es: Español
-      zh: '中国话'
+      zh: '中文'
 
     email:
       activateNotifications: TRUE

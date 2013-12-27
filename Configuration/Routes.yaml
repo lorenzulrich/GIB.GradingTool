@@ -33,7 +33,7 @@
 
 -
   name: 'GIB.GradingTool :: Project :: Deactivate Submission'
-  uriPattern: 'project/{project}/deactivatesubmission'
+  uriPattern: 'project/{project}/deactivategradingtool'
   defaults:
     '@package':    'GIB.GradingTool'
     '@controller': 'Project'
@@ -41,7 +41,7 @@
 
 -
   name: 'GIB.GradingTool :: Project :: Activate Submission'
-  uriPattern: 'project/{project}/activatesubmission'
+  uriPattern: 'project/{project}/activategradingtool'
   defaults:
     '@package':    'GIB.GradingTool'
     '@controller': 'Project'
@@ -50,7 +50,7 @@
 
 -
   name: 'GIB.GradingTool :: Project :: Edit Submission'
-  uriPattern: 'project/{project}/submission'
+  uriPattern: 'project/{project}/gradingtool'
   defaults:
     '@package':    'GIB.GradingTool'
     '@controller': 'Project'
@@ -58,7 +58,7 @@
 
 -
   name: 'GIB.GradingTool :: Project :: Review Submission'
-  uriPattern: 'project/{project}/reviewsubmission'
+  uriPattern: 'project/{project}/reviewgrading'
   defaults:
     '@package':    'GIB.GradingTool'
     '@controller': 'Project'

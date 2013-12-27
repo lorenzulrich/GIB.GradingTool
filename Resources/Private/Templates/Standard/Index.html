@@ -1,6 +1,6 @@
 <f:layout name="Default" />
 
-<f:section name="Title">GIB Grading Tool</f:section>
+<f:section name="Title">{settings.toolName}</f:section>
 
 <f:section name="Content">
 <div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
@@ -9,18 +9,18 @@
 
 		<p>With the GIB Grading Tool, sustainable infrastructure can be distinguished from non-sustainable infrastructure. It helps to highlight the environmental, social and economic risks and the potential impacts resulting from decisions and gives investors and project owners a framework for decision-making.</p>
 
-		<p>In order to gain access to the GIB Grading Tool you must first complete the data sheet, which can be found here:</p>
-
-		<div class="alert alert-warning">Due to a technical issue, uploading files is not possible at the moment. Therefore, please don't add any documents to your data sheet. You will be notified as soon as uploading is possible again.</div>
+		<p>In order to gain access to the GIB Grading Tool you must first register your project:</p>
 
 		<p>
-		<f:link.action class="btn btn-primary btn-lg" additionalAttributes="{role:'button'}" controller="Project" action="newDataSheet">Project Data Sheet</f:link.action>
+		<f:link.action class="btn btn-primary btn-lg" additionalAttributes="{role:'button'}" controller="Project" action="newDataSheet">Register Project</f:link.action>
 		</p>
 
-		<p>If you already have an account for the GIB Grading Tool, you can log in to edit your projects or add a new project:</p>
+		<hr />
+
+		<p>If you already have an account for the {settings.toolName}, you can log in to edit your projects or add a new project:</p>
 
 		<p>
-			<a class="login-panel btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
+			<a class="login-panel btn btn-default btn-lg" data-toggle="modal" data-target="#modal-login" href="{f:uri.action(controller:'Login', action: 'loginPanel', package: 'Flow.Login')}">Login</a>
 		</p>
 
 		<p>If you forgot your login credentials, please contact the <a href="mailto:info@globalinfrastructurebasel.com">GIB team</a>.</p>
