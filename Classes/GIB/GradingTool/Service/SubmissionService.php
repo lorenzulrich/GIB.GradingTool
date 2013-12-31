@@ -325,7 +325,7 @@ class SubmissionService {
 		$image->setFontProperties(array('FontName'=>$fontPath, 'FontSize'=>20, 'R'=>0, 'G'=>0, 'B'=>0));
 
 		/* Create the pRadar object */
-		$splitChart = new pRadar();
+		$splitChart = new \GIB\GradingTool\Utility\pRadar();
 
 		/* Draw a radar chart */
 		$image->setGraphArea(40, 20, 1160, 1180);
@@ -337,9 +337,10 @@ class SubmissionService {
 			'BackgroundB' => 255,
 			'BackgroundG' => 255,
 			'SegmentHeight' => 1,
-			'Segments' => 4,
+			'Segments' => 3,
 			'AxisRotation' => -90,
-			'FixedMax' => 4
+			'FixedMax' => 4,
+			'FixedMin' => 1
 		);
 
 		$splitChart->drawRadar($image, $data, $radarOptions);
