@@ -33,9 +33,9 @@ a {
 
 #siteHeader {
     padding: 20px;
-    background-color: #eaeaea;
-    border-radius: 0 0 10px 10px;
-    margin-bottom: 20px;
+    background-color: #f8f8f8;
+    margin: 0 auto 20px auto;
+    width: 100%;
 }
 
 #gib-logo {

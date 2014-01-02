@@ -1,6 +1,6 @@
 {namespace gib=GIB\GradingTool\ViewHelpers}
 <f:if condition="{demand.filter}">
-	<div class="navbar navbar-default">
+	<div id="filterDisplay" class="navbar navbar-default">
 		<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 			<f:if condition="{demand.filter.country.isoCode}">
 				<div class="col-md-3">
@@ -65,7 +65,7 @@
 				</p>
 			</div>
 			<div class="col-md-5">
-				<table class="table table-striped table-condensed table-smalltext">
+				<table class="table table-condensed table-smalltext">
 					<tbody>
 					<f:if condition="{project.dataSheetContentArray.categories}">
 						<tr>
