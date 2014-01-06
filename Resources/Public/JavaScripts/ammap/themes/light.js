@@ -91,8 +91,8 @@ AmCharts.themes.light = {
 	// ammap
 	AreasSettings: {
 		alpha: 0.8,
-		color: "#000000",
-		colorSolid: "#000000",
+		color: "#67b7dc",
+		colorSolid: "#003767",
 		unlistedAreasAlpha: 0.4,
 		unlistedAreasColor: "#000000",
 		outlineColor: "#FFFFFF",
@@ -120,7 +120,7 @@ AmCharts.themes.light = {
 
 	ZoomControl: {
 		buttonRollOverColor: "#3c5bdc",
-		buttonFillColor: "#f15135",
+		buttonFillColor: "#3994e2",
 		buttonFillAlpha: 0.8,
 		buttonBorderColor: "#000000",
 		gridBackgroundColor: "#000000",

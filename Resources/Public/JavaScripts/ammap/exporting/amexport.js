@@ -1,51 +1,54 @@
 AmCharts.AmExport = AmCharts.Class({
 	construct: function(chart, cfg) {
-		var _this = this;
-		_this.DEBUG = false;
-		_this.chart = chart;
-		_this.canvas = null;
-		_this.svgs = [];
-		_this.cfg = {
-			menuTop: 'auto',
-			menuLeft: 'auto',
-			menuRight: '0px',
-			menuBottom: '0px',
-			menuItems: [{
-				textAlign: 'center',
-				icon: _this.chart.pathToImages + 'export.png',
-				iconTitle: 'Save chart as an image',
-				format: 'png'
+		var _this		= this;
+		_this.DEBUG		= false;
+		_this.chart		= chart;
+		_this.canvas	= null;
+		_this.svgs		= [];
+		_this.cfg		= {
+			menuTop					: 'auto',
+			menuLeft				: 'auto',
+			menuRight				: '0px',
+			menuBottom				: '0px',
+			menuItems				: [{
+				textAlign				: 'center',
+				icon					: _this.chart.pathToImages + 'export.png',
+				iconTitle				: 'Save chart as an image',
+				format					: 'png'
 			}],
-			menuItemStyle: {
-				backgroundColor: 'transparent',
-				rollOverBackgroundColor: '#EFEFEF',
-				color: '#000000',
-				rollOverColor: '#CC0000',
-				paddingTop: '6px',
-				paddingRight: '6px',
-				paddingBottom: '6px',
-				paddingLeft: '6px',
-				marginTop: '0px',
-				marginRight: '0px',
-				marginBottom: '0px',
-				marginLeft: '0px',
-				textAlign: 'left',
-				textDecoration: 'none',
-				fontFamily: _this.chart.fontFamily,
-				fontSize: _this.chart.fontSize + 'px'
+			menuItemStyle			: {
+			backgroundColor			: 'transparent',
+			rollOverBackgroundColor	: '#EFEFEF',
+			color					: '#000000',
+			rollOverColor			: '#CC0000',
+			paddingTop				: '6px',
+			paddingRight			: '6px',
+			paddingBottom			: '6px',
+			paddingLeft				: '6px',
+			marginTop				: '0px',
+			marginRight				: '0px',
+			marginBottom			: '0px',
+			marginLeft				: '0px',
+			textAlign				: 'left',
+			textDecoration			: 'none',
+			fontFamily				: _this.chart.fontFamily,
+			fontSize				: _this.chart.fontSize + 'px'
 			},
-			menuItemOutput: {
-				backgroundColor: '#FFFFFF',
-				fileName: 'amChart',
-				format: 'png',
-				output: 'dataurlnewwindow',
-				render: 'browser',
-				dpi: 90,
-				onclick: function(instance, config, event) {
+			menuItemOutput			: {
+				backgroundColor			: '#FFFFFF',
+				fileName				: 'amChart',
+				format					: 'png',
+				output					: 'dataurlnewwindow',
+				render					: 'browser',
+				dpi						: 90,
+				onclick					: function(instance, config, event) {
+					event.preventDefault();
+					// Polify SVG; needs to wait
+					instance.polifySVG();
 					instance.output(config);
 				}
 			},
-			removeImagery: true
+			removeImagery: false
 		};
 		_this.processing = {
 			buffer: [],
@@ -106,17 +109,11 @@ AmCharts.AmExport = AmCharts.Class({
 
 
 		if (!AmCharts.isIE || (AmCharts.isIE && AmCharts.IEversion > 9)) {
-			window.clearTimeout(_this.processing.timer);
-			_this.processing.timer = setTimeout(function() {
-				// Polify SVG; needs to wait
-				_this.polifySVG();
-
-				// Build Buttons
-				_this.generateButtons();
-				if (_this.DEBUG == 10) {
-					_this.log('SETUP END');
-				} // DEBUG
-			}, 1000);
+			// Build Buttons
+			_this.generateButtons();
+			if (_this.DEBUG == 10) {
+				_this.log('SETUP END');
+			} // DEBUG
 		} else {
 			if (_this.DEBUG == 10) {
 				_this.log('< IE10 NOT SUPPORTED');
@@ -340,6 +337,12 @@ AmCharts.AmExport = AmCharts.Class({
 	*/
 	polifySVG: function() {
 		var _this = this;
+
+		var chart = _this.chart;
+		if(chart.prepareForExport){
+			chart.prepareForExport();
+		}
+
 		var svgs = _this.chart.div.getElementsByTagName('svg');
 
 		// Recursive function to force the attributes
@@ -348,19 +351,19 @@ AmCharts.AmExport = AmCharts.Class({
 
 			for (var i = 0; i < items.length; i++) {
 
-				if (_this.cfg.removeImagery) {
+				if ( _this.cfg.removeImagery ) {
 					items[i].parentNode.removeChild(items[i]);
 
 				} else {
-					var image = document.createElement('img');
-					var canvas = document.createElement('canvas');
-					var ctx = canvas.getContext('2d');
+					var image		= document.createElement('img');
+					var canvas		= document.createElement('canvas');
+					var ctx			= canvas.getContext('2d');
 
-					canvas.width = items[i].getAttribute('width');
-					canvas.height = items[i].getAttribute('height');
-					image.src = items[i].getAttribute('xlink:href');
-					image.width = items[i].getAttribute('width');
-					image.height = items[i].getAttribute('height');
+					canvas.width	= items[i].getAttribute('width');
+					canvas.height	= items[i].getAttribute('height');
+					image.src		= items[i].getAttribute('xlink:href');
+					image.width		= items[i].getAttribute('width');
+					image.height	= items[i].getAttribute('height');
 
 					try {
 						ctx.drawImage(image, 0, 0, image.width, image.height);
