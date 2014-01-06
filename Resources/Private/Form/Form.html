@@ -18,6 +18,20 @@
 				return Math.floor(currentProgressPercent) + '%';
 			}
 		);
+
+		/* check parent stages if a child stage is checked */
+		$('.dataSheetForm-stage input').each(function() {
+			if ($(this).val().match(/^[A-Z -]*$/)) {
+				$(this).parent().parent().addClass('parentStage');
+			}
+		});
+
+		$('input', '.dataSheetForm-stage:not(.parentStage)').click(function(e) {
+			if ($(this).prop('checked') == true) {
+				$(e.target).closest('.checkbox').prevAll('.parentStage').first().find('input').prop('checked', true);
+			}
+		});
+
 	});
 
 	function registerConditionalSection(fieldsetId, triggerFieldId, triggerValue) {
