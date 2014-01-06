@@ -5,7 +5,7 @@ GIB:
     #  submission: 'gibsubmission'
     #  emailTemplate: 'gibdefault'
 
-    toolName: 'GIB Project Hub'
+    toolName: 'GIB Project Platform'
     databaseName: 'GIB Project Finder'
 
     forms:
