@@ -106,6 +106,8 @@ textarea.form-control { max-width: 100% !important; min-height: 130px; }
 .mutedFieldLabels legend { font-size: 100%; border-bottom: 0; margin-bottom: 5px; font-weight: bold; }
 .mutedFieldLabels label { font-weight: normal; color: #999; }
 
+#dataSheetForm-description { min-height: 500px; }
+
 /* hide conditional fields on initialization */
 fieldset.conditionalSection { display: none; }
 
