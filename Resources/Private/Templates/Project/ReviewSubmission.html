@@ -66,8 +66,8 @@
 						Number of questions
 					</li>
 					<li class="list-group-item">
-						<span class="badge">{section.notApplicableAnswerCount}</span>
-						Not applicable answers
+						<span class="badge"><gib:calculation expressionString="{section.questionCount}-{section.notApplicableAnswerCount}" /></span>
+						Answered questions
 					</li>
 					<li class="list-group-item">
 						<span class="badge">{section.optOutAcceptedCount}</span>
@@ -75,11 +75,11 @@
 					</li>
 					<li class="list-group-item">
 						<span class="badge">{section.naAcceptanceLevel}</span>
-						N/A Acceptance Level
+						(N/A Acceptance Level)
 					</li>
 					<li class="list-group-item">
 						<span class="badge">{section.threshold}</span>
-						Resulting threshold
+						Answer threshold
 					</li>
 				</ul>
 				<table class="table table-striped table-hover">
