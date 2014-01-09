@@ -41,8 +41,11 @@ class DataSheetService {
 		$flatDataSheetArray = array();
 
 		foreach ($project->getDataSheetContentArray() as $key => $value) {
-			$flatDataSheetArray[$key]['label'] = $formDefinition->getElementByIdentifier($key)->getLabel();
-			$flatDataSheetArray[$key]['value'] = $value;
+			$formElement = $formDefinition->getElementByIdentifier($key);
+			if ($formElement instanceof \TYPO3\Form\Core\Model\FormElementInterface) {
+				$flatDataSheetArray[$key]['label'] = $formDefinition->getElementByIdentifier($key)->getLabel();
+				$flatDataSheetArray[$key]['value'] = $value;
+			}
 		}
 
 		return $flatDataSheetArray;
