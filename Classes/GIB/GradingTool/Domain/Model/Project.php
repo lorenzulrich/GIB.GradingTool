@@ -103,8 +103,8 @@ class Project {
 	protected $categories;
 
 	/**
-	 * @var integer
-	 * @ORM\Column(nullable=true)
+	 * @var float
+	 * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
 	 */
 	protected $cost;
 
