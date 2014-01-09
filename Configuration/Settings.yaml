@@ -89,6 +89,16 @@ TYPO3:
             properties:
               elementErrorClassAttribute: 'has-error'
 
+          'TYPO3.Form:TextMixin':
+            formBuilder:
+              editors:
+                validation:
+                   availableValidators:
+                    'GIB.GradingTool:FloatOrInteger':
+                      label: 'Floating-point number or integer'
+                      sorting: 141
+
+
           ### FORM ELEMENTS: CUSTOM ###
           'TYPO3.Form:DatePicker':
             properties:
@@ -486,6 +496,11 @@ TYPO3:
             implementationClassName: 'GIB\GradingTool\Form\Finishers\TemplateDatabaseFinisher'
 
 
+        ### VALIDATORS ###
+        validatorPresets:
+          'GIB.GradingTool:FloatOrInteger':
+            implementationClassName: 'GIB\GradingTool\Validation\Validator\FloatOrIntegerValidator'
+
       ### GIB SUBMISSION FORM ###
       gibsubmission:
         title: 'GIB Submission'
@@ -608,7 +623,3 @@ TYPO3:
       Finisher-GIB.GradingTool-DataSheetFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/DataSheetEditor.html'
       Finisher-GIB.GradingTool-SubmissionFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SubmissionEditor.html'
       Finisher-GIB.GradingTool-TemplateDatabaseFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/TemplateDatabaseEditor.html'
-
-
-
-
