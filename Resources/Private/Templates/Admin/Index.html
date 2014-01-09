@@ -38,18 +38,18 @@
 					</div>
 					<div class="btn-group">
 						<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-							Grading Tool <span class="caret"></span>
+							Grading <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu">
 							<f:if condition="{project.submissionFormAccess}">
 								<f:then>
-									<li><f:link.action additionalAttributes="{data-confirm: 'Are you sure?'}" class="returnConfirm" arguments="{project:project}" action="deactivateSubmissionForm" controller="Project"><i class="fa fa-eye-slash"></i> Deactivate Grading Tool</f:link.action></li>
+									<li><f:link.action additionalAttributes="{data-confirm: 'Are you sure?'}" class="returnConfirm" arguments="{project:project}" action="deactivateSubmissionForm" controller="Project"><i class="fa fa-eye-slash"></i> Deactivate Grading</f:link.action></li>
 								</f:then>
 								<f:else>
-									<li><f:link.action additionalAttributes="{data-confirm: 'This will send a notification e-mail to the user. Are you sure?'}" class="returnConfirm" arguments="{project:project}" action="activateSubmissionForm" controller="Project"><i class="fa fa-eye"></i> Activate Grading Tool</f:link.action></li>
+									<li><f:link.action additionalAttributes="{data-confirm: 'This will send a notification e-mail to the user. Are you sure?'}" class="returnConfirm" arguments="{project:project}" action="activateSubmissionForm" controller="Project"><i class="fa fa-eye"></i> Activate Grading</f:link.action></li>
 								</f:else>
 							</f:if>
-							<li><f:link.action action="submission" controller="Project" arguments="{project:project}"><i class="fa fa-list-ol"></i> Grading Tool</f:link.action></li>
+							<li><f:link.action action="submission" controller="Project" arguments="{project:project}"><i class="fa fa-list-ol"></i> Grading</f:link.action></li>
 							<f:if condition="{project.submissionContent}">
 								<li><f:link.action action="reviewSubmission" controller="Project" arguments="{project:project}"><i class="fa fa-eye"></i> Review Grading</f:link.action></li>
 							</f:if>
