@@ -84,12 +84,12 @@ class SubmissionService {
 							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['comment'] = $submissionContentArray[$field['identifier']];
 						}
 					} elseif ($field['type'] === 'GIB.GradingTool:OptOutAcceptedCheckbox') {
+						$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAcceptedFieldIdentifier'] = $field['identifier'];
 						if (isset($submissionContentArray[$field['identifier']])) {
 							// opt-out question was accepted (or not)
 							if ($submissionContentArray[$field['identifier']] == 1) {
 								$optOutAcceptedCount++;
 							}
-							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAcceptedFieldIdentifier'] = $field['identifier'];
 							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['optOutAccepted'] = $submissionContentArray[$field['identifier']];
 						}
 					}
