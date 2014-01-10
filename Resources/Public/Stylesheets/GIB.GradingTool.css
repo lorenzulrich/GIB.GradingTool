@@ -212,13 +212,26 @@ ul.submissionAnswer span {
 }
 
 .indent-1 {
-    text-indent: 20px;
+    text-indent: 30px;
 }
 
 .indent-2 {
-    text-indent: 40px;
+    text-indent: 60px;
+}
+
+.indent-3 {
+    text-indent: 90px;
+}
+
+#reviewDataSheet h3 {
+    background-color: #dedede;
+    padding: 5px;
 }
 
 #reviewDataSheet h4 {
+    font-weight: 600;
+}
+
+#reviewDataSheet h4.subsection {
     border-bottom: 1px solid #ccc;
 }
