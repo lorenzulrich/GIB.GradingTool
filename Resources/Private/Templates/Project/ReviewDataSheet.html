@@ -9,6 +9,28 @@
 	<h2>Review Data Sheet for project "{project.projectTitle}"</h2>
 
 	<div id="reviewDataSheet" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+		<table>
+			<thead>
+			<tr>
+				<th>
+					Data Sheet created at
+				</th>
+				<th>
+					Data Sheet last edited at
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>
+					<f:format.date>{project.created}</f:format.date>
+				</td>
+				<td>
+					<f:format.date>{project.lastUpdated}</f:format.date>
+				</td>
+			</tr>
+			</tbody>
+		</table>
 		<f:for each="{dataSheet}" as="section">
 			<h3>{section.label}</h3>
 			<f:if condition="{section.items}">
@@ -48,7 +70,7 @@
 		</f:for>
 	</div>
 
-	<p>
+	<p id="reviewDataSheetLinks">
 		<f:link.action class="btn btn-primary" action="editDataSheet" controller="Project" arguments="{project:project}"><i class="fa fa-edit"></i> Edit Data Sheet</f:link.action>
 	</p>
 

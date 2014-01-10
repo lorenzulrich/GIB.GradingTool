@@ -212,15 +212,15 @@ ul.submissionAnswer span {
 }
 
 .indent-1 {
-    text-indent: 30px;
+    text-indent: 40px;
 }
 
 .indent-2 {
-    text-indent: 60px;
+    text-indent: 80px;
 }
 
 .indent-3 {
-    text-indent: 90px;
+    text-indent: 120px;
 }
 
 #reviewDataSheet h3 {
@@ -233,5 +233,42 @@ ul.submissionAnswer span {
 }
 
 #reviewDataSheet h4.subsection {
-    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+    padding: 5px;
+}
+
+#reviewDataSheet ul {
+    margin-left: 40px;
+    padding-left: 17px;
+}
+
+#reviewDataSheet li {
+    text-indent: 0;
+}
+
+#reviewDataSheet th {
+    padding-right: 100px;
+}
+
+@media print {
+    body { font-size: 11px; }
+    h1 { font-size: 18px; }
+    h2 { font-size: 16px; }
+    h3 { font-size: 14px; }
+    h4 { font-size: 12px; }
+    #admin-navigation, #siteHeader, #siteFooter, #reviewDataSheetLinks {
+        display: none;
+    }
+    #reviewDataSheet h3 {
+        background-color: #dedede !important;
+    ;
+    }
+
+    #reviewDataSheet h4 {
+        font-weight: 600;
+    }
+
+    #reviewDataSheet h4.subsection {
+        background-color: #f0f0f0 !important;
+    }
 }
