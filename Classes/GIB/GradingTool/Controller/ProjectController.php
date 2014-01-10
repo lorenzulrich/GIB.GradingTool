@@ -111,6 +111,25 @@ class ProjectController extends AbstractBaseController {
 	}
 
 	/**
+	 * Review a data sheet
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function reviewDataSheetAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
+
+		$dataSheet = $this->dataSheetService->getProcessedDataSheet($project);
+
+		$this->view->assignMultiple(array(
+			'dataSheet' => $dataSheet,
+			'project' => $project,
+		));
+
+	}
+
+	/**
 	 * Edit/create a submission
 	 *
 	 * The create action is missing because the project is added in the
@@ -306,7 +325,7 @@ class ProjectController extends AbstractBaseController {
 	 */
 	public function exportReportAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
-		$dataSheet = $this->dataSheetService->getProcessedDataSheet($project);
+		$dataSheet = $this->dataSheetService->getFlatProcessedDataSheet($project);
 
 		$pdf = new \TYPO3\TcPdf\Pdf();
 

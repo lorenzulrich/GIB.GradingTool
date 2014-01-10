@@ -24,6 +24,14 @@
     '@action':     'editDataSheet'
 
 -
+  name: 'GIB.GradingTool :: Project :: Review Data Sheet'
+  uriPattern: 'project/{project}/reviewdatasheet'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'reviewDataSheet'
+
+-
   name: 'GIB.GradingTool :: Project :: Remove Project'
   uriPattern: 'project/{project}/remove'
   defaults:

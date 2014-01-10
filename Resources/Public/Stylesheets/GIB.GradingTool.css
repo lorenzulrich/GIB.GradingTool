@@ -210,3 +210,15 @@ ul.submissionAnswer span {
     bottom: 5px;
     font-size: 16px;
 }
+
+.indent-1 {
+    text-indent: 20px;
+}
+
+.indent-2 {
+    text-indent: 40px;
+}
+
+#reviewDataSheet h4 {
+    border-bottom: 1px solid #ccc;
+}
