@@ -1,5 +1,5 @@
 <f:if condition="{configuration.insertAbove}">
-	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+	<div id="paginationStatus" class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-7">
 			<f:if condition="{pagination.numberOfPages}">
 				<f:then>
@@ -11,16 +11,36 @@
 			</f:if>
 		</div>
 		<div class="col-md-5">
-			Sort by:
+			Sort by:<br />
 
 			<div class="btn-group">
 				<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-					Budget <span class="caret"></span>
+					Total Investment <span class="caret"></span>
 					<span class="sr-only">Toggle Dropdown</span>
 				</button>
 				<ul class="dropdown-menu">
 					<li><a href="#" class="sortingTrigger" data-property="cost" data-sortingorder="ascending"><i class="fa fa-sort-numeric-asc"></i> Ascending</a></li>
 					<li><a href="#" class="sortingTrigger" data-property="cost" data-sortingorder="descending"><i class="fa fa-sort-numeric-desc"></i> Descending</a></li>
+				</ul>
+			</div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+					Required Investment <span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="#" class="sortingTrigger" data-property="requiredInvestment" data-sortingorder="ascending"><i class="fa fa-sort-numeric-asc"></i> Ascending</a></li>
+					<li><a href="#" class="sortingTrigger" data-property="requiredInvestment" data-sortingorder="descending"><i class="fa fa-sort-numeric-desc"></i> Descending</a></li>
+				</ul>
+			</div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+					Entry Date <span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="#" class="sortingTrigger" data-property="created" data-sortingorder="ascending"><i class="fa fa-sort-numeric-asc"></i> Ascending</a></li>
+					<li><a href="#" class="sortingTrigger" data-property="created" data-sortingorder="descending"><i class="fa fa-sort-numeric-desc"></i> Descending</a></li>
 				</ul>
 			</div>
 

@@ -147,7 +147,7 @@ class ProjectRepository extends Repository {
 
 		// apply sorting
 		if (isset($demand['sorting']) && !empty($demand['sorting'])) {
-			$validSortingProperties = array('cost');
+			$validSortingProperties = array('cost', 'requiredInvestment', 'created');
 			if (in_array($demand['sorting']['property'], $validSortingProperties)) {
 				$validOrderings = array('ascending', 'descending');
 				if (in_array($demand['sorting']['order'], $validOrderings)) {
@@ -161,6 +161,8 @@ class ProjectRepository extends Repository {
 				}
 			}
 		}
+
+		//\TYPO3\Flow\var_dump($query->getDoctrineQuery()->getSQL());
 
 		return $query->execute();
 

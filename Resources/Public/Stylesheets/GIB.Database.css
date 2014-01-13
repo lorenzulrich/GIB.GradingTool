@@ -91,3 +91,7 @@
 #projectDetails .modal-dialog {
     width: 90%;
 }
+
+#paginationStatus {
+    margin-bottom: 5px;
+}
