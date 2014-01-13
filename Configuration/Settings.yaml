@@ -26,23 +26,40 @@ GIB:
       afterContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/AfterContent.html'
 
     projectDatabase:
-      itemsPerPage: 2
+      itemsPerPage: 5
       filters:
         budget:
           brackets:
-            0:
+            1:
               minimum: 5
               maximum: 49
-            1:
+            2:
               minimum: 50
               maximum: 99
-            2:
+            3:
               minimum: 100
               maximum: 299
-            3:
+            4:
               minimum: 300
               maximum: 499
+            5:
+              minimum: 500
+              maximum: 900
+        requiredInvestment:
+          brackets:
+            1:
+              minimum: 5
+              maximum: 49
+            2:
+              minimum: 50
+              maximum: 99
+            3:
+              minimum: 100
+              maximum: 299
             4:
+              minimum: 300
+              maximum: 499
+            5:
               minimum: 500
               maximum: 900
         stage:

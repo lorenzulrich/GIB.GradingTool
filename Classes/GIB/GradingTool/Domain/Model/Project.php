@@ -104,9 +104,15 @@ class Project {
 
 	/**
 	 * @var float
-	 * @ORM\Column(type="decimal", precision=2, scale=1, nullable=true)
+	 * @ORM\Column(type="decimal", precision=6, scale=2, nullable=true)
 	 */
 	protected $cost;
+
+	/**
+	 * @var float
+	 * @ORM\Column(type="decimal", precision=6, scale=2, nullable=true)
+	 */
+	protected $requiredInvestment;
 
 	/**
 	 * @var string
@@ -154,6 +160,9 @@ class Project {
 	public function getDataSheetContentArray() {
 		if ($this->dataSheetContentArray === NULL) {
 			$this->dataSheetContentArray = unserialize($this->getDataSheetContent());
+			// take these properties from the project model to make debugging the decimals easier
+			$this->dataSheetContentArray['cost'] = $this->getCost();
+			$this->dataSheetContentArray['requiredInvestment'] = $this->getRequiredInvestment();
 		}
 		return $this->dataSheetContentArray;
 	}
@@ -161,7 +170,7 @@ class Project {
 	/**
 	 * Set dataSheetContent but also the flattened part of it
 	 *
-	 * @param string, $dataSheetContent
+	 * @param array $dataSheetContent
 	 * @return void
 	 */
 	public function setDataSheetContent($dataSheetContent) {
@@ -179,7 +188,11 @@ class Project {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}
 		if (isset($dataSheetContent['cost'])) {
+			\TYPO3\Flow\var_dump($dataSheetContent['cost'], 'cost');
 			$this->setCost($dataSheetContent['cost']);
+		}
+		if (isset($dataSheetContent['requiredInvestment'])) {
+			$this->setRequiredInvestment($dataSheetContent['requiredInvestment']);
 		}
 		if (isset($dataSheetContent['country'])) {
 			$this->setCountryCode($dataSheetContent['country']);
@@ -296,17 +309,31 @@ class Project {
 	}
 
 	/**
-	 * @param string $cost
+	 * @param float $cost
 	 */
 	public function setCost($cost)	{
 		$this->cost = $cost;
 	}
 
 	/**
-	 * @return string
+	 * @return float
 	 */
 	public function getCost()	{
 		return $this->cost;
+	}
+
+	/**
+	 * @param float $requiredInvestment
+	 */
+	public function setRequiredInvestment($requiredInvestment) {
+		$this->requiredInvestment = $requiredInvestment;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getRequiredInvestment() {
+		return $this->requiredInvestment;
 	}
 
 	/**

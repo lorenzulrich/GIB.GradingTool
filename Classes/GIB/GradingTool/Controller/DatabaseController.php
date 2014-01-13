@@ -31,11 +31,13 @@ class DatabaseController extends AbstractBaseController {
 		$categories = $dataSheetFormDefinition['renderables'][0]['renderables'][3]['properties']['options'];
 
 		$budgetBrackets = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+		$requiredInvestmentBrackets = $this->settings['projectDatabase']['filters']['requiredInvestment']['brackets'];
 		$stages = $this->settings['projectDatabase']['filters']['stage'];
 
 		$this->view->assignMultiple(array(
 			'categories' => $categories,
 			'budgetBrackets' => $budgetBrackets,
+			'requiredInvestmentBrackets' => $requiredInvestmentBrackets,
 			'stages' => $stages,
 		));
 	}
@@ -70,11 +72,23 @@ class DatabaseController extends AbstractBaseController {
 			if (isset($demand['filter']['budgetBrackets']) && is_array($demand['filter']['budgetBrackets'])) {
 				$bracketsRequested = $demand['filter']['budgetBrackets'];
 				unset($demand['filter']['budgetBrackets']);
-				$budgetBracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+				$bracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
 				foreach ($bracketsRequested as $bracket) {
 					$demand['filter']['budgetBrackets'][$bracket]['key'] = $bracket;
-					$demand['filter']['budgetBrackets'][$bracket]['minimum'] = $budgetBracketSettings[$bracket]['minimum'];
-					$demand['filter']['budgetBrackets'][$bracket]['maximum'] = $budgetBracketSettings[$bracket]['maximum'];
+					$demand['filter']['budgetBrackets'][$bracket]['minimum'] = $bracketSettings[$bracket]['minimum'];
+					$demand['filter']['budgetBrackets'][$bracket]['maximum'] = $bracketSettings[$bracket]['maximum'];
+				}
+			}
+
+			// return not only the required investment bracket keys, but also the minimum and maximum value
+			if (isset($demand['filter']['requiredInvestmentBrackets']) && is_array($demand['filter']['requiredInvestmentBrackets'])) {
+				$bracketsRequested = $demand['filter']['requiredInvestmentBrackets'];
+				unset($demand['filter']['requiredInvestmentBrackets']);
+				$bracketSettings = $this->settings['projectDatabase']['filters']['budget']['brackets'];
+				foreach ($bracketsRequested as $bracket) {
+					$demand['filter']['requiredInvestmentBrackets'][$bracket]['key'] = $bracket;
+					$demand['filter']['requiredInvestmentBrackets'][$bracket]['minimum'] = $bracketSettings[$bracket]['minimum'];
+					$demand['filter']['requiredInvestmentBrackets'][$bracket]['maximum'] = $bracketSettings[$bracket]['maximum'];
 				}
 			}
 

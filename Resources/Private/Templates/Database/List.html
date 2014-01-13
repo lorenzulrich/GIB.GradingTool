@@ -33,9 +33,19 @@
 			<f:if condition="{demand.filter.budgetBrackets}">
 				<div class="col-md-3">
 					<p class="navbar-text">
-						<strong>Budget:</strong><br />
+						<strong>Total Investment:</strong><br />
 						<f:for each="{demand.filter.budgetBrackets}" as="bracket">
 							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{bracket.key}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> USD {bracket.minimum}-{bracket.maximum} Mio.<br />
+						</f:for>
+					</p>
+				</div>
+			</f:if>
+			<f:if condition="{demand.filter.requiredInvestmentBrackets}">
+				<div class="col-md-3">
+					<p class="navbar-text">
+						<strong>Required Investment:</strong><br />
+						<f:for each="{demand.filter.requiredInvestmentBrackets}" as="requiredInvestmentBracket">
+							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{requiredInvestmentBracket.key}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> USD {requiredInvestmentBracket.minimum}-{requiredInvestmentBracket.maximum} Mio.<br />
 						</f:for>
 					</p>
 				</div>
@@ -116,27 +126,27 @@
 									Project duration:
 								</th>
 								<td>
-									<f:format.date>{project.dataSheetContentArray.implementationTimeframe}</f:format.date>
+									{project.dataSheetContentArray.implementationTimeframe}
 								</td>
 							</tr>
 						</f:if>
 						<f:if condition="{project.dataSheetContentArray.cost}">
 							<tr>
 								<th>
-									Total investment:
+									Total Investment:
 								</th>
 								<td>
 									US $ {project.dataSheetContentArray.cost} Mio.
 								</td>
 							</tr>
 						</f:if>
-						<f:if condition="{project.dataSheetContentArray.fundingAmountRequested}">
+						<f:if condition="{project.dataSheetContentArray.requiredInvestment}">
 							<tr>
 								<th>
-									Required investment:
+									Required Investment:
 								</th>
 								<td>
-									US $ {project.dataSheetContentArray.fundingAmountRequested} Mio.
+									US $ {project.dataSheetContentArray.requiredInvestment} Mio.
 								</td>
 							</tr>
 						</f:if>

@@ -119,6 +119,25 @@ class ProjectRepository extends Repository {
 			);
 		}
 
+		// Filter by required investment brackets
+		if (isset($demand['filter']['requiredInvestmentBrackets']) && !empty($demand['filter']['requiredInvestmentBrackets'])) {
+			$requiredInvestmentBrackets = array();
+			$requiredInvestmentBracketSettings = $this->settings['projectDatabase']['filters']['requiredInvestment']['brackets'];
+			foreach($demand['filter']['requiredInvestmentBrackets'] as $requiredInvestmentBracket) {
+				\TYPO3\Flow\var_dump($requiredInvestmentBracket, 'reqInBracket');
+				$minValue = (float)$requiredInvestmentBracketSettings[(int)$requiredInvestmentBracket]['minimum'];
+				$maxValue = (float)$requiredInvestmentBracketSettings[(int)$requiredInvestmentBracket]['maximum'];
+				$requiredInvestmentBrackets[] = $query->logicalAnd(
+					$query->greaterThanOrEqual('requiredInvestment', $minValue),
+					$query->lessThanOrEqual('requiredInvestment', $maxValue)
+				);
+				//\TYPO3\Flow\var_dump($requiredInvestmentBracketSettings, 'reqInBracketSettings');
+			}
+			$constraints[] = $query->logicalOr(
+				$requiredInvestmentBrackets
+			);
+		}
+
 		// build query from constraints
 		if (!empty($constraints)) {
 			$query->matching(
