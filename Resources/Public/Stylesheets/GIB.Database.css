@@ -95,3 +95,7 @@
 #paginationStatus {
     margin-bottom: 5px;
 }
+
+#projectUriField {
+    width: 600px;
+}

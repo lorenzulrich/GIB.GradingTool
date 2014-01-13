@@ -331,4 +331,16 @@
 	<div class="modal fade" id="projectDetails" tabindex="-1" role="dialog" aria-labelledby="Project details" aria-hidden="true">
 	</div>
 
+	<f:if condition="{openProject}">
+		<script>
+			$(function() {
+				var showProjectUri = '{openProject}';
+				$('#projectDetails').modal({
+					show: true,
+					remote: showProjectUri
+				});
+			});
+		</script>
+	</f:if>
+
 </f:section>

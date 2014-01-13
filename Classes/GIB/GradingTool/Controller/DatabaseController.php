@@ -24,9 +24,12 @@ class DatabaseController extends AbstractBaseController {
 	protected $cldrService;
 
 	/**
+	 * Initialize the Project Finder
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $openProject
 	 * @return void
 	 */
-	public function indexAction() {
+	public function indexAction($openProject = NULL) {
 		$dataSheetFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
 		$categories = $dataSheetFormDefinition['renderables'][0]['renderables'][3]['properties']['options'];
 
@@ -40,6 +43,23 @@ class DatabaseController extends AbstractBaseController {
 			'requiredInvestmentBrackets' => $requiredInvestmentBrackets,
 			'stages' => $stages,
 		));
+
+		if ($openProject !== NULL) {
+			// the project finder was requested with the uuid of a project --> display project details in modal box
+			$showProjectUri = $this->uriBuilder->setCreateAbsoluteUri(TRUE)->uriFor('show', array('project' => $openProject));
+			$this->view->assign('openProject', $showProjectUri);
+		}
+
+	}
+
+	/**
+	 * Open a project in the Project Finder
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 * @return void
+	 */
+	public function openAction($project) {
+		$this->forward('index', 'Database', 'GIB.GradingTool', array('openProject' => $project));
 	}
 
 	/**
@@ -59,6 +79,8 @@ class DatabaseController extends AbstractBaseController {
 		if (is_array($demand)) {
 			$demand = Arrays::removeEmptyElementsRecursively($demand);
 			$projects = $this->projectRepository->findByDemand($demand);
+
+			//\TYPO3\Flow\var_dump($demand, 'demand');
 
 			// return not only the country code, but also the country name for filter display
 			if (isset($demand['filter']['country'])) {

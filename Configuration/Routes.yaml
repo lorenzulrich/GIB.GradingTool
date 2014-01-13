@@ -98,12 +98,24 @@
 
 -
   name: 'GIB.GradingTool Database'
-  uriPattern: 'database/{@action}'
+  uriPattern: 'database'
   defaults:
     '@package': 'GIB.GradingTool'
     '@controller': 'Database'
+    '@action': 'index'
   appendExceedingArguments: true
 
+-
+  name: 'GIB.GradingTool Open Project'
+  uriPattern: 'database/{project}/open'
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Database'
+    '@action': 'open'
+  routeParts:
+    project:
+      objectType: 'GIB\GradingTool\Domain\Model\Project'
+      uriPattern: '{projectTitle}'
 #-
 #  name: 'GIB Export PDF'
 #  uriPattern: 'gib.gradingtool/standard/export.{@format}'
