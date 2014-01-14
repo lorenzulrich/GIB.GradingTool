@@ -118,7 +118,6 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 
 		$formValueArray = $formRuntime->getFormState()->getFormValues();
 
-
 		if ($formRuntime->getRequest()->getParentRequest()->getControllerActionName() == 'editDataSheet') {
 			// we need to update the data sheet, we assume that the person is authenticated because a data sheet can only be edited by a authenticated user
 

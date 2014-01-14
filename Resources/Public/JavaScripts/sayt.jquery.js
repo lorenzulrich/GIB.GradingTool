@@ -83,7 +83,7 @@
          * Erase storage data for one form
          */
         if (settings['erase'] == true) {
-            $.jStorage.deleteKey('autosaveForm-' + theform.attr('id'));
+            $.jStorage.deleteKey('autosaveForm-' + theform.attr('data-uniqueformid'));
 
             return true;
         }
@@ -92,7 +92,7 @@
         /*
          * Get the stored form data
          */
-        var autoSavedData = $.jStorage.get('autosaveForm-' + theform.attr('id'));
+        var autoSavedData = $.jStorage.get('autosaveForm-' + theform.attr('data-uniqueformid'));
 
 
         /*
@@ -191,9 +191,9 @@
             jQuery.each(data, function(i, field) {
                 dataString = dataString + field.name + ':::--FIELDANDVARSPLITTER--:::' + field.value + ':::--FORMSPLITTERFORVARS--:::';
             });
-            $.jStorage.set('autosaveForm-' + theform.attr('id'), dataString);
+            $.jStorage.set('autosaveForm-' + theform.attr('data-uniqueformid'), dataString);
             if (settings['days'] !== false) {
-                $.jStorage.setTTL('autosaveForm-' + theform.attr('id'), settings['days'] * 24 * 60 * 60 * 1000);
+                $.jStorage.setTTL('autosaveForm-' + theform.attr('data-uniqueformid'), settings['days'] * 24 * 60 * 60 * 1000);
             }
         }
 
