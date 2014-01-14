@@ -32,11 +32,13 @@
 			}
 		});
 
+		/* make the form auto-save its values to a cookie */
+		$('#{form.identifier}{form.currentPage.index}').sayt();
 	});
 
 	function registerConditionalSection(fieldsetId, triggerFieldId, triggerValue) {
 
-		$(document).delegate('#dataSheetForm-' + triggerFieldId, 'change', function(e) {
+		$(document).delegate('.dataSheetForm-' + triggerFieldId, 'change', function(e) {
 			if ($(e.target).val() == triggerValue) {
 				$('fieldset#' + fieldsetId).slideToggle();
 			}
