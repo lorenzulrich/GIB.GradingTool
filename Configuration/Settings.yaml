@@ -70,6 +70,10 @@ GIB:
           4: Implementation
 
 TYPO3:
+  Flow:
+    session:
+      inactivityTimeout: 14400
+
   Form:
     presets:
       gibdefault:
