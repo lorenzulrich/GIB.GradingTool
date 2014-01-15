@@ -11,56 +11,5 @@
 
 		</div>
 	</div>
-	<f:comment>
-	<script src="{f:uri.resource(path: 'JavaScripts/jquery.autosave.min.js', package: 'GIB.GradingTool')}"></script>
-	<script>
-		var ajaxUri = '<f:format.raw>{ajaxUri}</f:format.raw>';
-
-		$(function() {
-
-			function submissionFormAutoSaved(status) {
-				if (status == 'success') {
-					var message = "Entry was saved successfully!";
-					var classes = 'flyover flyover-bottom alert alert-success';
-				} else {
-					var message = "Entry could not be saved.";
-					var classes = 'flyover flyover-bottom alert alert-danger';
-				}
-
-				$('<div>')
-						.attr('id', 'alertMessage')
-						.html('<p>' + message  + '</p>')
-						.addClass(classes)
-						.appendTo($('.container'));
-
-				if (!$('#alertMessage').is( '.in' )) {
-					$('#alertMessage').addClass('in');
-
-					setTimeout(function() {
-						$('#alertMessage').removeClass('in');
-					}, 1500);
-				}
-
-			}
-
-			$("form").autosave({
-				callbacks: {
-					save: function(options, formData) {
-						$.ajax({
-							url: ajaxUri,
-							data: { formData: formData },
-							type: 'post',
-							complete: function(jqXHR, status) {
-								submissionFormAutoSaved(status);
-							}
-
-						});
-						return false;
-					}
-				}
-			});
-
-		});
-	</script>
-	</f:comment>
+	<f:render partial="SaveAsYouTypeInit" />
 </f:section>

@@ -31,11 +31,6 @@
 				$(e.target).closest('.checkbox').prevAll('.parentStage').first().find('input').prop('checked', true);
 			}
 		});
-
-		/* make the form auto-save its values to a cookie and restore them on loading */
-		var $dataSheetForm = $('.dataSheetForm');
-		$dataSheetForm.sayt();
-
 	});
 
 	function registerConditionalSection(fieldsetId, triggerFieldId, triggerValue) {
