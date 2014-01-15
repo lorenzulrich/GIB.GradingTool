@@ -2,6 +2,16 @@
 <f:if condition="{demand.filter}">
 	<div id="filterDisplay" class="navbar navbar-default">
 		<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
+			<f:if condition="{demand.filter.regions}">
+				<div class="col-md-3">
+					<p class="navbar-text">
+						<strong>Regions:</strong><br />
+						<f:for each="{demand.filter.regions}" as="region">
+							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{region.key}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> {region.name}<br />
+						</f:for>
+					</p>
+				</div>
+			</f:if>
 			<f:if condition="{demand.filter.country.isoCode}">
 				<div class="col-md-3">
 					<p class="navbar-text">

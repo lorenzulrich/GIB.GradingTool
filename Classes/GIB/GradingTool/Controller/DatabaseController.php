@@ -36,12 +36,14 @@ class DatabaseController extends AbstractBaseController {
 		$budgetBrackets = $this->settings['projectDatabase']['filters']['budget']['brackets'];
 		$requiredInvestmentBrackets = $this->settings['projectDatabase']['filters']['requiredInvestment']['brackets'];
 		$stages = $this->settings['projectDatabase']['filters']['stage'];
+		$regions = $this->settings['projectDatabase']['filters']['region'];
 
 		$this->view->assignMultiple(array(
 			'categories' => $categories,
 			'budgetBrackets' => $budgetBrackets,
 			'requiredInvestmentBrackets' => $requiredInvestmentBrackets,
 			'stages' => $stages,
+			'regions' => $regions,
 		));
 
 		if ($openProject !== NULL) {
@@ -86,8 +88,18 @@ class DatabaseController extends AbstractBaseController {
 			if (isset($demand['filter']['country'])) {
 				$isoCode = $demand['filter']['country'];
 				unset($demand['filter']['country']);
-				$demand['filter']['country']['name'] = $this->cldrService->getCountryNameForIsoCode($isoCode);
+				$demand['filter']['country']['name'] = $this->cldrService->getTerritoryNameForIsoCode($isoCode);
 				$demand['filter']['country']['isoCode'] = $isoCode;
+			}
+
+			// return not only the regions requested
+			if (isset($demand['filter']['regions']) && is_array($demand['filter']['regions'])) {
+				$regionsRequested = $demand['filter']['regions'];
+				unset($demand['filter']['regions']);
+				foreach ($regionsRequested as $region) {
+					$demand['filter']['regions'][$region]['key'] = $region;
+					$demand['filter']['regions'][$region]['name'] = $this->cldrService->getTerritoryNameForIsoCode($region);
+				}
 			}
 
 			// return not only the budget bracket keys, but also the minimum and maximum value

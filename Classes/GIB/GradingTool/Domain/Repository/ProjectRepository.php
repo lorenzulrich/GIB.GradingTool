@@ -82,6 +82,17 @@ class ProjectRepository extends Repository {
 			$constraints[] = $query->like('countryCode', $demand['filter']['country'], FALSE);
 		}
 
+		// Filter by regions
+		if (isset($demand['filter']['regions']) && !empty($demand['filter']['regions'])) {
+			$regions = array();
+			foreach($demand['filter']['regions'] as $region) {
+				$regions[] = $query->like('regionCode', $region);
+			}
+			$constraints[] = $query->logicalOr(
+				$regions
+			);
+		}
+
 		// Filter by categories
 		if (isset($demand['filter']['categories']) && !empty($demand['filter']['categories'])) {
 			$categories = array();
@@ -124,14 +135,12 @@ class ProjectRepository extends Repository {
 			$requiredInvestmentBrackets = array();
 			$requiredInvestmentBracketSettings = $this->settings['projectDatabase']['filters']['requiredInvestment']['brackets'];
 			foreach($demand['filter']['requiredInvestmentBrackets'] as $requiredInvestmentBracket) {
-				\TYPO3\Flow\var_dump($requiredInvestmentBracket, 'reqInBracket');
 				$minValue = (float)$requiredInvestmentBracketSettings[(int)$requiredInvestmentBracket]['minimum'];
 				$maxValue = (float)$requiredInvestmentBracketSettings[(int)$requiredInvestmentBracket]['maximum'];
 				$requiredInvestmentBrackets[] = $query->logicalAnd(
 					$query->greaterThanOrEqual('requiredInvestment', $minValue),
 					$query->lessThanOrEqual('requiredInvestment', $maxValue)
 				);
-				//\TYPO3\Flow\var_dump($requiredInvestmentBracketSettings, 'reqInBracketSettings');
 			}
 			$constraints[] = $query->logicalOr(
 				$requiredInvestmentBrackets

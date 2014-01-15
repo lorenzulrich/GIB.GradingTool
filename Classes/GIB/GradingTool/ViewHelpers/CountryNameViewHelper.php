@@ -44,7 +44,7 @@ class CountryNameViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 			$countryCode = $this->renderChildren();
 		}
 
-		return $this->cldrService->getCountryNameForIsoCode($countryCode);
+		return $this->cldrService->getTerritoryNameForIsoCode($countryCode);
 	}
 	
 }

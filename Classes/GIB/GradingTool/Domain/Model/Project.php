@@ -98,6 +98,18 @@ class Project {
 
 	/**
 	 * @var string
+	 * @ORM\Column(nullable=true)
+	 */
+	protected $regionCode;
+
+	/**
+	 * @var string
+	 * @Flow\Transient
+	 */
+	protected $region;
+
+	/**
+	 * @var string
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $categories;
@@ -113,12 +125,6 @@ class Project {
 	 * @ORM\Column(type="decimal", precision=6, scale=2, nullable=true)
 	 */
 	protected $requiredInvestment;
-
-	/**
-	 * @var string
-	 * @ORM\Column(nullable=true)
-	 */
-	protected $region;
 
 	/**
 	 * @var string
@@ -180,7 +186,6 @@ class Project {
 		if (isset($dataSheetContent['language'])) {
 			$this->setLanguage($dataSheetContent['language']);
 		}
-		// todo setRegion
 		if (isset($dataSheetContent['stage']) && is_array($dataSheetContent['stage'])) {
 			$this->setStage(implode($dataSheetContent['stage']));
 		}
@@ -188,7 +193,6 @@ class Project {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}
 		if (isset($dataSheetContent['cost'])) {
-			\TYPO3\Flow\var_dump($dataSheetContent['cost'], 'cost');
 			$this->setCost($dataSheetContent['cost']);
 		}
 		if (isset($dataSheetContent['requiredInvestment'])) {
@@ -196,6 +200,7 @@ class Project {
 		}
 		if (isset($dataSheetContent['country'])) {
 			$this->setCountryCode($dataSheetContent['country']);
+			$this->setRegionCode($this->cldrService->getRegionIsoCodeForCountryIsoCode($dataSheetContent['country']));
 		}
 		$this->dataSheetContent = serialize($dataSheetContent);
 	}
@@ -300,12 +305,26 @@ class Project {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getRegionCode() {
+		return $this->regionCode;
+	}
+
+	/**
+	 * @param string $regionCode
+	 */
+	public function setRegionCode($regionCode) {
+		$this->regionCode = $regionCode;
+	}
+
+	/**
 	 * The textual representation of a country
 	 *
 	 * @return string
 	 */
 	public function getCountry() {
-		return $this->cldrService->getCountryNameForIsoCode($this->getCountryCode());
+		return $this->cldrService->getTerritoryNameForIsoCode($this->getCountryCode());
 	}
 
 	/**

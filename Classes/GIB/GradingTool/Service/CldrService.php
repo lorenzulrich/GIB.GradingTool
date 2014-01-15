@@ -22,7 +22,19 @@ class CldrService {
 	 */
 	protected $cldrRepository;
 
-	public function getCountryNameForIsoCode($countryCode) {
+	/**
+	 * @var array
+	 * @Flow\Inject(setting="cldrService", package="GIB.GradingTool")
+	 */
+	protected $serviceSettings;
+
+	/**
+	 * Returns the localized name of a country or - if no localization was found - the country code
+	 *
+	 * @param $countryCode
+	 * @return string
+	 */
+	public function getTerritoryNameForIsoCode($countryCode) {
 
 		// get the localized country names from the CLDR data
 		$i18nConfiguration = $this->i18nService->getConfiguration();
@@ -36,6 +48,20 @@ class CldrService {
 			return $countryCode;
 		}
 
+	}
+
+	/**
+	 * @param $countryCode
+	 * @return string
+	 */
+	public function getRegionIsoCodeForCountryIsoCode($countryCode) {
+		$countryCodeToRegionCodeArray = $this->serviceSettings['countryToRegions'];
+		if (isset($countryCodeToRegionCodeArray[$countryCode])) {
+			return $countryCodeToRegionCodeArray[$countryCode];
+		} else {
+			// country code of region "World"
+			return '001';
+		}
 	}
 
 }

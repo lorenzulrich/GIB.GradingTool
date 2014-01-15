@@ -24,6 +24,19 @@
 					<f:form id="filter-form" action="list" controller="Database">
 						<ul class="nav navbar-nav">
 							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Region <b class="caret"></b></a>
+								<ul id="navbar-regions" class="dropdown-menu dropdown-menu-form">
+									<f:for each="{regions}" as="region" iteration="regionsIterator">
+										<li>
+											<f:form.checkbox id="region{regionsIterator.cycle}" value="{region._key}" name="demand[filter][regions][]" /> <label for="region{regionsIterator.cycle}">{region._value}</label>
+										</li>
+									</f:for>
+									<li>
+										<f:form.button disabled="disabled" class="applyButton btn btn-primary">Apply</f:form.button>
+									</li>
+								</ul>
+							</li>
+							<li>
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sector <b class="caret"></b></a>
 								<ul id="navbar-categories" class="dropdown-menu dropdown-menu-form">
 									<f:for each="{categories}" as="category" iteration="categoriesIterator">
