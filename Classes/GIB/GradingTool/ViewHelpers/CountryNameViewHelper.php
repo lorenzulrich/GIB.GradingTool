@@ -26,10 +26,10 @@ use TYPO3\Flow\Annotations as Flow;
 class CountryNameViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var array
-	 * @Flow\Inject(setting="presets.gibdefault.formElementTypes", package="TYPO3.Form")
+	 * @var \GIB\GradingTool\Service\CldrService
+	 * @Flow\Inject
 	 */
-	protected $formElementTypes;
+	protected $cldrService;
 
 	/**
 	 * returns the country name for an ISO code
@@ -44,13 +44,7 @@ class CountryNameViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 			$countryCode = $this->renderChildren();
 		}
 
-		$countryArray = $this->formElementTypes['GIB.GradingTool:CountrySelector']['properties']['options'];
-
-		if (isset($countryArray[$countryCode])) {
-			return $countryArray[$countryCode];
-		}
-
-		return $countryCode;
+		return $this->cldrService->getCountryNameForIsoCode($countryCode);
 	}
 	
 }
