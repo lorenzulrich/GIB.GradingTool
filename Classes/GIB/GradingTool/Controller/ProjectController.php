@@ -321,6 +321,31 @@ class ProjectController extends AbstractBaseController {
 	}
 
 	/**
+	 * Iterates through all the projects and updates them with the current state of the data sheet
+	 * This is a helper method needed if the the separately persisted properties changed in the model
+	 */
+	public function updateAllProjectsAction() {
+		$projects = $this->projectRepository->findAll();
+		$i = 0;
+		foreach ($projects as $project) {
+			$i++;
+			$project->setDataSheetContent($project->getDataSheetContentArray());
+			$this->projectRepository->update($project);
+			if ($i % 20 == 0) {
+				// persist after each 20th project
+				$this->persistenceManager->persistAll();
+			}
+		}
+		// persist after the last bunch of projects
+		$this->persistenceManager->persistAll();
+
+		// add a flash message
+		$message = new \TYPO3\Flow\Error\Message('All projects updated.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+		$this->flashMessageContainer->addMessage($message);
+		$this->redirect('settings', 'Admin');
+	}
+
+	/**
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 */
 	public function exportReportAction(\GIB\GradingTool\Domain\Model\Project $project) {
