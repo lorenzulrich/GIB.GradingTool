@@ -1,0 +1,102 @@
+<script>
+	/* Radar chart */
+	var projectPerformance = new Array();
+	<f:for each="{submission.sections}" as="section" iteration="iterator">
+		sectionPerformance = new Object();
+		sectionPerformance.axis = "{section.label}";
+		<f:if condition="{section.weightedScore}">
+			<f:then>
+				sectionPerformance.value = Math.round({section.weightedScore} * 100) / 100;
+			</f:then>
+			<f:else>
+			sectionPerformance.value = 0;
+			</f:else>
+		</f:if>
+		projectPerformance[{iterator.index}] = sectionPerformance;
+	</f:for>
+
+	var modestPerformanceReference = new Array();
+	var goodPerformanceReference = new Array();
+	<f:for each="{scoreData}" as="section" iteration="iterator2">
+		goodPerformance = new Object();
+		goodPerformance.axis = "{section.categoryName}";
+		goodPerformance.value = Math.round({section.goodScore} * 100) / 100;
+		goodPerformanceReference[{iterator2.index}] = goodPerformance;
+		modestPerformance = new Object();
+		modestPerformance.axis = "";
+		modestPerformance.value = Math.round({section.modestScore} * 100) / 100;
+		modestPerformanceReference[{iterator2.index}] = modestPerformance;
+	</f:for>
+
+
+	//Data
+	var data = [
+		goodPerformanceReference,
+		modestPerformanceReference,
+		projectPerformance
+	];
+
+	var mycfg = {
+		color: d3.scale.category20(),
+		w: 500,
+		h: 500,
+		minValue: 1,
+		maxValue: 3,
+		opacityArea: 0.3,
+		factor: 1,
+		levels: 4,
+		ExtraWidthX: 300
+	}
+
+
+
+	RadarChart.draw("#scoreChart", data, mycfg);
+
+	var LegendOptions = ['Good Performance','Modest Performance', 'Project Performance'];
+
+	var svg = d3.select('#scoreChart')
+			.selectAll('svg')
+			.append('svg')
+			.attr("width", mycfg.w+300)
+			.attr("height", mycfg.h);
+
+	//Initiate Legend
+	var legend = svg.append("g")
+					.attr("class", "legend")
+					.attr("height", 100)
+					.attr("width", 200)
+					.attr('transform', 'translate(90,20)')
+			;
+	//Create colour squares
+	legend.selectAll('rect')
+			.data(LegendOptions)
+			.enter()
+			.append("rect")
+			.attr("x", mycfg.w - 65)
+			.attr("y", function(d, i){ return i * 20;})
+			.attr("width", 10)
+			.attr("height", 10)
+			.style("fill", function(d, i){ return mycfg.color(i);})
+	;
+	//Create text next to squares
+	legend.selectAll('text')
+			.data(LegendOptions)
+			.enter()
+			.append("text")
+			.attr("x", mycfg.w - 52)
+			.attr("y", function(d, i){ return i * 20 + 9;})
+			.attr("font-size", "11px")
+			.attr("fill", "#737373")
+			.text(function(d) { return d; })
+	;
+
+	// Scroll to section
+	$(function() {
+		$('li[data-section]').on('click', function(e) {
+			e.preventDefault();
+			var requestedSection = $(e.target).attr('data-section');
+			$('html,body').animate({scrollTop: $("#" + requestedSection).offset().top}, 'slow');
+		});
+	})
+
+</script>

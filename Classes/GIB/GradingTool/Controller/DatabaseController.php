@@ -30,8 +30,23 @@ class DatabaseController extends AbstractBaseController {
 	 * @return void
 	 */
 	public function indexAction($openProject = NULL) {
-		$dataSheetFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
-		$categories = $dataSheetFormDefinition['renderables'][0]['renderables'][3]['properties']['options'];
+		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
+		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
+
+		$dataSheetForm = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
+		/** @var \TYPO3\Form\Core\Model\FormDefinition $test */
+		$dataSheetFormDefinition = $factory->build($dataSheetForm);
+		$categories = $dataSheetFormDefinition->getElementByIdentifier('categories')->getProperties()['options'];
+
+		$projectDataForm = $this->formPersistenceManager->load($this->settings['forms']['projectData']);
+		/** @var \TYPO3\Form\Core\Model\FormDefinition $test */
+		$projectDataFormDefinition = $factory->build($projectDataForm);
+
+		$gibEvents = $projectDataFormDefinition->getElementByIdentifier('gib')->getProperties()['options'];
+		// remove the first (empty) element
+		array_shift($gibEvents);
+
+		$allStatus = $projectDataFormDefinition->getElementByIdentifier('status')->getProperties()['options'];
 
 		$budgetBrackets = $this->settings['projectDatabase']['filters']['budget']['brackets'];
 		$requiredInvestmentBrackets = $this->settings['projectDatabase']['filters']['requiredInvestment']['brackets'];
@@ -44,6 +59,8 @@ class DatabaseController extends AbstractBaseController {
 			'requiredInvestmentBrackets' => $requiredInvestmentBrackets,
 			'stages' => $stages,
 			'regions' => $regions,
+			'gibEvents' => $gibEvents,
+			'allStatus' => $allStatus,
 		));
 
 		if ($openProject !== NULL) {
@@ -128,7 +145,7 @@ class DatabaseController extends AbstractBaseController {
 
 
 		} else {
-			$projects = $this->projectRepository->findAll();
+			$projects = $this->projectRepository->findVisible();
 		}
 
 		$this->view->assignMultiple(array(

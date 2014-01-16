@@ -49,6 +49,22 @@ class Project {
 	protected $dataSheetContentArray;
 
 	/**
+	 * Serialized representation of Project Data Content
+	 *
+	 * @var string
+	 * @ORM\Column(type="text")
+	 */
+	protected $projectData;
+
+	/**
+	 * Project Data Content
+	 *
+	 * @var array
+	 * @Flow\Transient
+	 */
+	protected $projectDataArray;
+
+	/**
 	 * @var string
 	 */
 	protected $projectTitle;
@@ -133,6 +149,23 @@ class Project {
 	protected $stage;
 
 	/**
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	protected $status;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	protected $gibYear;
+
+	/**
+	 * @var boolean
+	 */
+	protected $isVisibleInProjectFinder = FALSE;
+
+	/**
 	 * Sets the project manager of a project
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager The projectManager
@@ -203,6 +236,47 @@ class Project {
 			$this->setRegionCode($this->cldrService->getRegionIsoCodeForCountryIsoCode($dataSheetContent['country']));
 		}
 		$this->dataSheetContent = serialize($dataSheetContent);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getProjectData() {
+		return $this->projectData;
+	}
+
+	/**
+	 * Return the unserialized data sheet content
+	 *
+	 * @return array|mixed
+	 */
+	public function getProjectDataArray() {
+		$projectData = $this->getProjectData();
+		if ($this->projectDataArray === NULL && !empty($projectData)) {
+			$this->projectDataArray = unserialize($this->getProjectData());
+		}
+		return $this->projectDataArray;
+	}
+
+	/**
+	 * Set projectData but also the flattened part of it
+	 *
+	 * @param array $projectData
+	 * @return void
+	 */
+	public function setProjectData($projectData) {
+		if (!empty($projectData['listProject'])) {
+			$this->setIsVisibleInProjectFinder(TRUE);
+		} else {
+			$this->setIsVisibleInProjectFinder(FALSE);
+		}
+		if (isset($projectData['status'])) {
+			$this->setStatus($projectData['status']);
+		}
+		if (isset($projectData['gib'])) {
+			$this->setGibYear($projectData['gib']);
+		}
+		$this->projectData = serialize($projectData);
 	}
 
 	/**
@@ -395,6 +469,48 @@ class Project {
 	 */
 	public function getStage() {
 		return $this->stage;
+	}
+
+	/**
+	 * @param string $gibYear
+	 */
+	public function setGibYear($gibYear) {
+		$this->gibYear = $gibYear;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGibYear() {
+		return $this->gibYear;
+	}
+
+	/**
+	 * @param boolean $isVisibleInProjectFinder
+	 */
+	public function setIsVisibleInProjectFinder($isVisibleInProjectFinder) {
+		$this->isVisibleInProjectFinder = $isVisibleInProjectFinder;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getIsVisibleInProjectFinder() {
+		return $this->isVisibleInProjectFinder;
+	}
+
+	/**
+	 * @param string $status
+	 */
+	public function setStatus($status) {
+		$this->status = $status;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStatus() {
+		return $this->status;
 	}
 
 }

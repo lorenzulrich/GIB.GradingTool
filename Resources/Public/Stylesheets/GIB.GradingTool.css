@@ -107,6 +107,7 @@ textarea.form-control { max-width: 100% !important; min-height: 130px; }
 .mutedFieldLabels label { font-weight: normal; color: #999; }
 
 #dataSheetForm-description { min-height: 500px; }
+#projectDataForm-overview { min-height: 300px; }
 
 /* hide conditional fields on initialization */
 fieldset.conditionalSection { display: none; }

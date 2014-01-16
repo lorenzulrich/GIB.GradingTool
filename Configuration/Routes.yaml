@@ -24,6 +24,14 @@
     '@action':     'editDataSheet'
 
 -
+  name: 'GIB.GradingTool :: Project :: Edit Project Data'
+  uriPattern: 'project/{project}/editprojectdata'
+  defaults:
+    '@package':    'GIB.GradingTool'
+    '@controller': 'Project'
+    '@action':     'editProjectData'
+
+-
   name: 'GIB.GradingTool :: Project :: Review Data Sheet'
   uriPattern: 'project/{project}/reviewdatasheet'
   defaults:

@@ -33,6 +33,17 @@ class ProjectRepository extends Repository {
 	}
 
 	/**
+	 * Find all visible projects
+	 *
+	 * @return \TYPO3\Flow\Persistence\QueryResultInterface
+	 */
+	public function findVisible() {
+		$query = $this->createQuery();
+		$query->matching($query->equals('isVisibleInProjectFinder', TRUE));
+		return $query->execute();
+	}
+
+	/**
 	 * Find all countries and return an array with their ISO code and the number of projects
 	 *
 	 * @param array $demand
@@ -45,7 +56,7 @@ class ProjectRepository extends Repository {
 			$projects = $this->findByDemand($demand);
 		} else {
 			/** @var \TYPO3\Flow\Persistence\QueryResultInterface $projects */
-			$projects = $this->createQuery()->execute();
+			$projects = $this->findVisible();
 		}
 
 		$countries = array();
@@ -76,6 +87,9 @@ class ProjectRepository extends Repository {
 
 		$query = $this->createQuery();
 		$constraints = array();
+
+		// Only consider visible projects
+		$constraints[] = $query->equals('isVisibleInProjectFinder', TRUE);
 
 		// Filter by country
 		if (isset($demand['filter']['country']) && !empty($demand['filter']['country'])) {
@@ -146,6 +160,30 @@ class ProjectRepository extends Repository {
 				$requiredInvestmentBrackets
 			);
 		}
+
+		// Filter by status
+		if (isset($demand['filter']['allStatus']) && !empty($demand['filter']['allStatus'])) {
+			$allStatus = array();
+			foreach($demand['filter']['allStatus'] as $status) {
+				$allStatus[] = $query->like('status', $status);
+			}
+			$constraints[] = $query->logicalOr(
+				$allStatus
+			);
+		}
+
+		// Filter by GIB
+		if (isset($demand['filter']['gibEvents']) && !empty($demand['filter']['gibEvents'])) {
+			$gibEvents = array();
+			foreach($demand['filter']['gibEvents'] as $gib) {
+				$gibEvents[] = $query->like('gibYear', $gib);
+			}
+			$constraints[] = $query->logicalOr(
+				$gibEvents
+			);
+		}
+
+		//\TYPO3\Flow\var_dump($constraints);
 
 		// build query from constraints
 		if (!empty($constraints)) {

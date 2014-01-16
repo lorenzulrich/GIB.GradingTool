@@ -130,6 +130,35 @@ class ProjectController extends AbstractBaseController {
 	}
 
 	/**
+	 * Edit the (administrator-only) project data
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function editProjectDataAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['projectData']);
+		$overrideConfiguration = $this->formPersistenceManager->load($formName);
+		$formDefinition = $factory->build($overrideConfiguration);
+
+		if (is_array($project->getProjectDataArray())) {
+			// we already have form data, so we apply it
+			foreach ($project->getProjectDataArray() as $projectDataField => $projectDataContent) {
+				$formDefinition->addElementDefaultValue($projectDataField, $projectDataContent);
+			}
+		}
+		$response = new \TYPO3\Flow\Http\Response($this->controllerContext->getResponse());
+		$form = $formDefinition->bind($this->controllerContext->getRequest(), $response);
+		$renderedForm = $form->render();
+
+		$this->view->assignMultiple(array(
+			'renderedForm' => $renderedForm,
+			'project' => $project,
+		));
+
+	}
+
+	/**
 	 * Edit/create a submission
 	 *
 	 * The create action is missing because the project is added in the
@@ -329,7 +358,9 @@ class ProjectController extends AbstractBaseController {
 		$i = 0;
 		foreach ($projects as $project) {
 			$i++;
+			/** @var \GIB\GradingTool\Domain\Model\Project $project */
 			$project->setDataSheetContent($project->getDataSheetContentArray());
+			$project->setProjectData($project->getProjectDataArray());
 			$this->projectRepository->update($project);
 			if ($i % 20 == 0) {
 				// persist after each 20th project

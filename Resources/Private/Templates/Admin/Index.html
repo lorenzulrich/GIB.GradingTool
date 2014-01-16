@@ -14,8 +14,11 @@
 				<th>Project Title</th>
 				<th>Language</th>
 				<th>Project Manager</th>
-				<th>Created</th>
-				<th>Last Updated</th>
+				<th>
+					Last Updated<br />
+					Created
+				</th>
+				<th>Visibility</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -25,8 +28,15 @@
 				<td>{project.projectTitle}</td>
 				<td>{project.language}</td>
 				<td><f:link.email title="Click to send e-mail" email="{project.projectManager.primaryElectronicAddress}">{project.projectManager.name}</f:link.email></td>
-				<td><f:format.date format="d.m.Y H:i">{project.created}</f:format.date></td>
-				<td><f:format.date format="d.m.Y H:i">{project.lastUpdated}</f:format.date></td>
+				<td>
+					<f:format.date format="d.m.Y H:i">{project.lastUpdated}</f:format.date><br />
+					<f:format.date format="d.m.Y H:i">{project.created}</f:format.date>
+				</td>
+				<td>
+					<f:if condition="{project.isVisibleInProjectFinder} == 1">
+						<i title="Project is visible in Project Finder" class="text-success fa fa-check-square"></i>
+					</f:if>
+				</td>
 				<td>
 					<div class="btn-group">
 						<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -58,9 +68,10 @@
 					</div>
 					<div class="btn-group">
 						<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-							Export <span class="caret"></span>
+							Publish <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" role="menu">
+							<li><f:link.action action="editProjectData" controller="Project" arguments="{project:project}"><i class="fa fa-edit"></i> Edit Project Data & Publish</f:link.action></li>
 							<li><f:link.action target="_blank" action="exportReport" controller="Project" arguments="{project:project}"><i class="fa fa-download"></i> Export PDF</f:link.action></li>
 						</ul>
 					</div>

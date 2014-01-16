@@ -99,3 +99,7 @@
 #projectUriField {
     width: 600px;
 }
+
+li.filter-internal {
+    background-color: rgba(255, 0, 0, 0.07);
+}

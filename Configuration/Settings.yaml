@@ -8,6 +8,7 @@ GIB:
       dataSheet: 'dataSheetForm'
       submission: 'submissionForm'
       emailTemplate: 'emailTemplate'
+      projectData: 'projectDataForm'
 
     defaultLanguage: en
     languages:
@@ -647,6 +648,9 @@ TYPO3:
                     'GIB.GradingTool:DataSheetFinisher':
                       label: 'Save Project and Data Sheet'
                       templateName: 'Finisher-GIB.GradingTool-DataSheetFinisher'
+                    'GIB.GradingTool:ProjectDataFinisher':
+                      label: 'Save Project Data'
+                      templateName: 'Finisher-GIB.GradingTool-ProjectDataFinisher'
                     'GIB.GradingTool:TemplateDatabaseFinisher':
                       label: 'Save Template'
                       templateName: 'Finisher-GIB.GradingTool-TemplateDatabaseFinisher'
@@ -761,6 +765,8 @@ TYPO3:
         finisherPresets:
           'GIB.GradingTool:DataSheetFinisher':
             implementationClassName: 'GIB\GradingTool\Form\Finishers\DataSheetFinisher'
+          'GIB.GradingTool:ProjectDataFinisher':
+            implementationClassName: 'GIB\GradingTool\Form\Finishers\ProjectDataFinisher'
           'GIB.GradingTool:TemplateDatabaseFinisher':
             implementationClassName: 'GIB\GradingTool\Form\Finishers\TemplateDatabaseFinisher'
 
@@ -890,5 +896,6 @@ TYPO3:
     defaultPreset: 'gibdefault'
     handlebarsTemplates:
       Finisher-GIB.GradingTool-DataSheetFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/DataSheetEditor.html'
+      Finisher-GIB.GradingTool-ProjectDataFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/ProjectDataEditor.html'
       Finisher-GIB.GradingTool-SubmissionFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/SubmissionEditor.html'
       Finisher-GIB.GradingTool-TemplateDatabaseFinisher: 'resource://GIB.GradingTool/Private/FormBuilderTemplates/Finisher/TemplateDatabaseEditor.html'
