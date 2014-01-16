@@ -79,7 +79,7 @@ class SubmissionService {
 							}
 						}
 					} elseif ($field['type'] === 'GIB.GradingTool:NotApplicableMultiLineText') {
-						if (isset($formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['comment'])) {
+						if (isset($submissionContentArray[$field['identifier']]) && !empty($submissionContentArray[$field['identifier']])) {
 							// comment for opt-out questions
 							$formSections[$section['identifier']]['questions'][$field['properties']['questionIdentifier']]['comment'] = $submissionContentArray[$field['identifier']];
 						}
