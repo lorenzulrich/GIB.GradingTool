@@ -1,3 +1,4 @@
+{namespace m=TYPO3\Media\ViewHelpers}
 <div class="modal-dialog">
 	<div class="modal-content">
 		<div class="modal-header">
@@ -5,50 +6,65 @@
 			<h4 class="modal-title" id="myModalLabel">
 				{project.projectTitle}
 			</h4>
+			<f:if condition="{project.dataSheetContentArray.projectSubtitle}">
+				<br><h5>{project.dataSheetContentArray.projectSubtitle}</h5>
+			</f:if>
 		</div>
 		<div class="modal-body">
-			<f:if condition="{project.dataSheetContentArray.projectSubtitle}">
-				<h5>{project.dataSheetContentArray.projectSubtitle}</h5>
-			</f:if>
-			<p>
-				<f:format.nl2br>{project.projectDataArray.overview}</f:format.nl2br>
-			</p>
-			<p>
-				<f:if condition="{project.projectDataArray.hideSpider}">
-					<f:else>
-						<f:if condition="{submission.errorCount} == 0">
-							<div id="scoreChart"></div>
+			<div class="row">
+				<div class="col-md-7">
+					<p>
+						<f:format.nl2br>{project.projectDataArray.overview}</f:format.nl2br>
+					</p>
+					<p>
+						<f:if condition="{project.projectDataArray.hideSpider}">
+							<f:else>
+								<h4>Project Performance</h4>
+								<m:image class="img-responsive" image="{radarChartImage}" maximumWidth="1000" alt="Radar Chart" />
+							</f:else>
 						</f:if>
-					</f:else>
-				</f:if>
-			</p>
-			<p>
-				Link to this project:
-				<input id="projectUriField" onclick="this.select()" type="text" value="{f:uri.action(action: 'open', absolute: "TRUE", arguments: {project:project})}" />
-				<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-						width="110"
-						height="14"
-						id="clippy" >
-					<param name="movie" value="{f:uri.resource(path: 'Flash/clippy.swf')}"/>
-					<param name="allowScriptAccess" value="always" />
-					<param name="quality" value="high" />
-					<param name="scale" value="noscale" />
-					<param NAME="FlashVars" value="text={f:uri.action(action: 'open', absolute: 'TRUE', arguments: {project:project})}">
-					<param name="bgcolor" value="#{bgcolor}">
-					<embed src="{f:uri.resource(path: 'Flash/clippy.swf')}"
-						   width="110"
-						   height="14"
-						   name="clippy"
-						   quality="high"
-						   allowScriptAccess="always"
-						   type="application/x-shockwave-flash"
-						   pluginspage="http://www.macromedia.com/go/getflashplayer"
-						   FlashVars="text={f:uri.action(action: 'open', absolute: 'TRUE', arguments: {project:project})}"
-						   bgcolor="#ffffff"
-					></embed>
-				</object>
-			</p>
+					</p>
+				</div>
+				<div class="col-md-5">
+					<f:if condition="{project.projectDataArray.picture}">
+						<p>
+							<img class="img-responsive" src="{f:uri.resource(resource: project.projectDataArray.picture)}" />
+						</p>
+						<h4>Project Details</h4>
+						<f:render partial="ProjectDetailsTable" arguments="{project:project}"/>
+					</f:if>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<p>
+						Link to this project:
+						<input id="projectUriField" onclick="this.select()" type="text" value="{f:uri.action(action: 'open', absolute: "TRUE", arguments: {project:project})}" />
+						<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+								width="110"
+								height="14"
+								id="clippy" >
+							<param name="movie" value="{f:uri.resource(path: 'Flash/clippy.swf')}"/>
+							<param name="allowScriptAccess" value="always" />
+							<param name="quality" value="high" />
+							<param name="scale" value="noscale" />
+							<param NAME="FlashVars" value="text={f:uri.action(action: 'open', absolute: 'TRUE', arguments: {project:project})}">
+							<param name="bgcolor" value="#{bgcolor}">
+							<embed src="{f:uri.resource(path: 'Flash/clippy.swf')}"
+								   width="110"
+								   height="14"
+								   name="clippy"
+								   quality="high"
+								   allowScriptAccess="always"
+								   type="application/x-shockwave-flash"
+								   pluginspage="http://www.macromedia.com/go/getflashplayer"
+								   FlashVars="text={f:uri.action(action: 'open', absolute: 'TRUE', arguments: {project:project})}"
+								   bgcolor="#ffffff"
+									></embed>
+						</object>
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-<f:render partial="SpiderChartJavaScript" arguments="{submission:submission, scoreData:scoreData}"/>

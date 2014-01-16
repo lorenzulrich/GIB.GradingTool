@@ -24,6 +24,12 @@ class DatabaseController extends AbstractBaseController {
 	protected $cldrService;
 
 	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Resource\ResourceManager
+	 */
+	protected $resourceManager;
+
+	/**
 	 * @var \GIB\GradingTool\Service\SubmissionService
 	 * @Flow\Inject
 	 */
@@ -164,12 +170,16 @@ class DatabaseController extends AbstractBaseController {
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 */
 	public function showAction($project) {
-		$submission = $this->submissionService->getProcessedSubmission($project);
+
+		$radarChartFileName = $this->submissionService->getRadarImage($project);
+
+		$radarChartResource = $this->resourceManager->importResource($radarChartFileName);
+		$radarChartResource->setFilename('radarChart.jpg');
+		$radarChartImage = new \TYPO3\Media\Domain\Model\Image($radarChartResource);
 
 		$this->view->assignMultiple(array(
-			'submission' => $submission,
 			'project' => $project,
-			'scoreData' => $this->submissionService->getScoreData(),
+			'radarChartImage' => $radarChartImage,
 		));
 	}
 
