@@ -24,6 +24,12 @@ class DatabaseController extends AbstractBaseController {
 	protected $cldrService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\SubmissionService
+	 * @Flow\Inject
+	 */
+	protected $submissionService;
+
+	/**
 	 * Initialize the Project Finder
 	 *
 	 * @param \GIB\GradingTool\Domain\Model\Project $openProject
@@ -158,7 +164,13 @@ class DatabaseController extends AbstractBaseController {
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 */
 	public function showAction($project) {
-		$this->view->assign('project', $project);
+		$submission = $this->submissionService->getProcessedSubmission($project);
+
+		$this->view->assignMultiple(array(
+			'submission' => $submission,
+			'project' => $project,
+			'scoreData' => $this->submissionService->getScoreData(),
+		));
 	}
 
 }

@@ -16,7 +16,9 @@
 			<p>
 				<f:if condition="{project.projectDataArray.hideSpider}">
 					<f:else>
-						Spider
+						<f:if condition="{submission.errorCount} == 0">
+							<div id="scoreChart"></div>
+						</f:if>
 					</f:else>
 				</f:if>
 			</p>
@@ -49,3 +51,4 @@
 		</div>
 	</div>
 </div>
+<f:render partial="SpiderChartJavaScript" arguments="{submission:submission, scoreData:scoreData}"/>
