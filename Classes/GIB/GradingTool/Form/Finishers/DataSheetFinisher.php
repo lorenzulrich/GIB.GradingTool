@@ -17,8 +17,6 @@ namespace GIB\GradingTool\Form\Finishers;
  */
 
 use GIB\GradingTool\Utility\DiffUtility;
-use GIB\GradingTool\Utility\StringDiffUtility;
-use GIB\GradingTool\Utility\ArrayDiffUtility;
 use TYPO3\Flow\Annotations as Flow;
 
 class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
@@ -139,6 +137,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$this->partyRepository->update($project->getProjectManager());
 
 			$this->projectRepository->update($project);
+			$this->persistenceManager->persistAll();
 
 			// send a notification mail to the Administrator containing the changes
 			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('editDataSheetNotification', $project);
@@ -216,6 +215,8 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 				$projectManager->addProject($project);
 				$this->partyRepository->update($projectManager);
 			}
+			
+			$this->persistenceManager->persistAll();
 
 			// send notification mail
 			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
