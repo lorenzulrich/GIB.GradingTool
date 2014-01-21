@@ -52,7 +52,7 @@ class Project {
 	 * Serialized representation of Project Data Content
 	 *
 	 * @var string
-	 * @ORM\Column(type="text")
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $projectData;
 
