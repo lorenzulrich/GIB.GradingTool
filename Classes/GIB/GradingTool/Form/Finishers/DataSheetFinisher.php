@@ -81,6 +81,12 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	protected $templateService;
 
 	/**
+	 * @var \GIB\GradingTool\Service\DataSheetService
+	 * @Flow\Inject
+	 */
+	protected $dataSheetService;
+
+	/**
 	 * The flash messages. Use $this->flashMessageContainer->addMessage(...) to add a new Flash
 	 * Message.
 	 *
@@ -218,9 +224,14 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			
 			$this->persistenceManager->persistAll();
 
-			// send notification mail
-			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetNotification', $project);
+			// send notification mail to project manager (bcc to team)
+			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetProjectManagerNotification', $project);
 			$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, $formValueArray['projectManagerFirstName'] . ' ' . $formValueArray['projectManagerLastName'], $formValueArray['projectManagerEmail']);
+
+			// send notification mail to the GIB team
+			$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newDataSheetTeamNotification', $project);
+			$dataSheetArray = $this->dataSheetService->getProcessedDataSheet($project);
+			$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $projectManager, '', '', $dataSheetArray);
 
 		}
 

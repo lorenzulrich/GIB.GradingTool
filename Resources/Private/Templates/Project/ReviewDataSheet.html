@@ -31,43 +31,7 @@
 			</tr>
 			</tbody>
 		</table>
-		<f:for each="{dataSheet}" as="section">
-			<h3>{section.label}</h3>
-			<f:if condition="{section.items}">
-				<f:for each="{section.items}" as="subsection">
-					<h4 class="subsection">{subsection.label}</h4>
-					<f:if condition="{subsection.items}">
-						<f:then>
-							<f:for each="{subsection.items}" as="subsubsection">
-								<h4 class="indent-1">{subsubsection.label}</h4>
-								<f:if condition="{subsubsection.items}">
-									<f:then>
-										<f:for each="{subsubsection.items}" as="subsubsubsection">
-											<h4 class="indent-2">{subsubsubsection.label}</h4>
-											<f:if condition="{subsubsubsection.value}">
-												<div class="indent-3">
-													<f:render partial="RenderFormValue" arguments="{item:subsubsubsection}" />
-												</div>
-											</f:if>
-										</f:for>
-									</f:then>
-									<f:else>
-										<div class="indent-2">
-											<f:render partial="RenderFormValue" arguments="{item:subsubsection}" />
-										</div>
-									</f:else>
-								</f:if>
-							</f:for>
-						</f:then>
-						<f:else>
-							<div class="indent-1">
-								<f:render partial="RenderFormValue" arguments="{item:subsection}" />
-							</div>
-						</f:else>
-					</f:if>
-				</f:for>
-			</f:if>
-		</f:for>
+		<f:render partial="DataSheetContent" arguments="{dataSheet:dataSheet}"/>
 	</div>
 
 	<p id="reviewDataSheetLinks">

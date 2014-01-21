@@ -14,7 +14,8 @@ use TYPO3\Flow\Persistence\Repository;
  */
 class TemplateRepository extends Repository {
 
-	// add customized methods here
-
+	protected $defaultOrderings = array(
+		'templateIdentifier' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING
+	);
 }
 ?>

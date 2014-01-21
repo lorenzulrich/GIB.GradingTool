@@ -34,6 +34,7 @@ class NotificationMailService {
 	 * @param string $recipientName
 	 * @param string $recipientEmail
 	 * @param string $additionalContent
+	 * @return bool|void
 	 */
 	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $additionalContent = '') {
 		if ($this->settings['email']['activateNotifications'] === FALSE) {
@@ -51,6 +52,8 @@ class NotificationMailService {
 		/** @var \TYPO3\Fluid\View\StandaloneView $emailView */
 		$emailView = new \TYPO3\Fluid\View\StandaloneView();
 		$emailView->setTemplateSource('<f:format.raw>' . $beforeContent . $templateContentArray['content'] . $afterContent . '</f:format.raw>');
+		$emailView->setPartialRootPath(FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Partials');
+		$emailView->setFormat('html');
 		$emailView->assignMultiple(array(
 			'beforeContent' => $beforeContent,
 			'afterContent' => $afterContent,
@@ -60,14 +63,13 @@ class NotificationMailService {
 			'additionalContent' => $additionalContent,
 		));
 		$emailBody = $emailView->render();
-
 		/** @var \TYPO3\SwiftMailer\Message $email */
 		$email = new Message();
 		$email->setFrom(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
 		// the recipient e-mail can be overridden by method arguments
 		if (!empty($recipientEmail)) {
 			$email->setTo(array((string)$recipientEmail => (string)$recipientName));
-			// in this case, set a bcc to the GIB team
+			// in this case, send a bcc to the GIB team
 			$email->setBcc(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
 		} else {
 			$email->setTo(array($templateContentArray['recipientEmail'] => $templateContentArray['recipientName']));
