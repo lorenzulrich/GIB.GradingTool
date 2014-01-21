@@ -33,9 +33,9 @@ class NotificationMailService {
 	 * @param \GIB\GradingTool\Domain\Model\ProjectManager $projectManager
 	 * @param string $recipientName
 	 * @param string $recipientEmail
-	 * @param string $diffContent
+	 * @param string $additionalContent
 	 */
-	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $diffContent = '') {
+	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $additionalContent = '') {
 		if ($this->settings['email']['activateNotifications'] === FALSE) {
 			return TRUE;
 		}
@@ -57,7 +57,7 @@ class NotificationMailService {
 			'project' => $project,
 			'projectManager' => $projectManager,
 			'dataSheetContent' => $project->getDataSheetContentArray(),
-			'diffContent' => $diffContent,
+			'additionalContent' => $additionalContent,
 		));
 		$emailBody = $emailView->render();
 
