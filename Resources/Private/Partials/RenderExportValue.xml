@@ -1,0 +1,47 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<f:if condition="{item.type} == 'TYPO3.Form:SingleLineText'">
+	{item.value}
+</f:if>
+<f:if condition="{item.type} == 'TYPO3.Form:MultiLineText'">
+	{item.value}
+</f:if>
+<f:if condition="{item.type} == 'TYPO3.Form:MultipleSelectCheckboxes'">
+	<f:if condition="{item.value}">
+			<f:for each="{item.value}" as="value" iteration="iterator">
+                <f:if condition="{iterator.isLast}">
+                    <f:then>
+                        {value}
+                    </f:then>
+                    <f:else>
+                        {value},
+                    </f:else>
+                </f:if>
+			</f:for>
+	</f:if>
+</f:if>
+<f:if condition="{item.type} == 'GIB.GradingTool:CountrySelector'">
+	<gib:countryName>{item.value}</gib:countryName>
+</f:if>
+<f:if condition="{item.type} == 'TYPO3.Form:SingleSelectRadiobuttons'">
+	{item.value}
+</f:if>
+<f:if condition="{item.type} == 'TYPO3.Form:FileUpload'">
+	<f:if condition="{item.value}">
+		<a href="{f:uri.resource(resource: item.value)}" target="_blank">{item.value.filename}</a>
+	</f:if>
+</f:if>
+<f:if condition="{item.type} == 'TYPO3.Form:DatePicker'">
+	<f:if condition="{item.value}">
+		<f:format.date format="d.m.Y">{item.value}</f:format.date>
+	</f:if>
+</f:if>
+<f:if condition="{item.type} == 'TYPO3.Form:Checkbox'">
+	<f:if condition="{item.value} == 1">
+		<f:then>
+			1
+		</f:then>
+		<f:else>
+			0
+		</f:else>
+	</f:if>
+</f:if>

@@ -1,0 +1,98 @@
+<gib:tidy>
+	{namespace gib=GIB\GradingTool\ViewHelpers}
+	<?xml version="1.0" encoding="UTF-8"?>
+	<FMPXMLRESULT xmlns="http://www.filemaker.com/fmpxmlresult">
+		<METADATA>
+			<FIELD NAME="uid" TYPE="NUMBER"/>
+			<FIELD NAME="salutation" TYPE="TEXT"/>
+			<FIELD NAME="firstName" TYPE="TEXT"/>
+			<FIELD NAME="lastName" TYPE="TEXT"/>
+			<FIELD NAME="organisation" TYPE="TEXT"/>
+			<FIELD NAME="occupation" TYPE="TEXT"/>
+			<FIELD NAME="street" TYPE="TEXT"/>
+			<FIELD NAME="address2" TYPE="TEXT"/>
+			<FIELD NAME="city" TYPE="TEXT"/>
+			<FIELD NAME="state" TYPE="TEXT"/>
+			<FIELD NAME="zip" TYPE="TEXT"/>
+			<FIELD NAME="country" TYPE="TEXT"/>
+			<FIELD NAME="email" TYPE="TEXT"/>
+			<FIELD NAME="phone" TYPE="TEXT"/>
+		</METADATA>
+		<RESULTSET>
+			<f:for each="{projectManagers}" as="projectManager">
+				<ROW>
+					<COL>
+						<DATA>
+							{projectManager.uid}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerSalutation}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerFirstName}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerLastName}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerOrganisation}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerOccupation}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerStreet}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerAddress2}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerCity}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerState}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerZip}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							<gib:countryName>{projectManager.projects.0.dataSheetContentArray.projectManagerCountry}</gib:countryName>
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerEmail}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{projectManager.projects.0.dataSheetContentArray.projectManagerPhone}
+						</DATA>
+					</COL>
+				</ROW>
+			</f:for>
+		</RESULTSET>
+	</FMPXMLRESULT>
+</gib:tidy>

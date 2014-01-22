@@ -22,6 +22,10 @@ GIB:
       beforeContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/BeforeContent.html'
       afterContentTemplate: 'resource://GIB.GradingTool/Private/Templates/Email/AfterContent.html'
 
+    export:
+      xml:
+        requestToken: '1MV5yMTQILiaTCm2FYiDvXAYzMjRb4LA'
+
     cldrService:
       countryToRegions:
         AF: 142

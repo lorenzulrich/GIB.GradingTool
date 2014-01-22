@@ -1,0 +1,197 @@
+<gib:tidy>
+	{namespace gib=GIB\GradingTool\ViewHelpers}
+	<?xml version="1.0" encoding="UTF-8"?>
+	<FMPXMLRESULT xmlns="http://www.filemaker.com/fmpxmlresult">
+		<METADATA>
+			<FIELD NAME="uid" TYPE="NUMBER"/>
+			<FIELD NAME="projectManager_uid" TYPE="NUMBER"/>
+			<f:for each="{projects}" as="project" iteration="labelIterator">
+				<f:if condition="{labelIterator.isFirst}">
+					<gib:dataSheet project="{project}" as="section">
+						<f:if condition="{section.items}">
+							<f:for each="{section.items}" as="subsection">
+								<f:if condition="{subsection.items}">
+									<f:then>
+										<f:for each="{subsection.items}" as="subsubsection">
+											<f:if condition="{subsubsection.items}">
+												<f:then>
+													<f:for each="{subsubsection.items}" as="subsubsubsection">
+														<f:if condition="{subsubsubsection.identifier}">
+															<FIELD NAME="dataSheet_{subsubsubsection.identifier}"
+																   TYPE="TEXT"/>
+														</f:if>
+													</f:for>
+												</f:then>
+												<f:else>
+													<FIELD NAME="dataSheet_{subsubsection.identifier}" TYPE="TEXT"/>
+												</f:else>
+											</f:if>
+										</f:for>
+									</f:then>
+									<f:else>
+										<FIELD NAME="dataSheet_{subsection.identifier}" TYPE="TEXT"/>
+									</f:else>
+								</f:if>
+							</f:for>
+						</f:if>
+					</gib:dataSheet>
+					<gib:projectData project="{project}" as="section">
+						<f:if condition="{section.items}">
+							<f:for each="{section.items}" as="subsection">
+								<f:if condition="{subsection.items}">
+									<f:then>
+										<f:for each="{subsection.items}" as="subsubsection">
+											<f:if condition="{subsubsection.items}">
+												<f:then>
+													<f:for each="{subsubsection.items}" as="subsubsubsection">
+														<f:if condition="{subsubsubsection.identifier}">
+															<FIELD NAME="projectData_{subsubsubsection.identifier}"
+																   TYPE="TEXT"/>
+														</f:if>
+													</f:for>
+												</f:then>
+												<f:else>
+													<FIELD NAME="projectData_{subsubsection.identifier}" TYPE="TEXT"/>
+												</f:else>
+											</f:if>
+										</f:for>
+									</f:then>
+									<f:else>
+										<FIELD NAME="projectData_{subsection.identifier}" TYPE="TEXT"/>
+									</f:else>
+								</f:if>
+							</f:for>
+						</f:if>
+					</gib:projectData>
+					<FIELD NAME="grading_hasError" TYPE="TEXT"/>
+					<gib:grading subject="{project}">
+						<f:for each="{grading.sections}" as="section">
+							<FIELD NAME="grading_{section.identifier}" TYPE="TEXT"/>
+						</f:for>
+					</gib:grading>
+					<FIELD NAME="grading_mean" TYPE="TEXT"/>
+				</f:if>
+			</f:for>
+		</METADATA>
+		<RESULTSET>
+			<f:for each="{projects}" as="project">
+				<ROW>
+					<COL>
+						<DATA>
+							{project.uid}
+						</DATA>
+					</COL>
+					<COL>
+						<DATA>
+							{project.projectManager.uid}
+						</DATA>
+					</COL>
+					<gib:dataSheet project="{project}" as="section">
+						<f:if condition="{section.items}">
+							<f:for each="{section.items}" as="subsection">
+								<f:if condition="{subsection.items}">
+									<f:then>
+										<f:for each="{subsection.items}" as="subsubsection">
+											<f:if condition="{subsubsection.items}">
+												<f:then>
+													<f:for each="{subsubsection.items}" as="subsubsubsection">
+														<f:if condition="{subsubsubsection.identifier}">
+															<COL>
+																<DATA>
+																	<f:render partial="RenderExportValue"
+																			  arguments="{item:subsubsubsection}"/>
+																</DATA>
+															</COL>
+														</f:if>
+													</f:for>
+												</f:then>
+												<f:else>
+													<COL>
+														<DATA>
+															<f:render partial="RenderExportValue"
+																	  arguments="{item:subsubsection}"/>
+														</DATA>
+													</COL>
+												</f:else>
+											</f:if>
+										</f:for>
+									</f:then>
+									<f:else>
+										<COL>
+											<DATA>
+												<f:render partial="RenderExportValue" arguments="{item:subsection}"/>
+											</DATA>
+										</COL>
+									</f:else>
+								</f:if>
+							</f:for>
+						</f:if>
+					</gib:dataSheet>
+					<gib:projectData project="{project}" as="section">
+						<f:if condition="{section.items}">
+							<f:for each="{section.items}" as="subsection">
+								<f:if condition="{subsection.items}">
+									<f:then>
+										<f:for each="{subsection.items}" as="subsubsection">
+											<f:if condition="{subsubsection.items}">
+												<f:then>
+													<f:for each="{subsubsection.items}" as="subsubsubsection">
+														<f:if condition="{subsubsubsection.identifier}">
+															<COL>
+																<DATA>
+																	<f:render partial="RenderExportValue"
+																			  arguments="{item:subsubsubsection}"/>
+																</DATA>
+															</COL>
+														</f:if>
+													</f:for>
+												</f:then>
+												<f:else>
+													<COL>
+														<DATA>
+															<f:render partial="RenderExportValue"
+																	  arguments="{item:subsubsection}"/>
+														</DATA>
+													</COL>
+												</f:else>
+											</f:if>
+										</f:for>
+									</f:then>
+									<f:else>
+										<COL>
+											<DATA>
+												<f:render partial="RenderExportValue" arguments="{item:subsection}"/>
+											</DATA>
+										</COL>
+									</f:else>
+								</f:if>
+							</f:for>
+						</f:if>
+					</gib:projectData>
+					<gib:grading subject="{project}">
+						<COL>
+							<DATA>
+								<f:if condition="{grading.errorCount} > 0">
+									<f:then>1</f:then>
+									<f:else>0</f:else>
+								</f:if>
+							</DATA>
+						</COL>
+						<f:for each="{grading.sections}" as="section">
+							<COL>
+								<DATA>
+									<f:format.number decimals="2">{section.weightedScore}</f:format.number>
+								</DATA>
+							</COL>
+						</f:for>
+						<COL>
+							<DATA>
+								<f:format.number decimals="2">{grading.mean}</f:format.number>
+							</DATA>
+						</COL>
+					</gib:grading>
+				</ROW>
+			</f:for>
+		</RESULTSET>
+	</FMPXMLRESULT>
+</gib:tidy>

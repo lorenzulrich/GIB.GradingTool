@@ -15,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 class ProjectManager extends \TYPO3\Party\Domain\Model\Person {
 
 	/**
+	 * @var int
+	 * @ORM\Column(columnDefinition="INT(11) NOT NULL AUTO_INCREMENT UNIQUE")
+	 */
+	protected $uid;
+
+	/**
 	 * @var \Doctrine\Common\Collections\Collection<\GIB\GradingTool\Domain\Model\Project>
 	 * @ORM\OneToMany(mappedBy="projectManager")
 	 */
@@ -26,6 +32,20 @@ class ProjectManager extends \TYPO3\Party\Domain\Model\Person {
 	public function __construct() {
 		parent::__construct();
 		$this->projects = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	/**
+	 * @param int $uid
+	 */
+	public function setUid($uid) {
+		$this->uid = $uid;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUid() {
+		return $this->uid;
 	}
 
 	/**

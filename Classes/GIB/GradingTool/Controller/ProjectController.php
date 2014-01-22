@@ -17,6 +17,12 @@ class ProjectController extends AbstractBaseController {
 	protected $projectRepository;
 
 	/**
+	 * @var \GIB\GradingTool\Domain\Repository\ProjectManagerRepository
+	 * @Flow\Inject
+	 */
+	protected $projectManagerRepository;
+
+	/**
 	 * @var \GIB\GradingTool\Service\NotificationMailService
 	 * @Flow\Inject
 	 */
@@ -477,6 +483,45 @@ class ProjectController extends AbstractBaseController {
 		$pdf->endTOCPage();
 
 		$pdf->Output('export.pdf', 'I');
+	}
+
+	/**
+	 * Export all projects as a single XML file meeting the FMPXMLRESULT grammar
+	 *
+	 * @param string $authToken
+	 */
+	public function exportProjectsAction($authToken = '') {
+		if (empty($authToken) || $authToken !== $this->settings['export']['xml']['requestToken']) {
+			$message = new \TYPO3\Flow\Error\Message('Permission denied. Authentication token missing or wrong.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('index', 'Standard');
+		}
+
+		$projects = $this->projectRepository->findAll();
+
+		$this->view->assignMultiple(array(
+			'projects' => $projects
+		));
+	}
+
+	/**
+	 * Export all project managers as a single XML file meeting the FMPXMLRESULT grammar
+	 *
+	 * @param string $authToken
+	 */
+	public function exportProjectManagersAction($authToken = '') {
+		if (empty($authToken) || $authToken !== $this->settings['export']['xml']['requestToken']) {
+			$message = new \TYPO3\Flow\Error\Message('Permission denied. Authentication token missing or wrong.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('index', 'Standard');
+		}
+
+		$projectManagers = $this->projectManagerRepository->findAll();
+
+		$this->view->assignMultiple(array(
+			'projectManagers' => $projectManagers
+		));
+
 	}
 
 }

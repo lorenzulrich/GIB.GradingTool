@@ -94,6 +94,7 @@ class SubmissionService {
 						}
 					}
 				}
+				$formSections[$section['identifier']]['identifier'] = $section['identifier'];
 				$formSections[$section['identifier']]['notApplicableAnswerCount'] = $notApplicableAnswerCount;
 				$formSections[$section['identifier']]['questionCount'] = $questionCount;
 				$formSections[$section['identifier']]['optOutAcceptedCount'] = $optOutAcceptedCount;
@@ -125,8 +126,16 @@ class SubmissionService {
 			}
 
 		}
-
 		$submission['sections'] = $formSections;
+
+
+		$sectionCount = 0;
+		$scoreSum = 0;
+		foreach ($formSections as $section) {
+			$sectionCount++;
+			$scoreSum = $scoreSum + $section['weightedScore'];
+		}
+		$submission['mean'] = $scoreSum / $sectionCount;
 
 		return $submission;
 

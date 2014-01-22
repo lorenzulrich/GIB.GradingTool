@@ -74,6 +74,12 @@
 		</f:for>
 		</tbody>
 	</table>
+	<h2>XML export</h2>
+	<p>
+		<f:link.action target="_blank" class="btn btn-primary btn-sm" arguments="{authToken:settings.export.xml.requestToken}" format="xml" controller="Project" action="exportProjects"><i class="fa fa-code"></i> Export projects</f:link.action>
+		<f:link.action target="_blank" class="btn btn-primary btn-sm" arguments="{authToken:settings.export.xml.requestToken}" format="xml" controller="Project" action="exportProjectManagers"><i class="fa fa-code"></i> Export project managers</f:link.action>
+	</p>
+
 	<h2>Maintenance</h2>
 	<p class="text-muted">Update all projects after properties of the project model have changed. This is a developer-only function.</p>
 	<p>

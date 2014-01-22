@@ -15,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Project {
 
 	/**
+	 * @var int
+	 * @ORM\Column(columnDefinition="INT(11) NOT NULL AUTO_INCREMENT UNIQUE")
+	 */
+	protected $uid;
+
+	/**
 	 * @var \GIB\GradingTool\Service\CldrService
 	 * @Flow\Inject
 	 */
@@ -164,6 +170,20 @@ class Project {
 	 * @var boolean
 	 */
 	protected $isVisibleInProjectFinder = FALSE;
+
+	/**
+	 * @param int $uid
+	 */
+	public function setUid($uid) {
+		$this->uid = $uid;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getUid() {
+		return $this->uid;
+	}
 
 	/**
 	 * Sets the project manager of a project

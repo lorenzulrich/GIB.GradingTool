@@ -3,7 +3,7 @@ namespace GIB\GradingTool\Service;
 
 use TYPO3\Flow\Annotations as Flow;
 
-class DataSheetService {
+class ProjectDataService {
 
 	/**
 	 * @var array
@@ -35,10 +35,10 @@ class DataSheetService {
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 * @return array
 	 */
-	public function getProcessedDataSheet(\GIB\GradingTool\Domain\Model\Project $project) {
+	public function getProcessedProjectData(\GIB\GradingTool\Domain\Model\Project $project) {
 		/** @var \TYPO3\Form\Core\Model\FormDefinition $formDefinition */
-		$formDefinition = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
-		$fieldArray = $this->buildFieldArray($formDefinition['renderables'], $project->getDataSheetContentArray());
+		$formDefinition = $this->formPersistenceManager->load($this->settings['forms']['projectData']);
+		$fieldArray = $this->buildFieldArray($formDefinition['renderables'], $project->getProjectDataArray());
 		return $fieldArray;
 	}
 
@@ -89,37 +89,7 @@ class DataSheetService {
 			}
 
 		}
-
 		return $renderablesArray;
-	}
-
-	/**
-	 * @param \GIB\GradingTool\Domain\Model\Project $project
-	 * @param bool $languageOverlay
-	 * @return array
-	 */
-	public function getFlatProcessedDataSheet(\GIB\GradingTool\Domain\Model\Project $project, $languageOverlay = FALSE) {
-
-		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
-		$factory = new \TYPO3\Form\Factory\ArrayFormFactory;
-		// todo overlay if needed
-		$overrideConfiguration = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
-		/** @var \TYPO3\Form\Core\Model\FormDefinition $formDefinition */
-		$formDefinition = $factory->build($overrideConfiguration);
-
-		$flatDataSheetArray = array();
-
-		foreach ($project->getDataSheetContentArray() as $key => $value) {
-			$formElement = $formDefinition->getElementByIdentifier($key);
-			if ($formElement instanceof \TYPO3\Form\Core\Model\FormElementInterface) {
-				$flatDataSheetArray[$key]['label'] = $formDefinition->getElementByIdentifier($key)->getLabel();
-				$flatDataSheetArray[$key]['type'] = $formDefinition->getElementByIdentifier($key)->getType();
-				$flatDataSheetArray[$key]['value'] = $value;
-			}
-		}
-
-		return $flatDataSheetArray;
-
 	}
 
 }

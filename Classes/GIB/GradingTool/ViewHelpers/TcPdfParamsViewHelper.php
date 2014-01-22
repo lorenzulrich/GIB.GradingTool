@@ -36,7 +36,7 @@ class TcPdfParamsViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 			$params = $this->renderChildren();
 		}
 		if (is_object($params) && !$params instanceof \Countable) {
-			throw new \TYPO3\Fluid\Core\ViewHelper\Exception('TcPdfPAramsViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
+			throw new \TYPO3\Fluid\Core\ViewHelper\Exception('TcPdfParamsViewHelper only supports arrays and objects implementing \Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
 		}
 		return urlencode(serialize($params));
 	}
