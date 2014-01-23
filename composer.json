@@ -8,7 +8,7 @@
         "typo3/flow": "*",
         "typo3/form": "dev-master",
         "typo3/formbuilder": "dev-master",
-        "phpoffice/phpexcel": "1.8.0rc1"
+        "phpoffice/phpexcel": "dev-master"
     },
     "autoload": {
         "psr-0": {
