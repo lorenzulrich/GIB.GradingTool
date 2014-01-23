@@ -25,6 +25,13 @@ GIB:
     export:
       xml:
         requestToken: '1MV5yMTQILiaTCm2FYiDvXAYzMjRb4LA'
+      excel:
+        worksheetLabel: 'Results Summary'
+        projectTitleCell: A1
+        firstSectionColumn: A
+        sectionValueFirstRow: 3
+        templatePath: %FLOW_PATH_DATA%Templates/
+        templateFileName: 'ExportGrading.xlsm'
 
     cldrService:
       countryToRegions:

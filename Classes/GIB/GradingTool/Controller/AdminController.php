@@ -89,12 +89,41 @@ class AdminController extends AbstractBaseController {
 	public function settingsAction() {
 		$forms = $this->yamlPersistenceManager->listForms();
 
+		$excelExportFilePathAndFileName =  \TYPO3\Flow\Utility\Files::concatenatePaths(array($this->settings['export']['excel']['templatePath'], $this->settings['export']['excel']['templateFileName']));
+
 		$this->view->assignMultiple(array(
 			'currentAction' => $this->request->getControllerActionName(),
 			'forms' => $forms,
 			'languages' => $this->settings['languages'],
 			'scoreData' => $this->submissionService->getScoreData(),
+			'excelExportTemplateFound' => is_file($excelExportFilePathAndFileName),
 		));
+	}
+
+	/**
+	 * Create or upload an Excel export template
+	 *
+	 * @param \TYPO3\Flow\Resource\Resource $excelExportTemplateFile
+	 */
+	public function createUpdateExcelExportTemplateFileAction(\TYPO3\Flow\Resource\Resource $excelExportTemplateFile = NULL) {
+		if ($excelExportTemplateFile === NULL) {
+			// Go back to settings if no file was uploaded
+			$message = new \TYPO3\Flow\Error\Message('No file was uploaded. The Excel export template was not replaced.', \TYPO3\Flow\Error\Message::SEVERITY_WARNING);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('settings');
+		}
+
+		$fileContent = file_get_contents('resource://' . $excelExportTemplateFile);
+		// Create templates folder if it doesn't exist
+		if (!is_dir($this->settings['export']['excel']['templatePath'])) {
+			\TYPO3\Flow\Utility\Files::createDirectoryRecursively($this->settings['export']['excel']['templatePath']);
+		}
+		$targetFilePathAndFileName =  \TYPO3\Flow\Utility\Files::concatenatePaths(array($this->settings['export']['excel']['templatePath'], $this->settings['export']['excel']['templateFileName']));
+		file_put_contents($targetFilePathAndFileName, $fileContent);
+
+		$message = new \TYPO3\Flow\Error\Message('The Excel export template has been replaced successfully.', \TYPO3\Flow\Error\Message::SEVERITY_OK);
+		$this->flashMessageContainer->addMessage($message);
+		$this->redirect('settings');
 	}
 
 	/**

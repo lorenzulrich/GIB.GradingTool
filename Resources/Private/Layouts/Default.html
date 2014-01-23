@@ -133,6 +133,18 @@
 		});
 	});
 
+	$(document).on("click", ".returnConfirmFormSubmit", function(e) {
+		e.preventDefault();
+		var targetElement = $(e.target);
+		var $form = $(e.target).closest('form');
+		var message = targetElement.attr('data-confirm');
+		bootbox.confirm(message, function(result) {
+			if (result == true) {
+				$form.submit();
+			}
+		});
+	});
+
 	$(function() {
 		/* Set a language cookie depending on the language selector */
 		$('a.languageSelect').click(function(e) {
