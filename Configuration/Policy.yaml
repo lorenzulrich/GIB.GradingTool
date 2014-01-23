@@ -1,7 +1,7 @@
 resources:
   methods:
     Flow_LoginSignedInMethods: 'method(Flow\Login\Controller\LoginController->signedInAction())'
-    AdminClass: 'method(GIB\GradingTool\Controller\AdminController->.*())'
+    AdminController: 'class(GIB\GradingTool\Controller\AdminController)'
     RemoveProject: 'method(GIB\GradingTool\Controller\ProjectController->removeAction())'
     activateSubmissionForm: 'method(GIB\GradingTool\Controller\ProjectController->activateSubmissionFormAction())'
     deactivateSubmissionForm: 'method(GIB\GradingTool\Controller\ProjectController->deactivateSubmissionFormAction())'
@@ -27,7 +27,7 @@ acls:
   Administrator:
     methods:
       Flow_LoginSignedInMethods: GRANT
-      AdminClass: GRANT
+      AdminController: GRANT
       RemoveProject: GRANT
       activateSubmissionForm: GRANT
       deactivateSubmissionForm: GRANT
