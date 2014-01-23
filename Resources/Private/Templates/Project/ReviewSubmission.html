@@ -9,11 +9,11 @@
 
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
-			<h2>Review submission for project "{project.projectTitle}"</h2>
+			<h2>Review Grading for project "{project.projectTitle}"</h2>
 			<h3>Overview</h3>
 			<f:if condition="{submission.errorCount} > 0">
 				<div class="alert alert-danger">
-					The threshold for some sections of this submission was not reached. Therefore the project dossier cannot be exported.
+					The threshold for some sections of this Grading was not reached. Therefore the project dossier cannot be exported.
 				</div>
 			</f:if>
 		</div>
@@ -36,6 +36,19 @@
 						{section.label}
 					</li>
 			</f:for>
+				<li id="overall-grading" class="list-group-item {f:if(condition: '{submission.errorCount} == 0', then:'', else:'danger')}">
+						<span class="badge">
+							<f:if condition="{submission.errorCount} == 0">
+								<f:then>
+									<f:format.number decimals="2" decimalSeparator=".">{submission.mean}</f:format.number>
+								</f:then>
+								<f:else>
+									<i class="fa fa-exclamation"></i>
+								</f:else>
+							</f:if>
+						</span>
+					Overall Grading
+				</li>
 			</ul>
 		</div>
 		<div class="col-md-4">
