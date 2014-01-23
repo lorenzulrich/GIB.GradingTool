@@ -7,8 +7,7 @@
     "require": {
         "typo3/flow": "*",
         "typo3/form": "dev-master",
-        "typo3/formbuilder": "dev-master",
-        "kaystrobach/phpoffice": "dev-master"
+        "typo3/formbuilder": "dev-master"
     },
     "autoload": {
         "psr-0": {
