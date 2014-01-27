@@ -73,6 +73,9 @@
 						<ul class="dropdown-menu" role="menu">
 							<li><f:link.action action="editProjectData" controller="Project" arguments="{project:project}"><i class="fa fa-edit"></i> Edit Project Data & Publish</f:link.action></li>
 							<li><f:link.action target="_blank" action="exportReport" controller="Project" arguments="{project:project}"><i class="fa fa-download"></i> Export PDF</f:link.action></li>
+							<f:if condition="{project.submissionContent}">
+								<li><f:link.action target="_blank" action="exportExcelGrading" controller="Project" arguments="{project:project}"><i class="fa fa-download"></i> Export Excel Grading</f:link.action></li>
+							</f:if>
 						</ul>
 					</div>
 					<f:link.action additionalAttributes="{data-confirm: 'Are you sure you want to remove this project?'}" class="btn btn-danger btn-sm returnConfirm" action="remove" controller="Project" arguments="{project:project}"><i class="fa fa-times-circle"></i> Remove</f:link.action>

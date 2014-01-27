@@ -29,7 +29,7 @@ GIB:
         worksheetLabel: 'Results Summary'
         projectTitleCell: A1
         firstSectionColumn: A
-        sectionValueFirstRow: 3
+        sectionLabelFirstRow: 2
         templatePath: %FLOW_PATH_DATA%Templates/
         templateFileName: 'ExportGrading.xlsm'
 

@@ -41,7 +41,7 @@ class SubmissionService {
 		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
 
 		$submission = array();
-		$submission['errorCount'] = 0;
+		$submission['hasError'] = FALSE;
 		$formSections = array();
 		foreach ($submissionFormDefinition['renderables'] as $page) {
 			// a form page
@@ -54,6 +54,7 @@ class SubmissionService {
 				$questionCount = 0;
 				$optOutAcceptedCount = 0;
 				$weightingsSum = 0;
+				$answeredQuestionCount = 0;
 				foreach ($section['renderables'] as $field) {
 					if ($field['type'] === 'GIB.GradingTool:Question') {
 						// selected answer and their score
@@ -66,6 +67,7 @@ class SubmissionService {
 							$key = $submissionContentArray[$field['identifier']];
 							foreach ($field['properties']['options'] as $option) {
 								if ($option['_key'] == $key) {
+									$formSections[$section['identifier']]['questions'][$field['identifier']]['identifier'] =  $field['identifier'];
 									$formSections[$section['identifier']]['questions'][$field['identifier']]['score'] =  $option['score'];
 									$formSections[$section['identifier']]['questions'][$field['identifier']]['key'] = $option['_key'];
 									$formSections[$section['identifier']]['questions'][$field['identifier']]['value'] = $option['_value'];
@@ -77,6 +79,10 @@ class SubmissionService {
 									}
 								}
 							}
+							$answeredQuestionCount++;
+						} else {
+							// if a question was not answered, the submission is invalid
+							$submission['hasError'] = TRUE;
 						}
 					} elseif ($field['type'] === 'GIB.GradingTool:NotApplicableMultiLineText') {
 						if (isset($submissionContentArray[$field['identifier']]) && !empty($submissionContentArray[$field['identifier']])) {
@@ -104,8 +110,8 @@ class SubmissionService {
 				$formSections[$section['identifier']]['threshold'] = ceil($questionCount - ($questionCount * $formSections[$section['identifier']]['naAcceptanceLevel']));
 
 				$neededAnswerCount = $questionCount - $optOutAcceptedCount;
-				$answeredQuestionCount = $questionCount - $notApplicableAnswerCount + $optOutAcceptedCount;
-				$answeredQuestionRatio = $answeredQuestionCount / $neededAnswerCount;
+				$answeredQuestionCountAfterOptOut = $answeredQuestionCount - $notApplicableAnswerCount + $optOutAcceptedCount;
+				$answeredQuestionRatio = $answeredQuestionCountAfterOptOut / $neededAnswerCount;
 
 				// float: how many question were answered (accepted opt-out questions don't count)
 				$formSections[$section['identifier']]['answeredQuestionRatio'] = $answeredQuestionRatio;
@@ -120,7 +126,7 @@ class SubmissionService {
 					$formSections[$section['identifier']]['weightedScore'] = $this->calculateScoreForSection($formSections[$section['identifier']]['questions']);
 				} else {
 					$formSections[$section['identifier']]['weightedScore'] = FALSE;
-					$submission['errorCount']++;
+					$submission['hasError'] = TRUE;
 				}
 
 			}

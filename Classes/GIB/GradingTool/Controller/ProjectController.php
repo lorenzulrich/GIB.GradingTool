@@ -524,6 +524,63 @@ class ProjectController extends AbstractBaseController {
 
 	}
 
+	/**
+	 * Export to the Excel template using the PHPExcel library
+	 *
+	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 */
+	public function exportExcelGradingAction(\GIB\GradingTool\Domain\Model\Project $project) {
+
+		// Write Grading results
+		$grading = $this->submissionService->getProcessedSubmission($project);
+
+		if ($grading['hasError']) {
+			// Don't export the Grading if is has errors
+			$message = new \TYPO3\Flow\Error\Message('The Grading has errors and therefore it cannot be exported. Review and correct the Grading.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('index', 'Standard');
+		}
+
+		// the uploaded export template
+		$templateFilePathAndFileName =  \TYPO3\Flow\Utility\Files::concatenatePaths(array($this->settings['export']['excel']['templatePath'], $this->settings['export']['excel']['templateFileName']));
+		$excelReader = new \PHPExcel_Reader_Excel2007();
+		$phpExcel = $excelReader->load($templateFilePathAndFileName);
+		$worksheet = $phpExcel->getSheetByName($this->settings['export']['excel']['worksheetLabel']);
+
+		$firstSectionColumn = $this->settings['export']['excel']['firstSectionColumn'];
+		// we need to subtract 1 because of https://github.com/PHPOffice/PHPExcel/issues/307
+		$columnNumber = \PHPExcel_Cell::columnIndexFromString($firstSectionColumn) - 1;
+		foreach ($grading['sections'] as $section) {
+			$row = $this->settings['export']['excel']['sectionLabelFirstRow'];
+			$column = \PHPExcel_Cell::stringFromColumnIndex($columnNumber);
+			$worksheet->getCell($column . $row)->setValue($section['label']);
+			foreach ($section['questions'] as $question) {
+				$row++;
+				if (isset($question['score'])) {
+					if ($question['score'] === 'N/A') {
+						// N/A is value 5 in Excel tool
+						$worksheet->getCell($column . $row)->setValue('5');
+					} else {
+						$worksheet->getCell($column . $row)->setValue($question['score']);
+					}
+				}
+			}
+			$columnNumber++;
+		}
+		
+		// Write project title
+		$worksheet->getCell($this->settings['export']['excel']['projectTitleCell'])->setValue($project->getProjectTitle());
+
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="grading.xlsx"');
+		header('Cache-Control: max-age=0');
+
+		/** @var \PHPExcel_Writer_Excel2007 $excelWriter */
+		$excelWriter = \PHPExcel_IOFactory::createWriter($phpExcel, 'Excel2007');
+		$excelWriter->save('php://output');
+
+	}
+
 }
 
 ?>

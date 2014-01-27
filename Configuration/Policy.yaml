@@ -9,6 +9,7 @@ resources:
     reviewDataSheet: 'method(GIB\GradingTool\Controller\ProjectController->reviewDataSheetAction())'
     submission: 'method(GIB\GradingTool\Controller\ProjectController->submissionAction())'
     exportReport: 'method(GIB\GradingTool\Controller\ProjectController->exportReportAction())'
+    exportExcelGrading: 'method(GIB\GradingTool\Controller\ProjectController->exportExcelGradingAction())'
     formBuilderEditorController: 'class(TYPO3\FormBuilder\Controller\EditorController)'
     formBuilderFormManagerController: 'class(TYPO3\FormBuilder\Controller\FormManagerController)'
     formBuilderStandardController: 'class(TYPO3\FormBuilder\Controller\StandardController)'
@@ -35,6 +36,7 @@ acls:
       reviewDataSheet: GRANT
       submission: GRANT
       exportReport: GRANT
+      exportExcelGrading: GRANT
       formBuilderEditorController: GRANT
       formBuilderFormManagerController: GRANT
       formBuilderStandardController: GRANT
