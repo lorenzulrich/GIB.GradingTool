@@ -285,6 +285,14 @@ class SubmissionService {
 			$projectScoreData[] = number_format($section['weightedScore'], 2, '.', '\'');
 		}
 
+		// Data for modest performance
+		$data->addPoints(
+			$modestScoreData,
+			'ModestPerformance'
+		);
+		$data->setSerieDescription('ModestPerformance', 'Modest Performance');
+		$data->setPalette('ModestPerformance', array('R' => 249, 'G' => 172, 'B'=>44));
+
 		// Data for good performance
 		$data->addPoints(
 			$goodScoreData,
@@ -293,14 +301,6 @@ class SubmissionService {
 		$data->setSerieDescription('GoodPerformance', 'Good Performance');
 		$data->setPalette('GoodPerformance', array('R' => 31, 'G' => 119, 'B' => 180));
 
-		// Data for modest performance
-		$data->addPoints(
-			$modestScoreData,
-			'ModestPerformance'
-		);
-		$data->setSerieDescription('ModestPerformance', 'Modest Performance');
-		$data->setPalette('ModestPerformance', array('R' => 174, 'G' => 199, 'B'=>232));
-
 		// Actual performance
 		$data->addPoints(
 			$projectScoreData,
@@ -308,10 +308,10 @@ class SubmissionService {
 		);
 		$data->setAxisXY(1);
 		$data->setSerieDescription('Score', 'Project Performance');
-		$data->setPalette('Score', array('R' => 255, 'G' => 127, 'B' => 14));
-		$data->setSerieWeight('Score', 4);
+		$data->setPalette('Score', array('R' => 255, 'G' => 127, 'B' => 14, 'Weight' => 100));
+		$data->setSerieWeight('Score', 5);
 
-		/* Define the absissa serie */
+		/* Define the abscissa serie */
 		$data->addPoints(
 			$axisLabels,
 			'Categories'
@@ -333,31 +333,29 @@ class SubmissionService {
 		$data = $this->getScoreDataForGraph($project);
 
 		/* Create the pChart object */
-		$image = new pImage(1800,1300, $data);
+		$image = new pImage(1980,1300, $data);
 
 		/* Set the default font properties */
-		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/verdana.ttf';
+		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/Cambria.ttf';
 		$image->setFontProperties(array('FontName'=>$fontPath, 'FontSize'=>20, 'R'=>0, 'G'=>0, 'B'=>0));
 
 		/* Create the pRadar object */
 		$splitChart = new \GIB\GradingTool\Utility\pRadar();
 
 		/* Draw a radar chart */
-		$image->setGraphArea(40, 20, 1160, 1180);
+		$image->setGraphArea(300, 20, 1320, 1180);
 		$radarOptions = array(
 			'DrawPoly' => TRUE,
 			'WriteValues' => TRUE,
+			'LabelPos' => RADAR_LABELS_HORIZONTAL,
 			'ValueFontSize' => 11,
-			'BackgroundR' => 255,
-			'BackgroundB' => 255,
-			'BackgroundG' => 255,
+			'DrawBackground' => FALSE,
 			'SegmentHeight' => 1,
 			'Segments' => 3,
 			'AxisRotation' => -90,
 			'FixedMax' => 4,
 			'FixedMin' => 1
 		);
-
 		$splitChart->drawRadar($image, $data, $radarOptions);
 
 		$legendOptions = array(
@@ -372,7 +370,7 @@ class SubmissionService {
 			'BoxWidth' => 25,
 			'BoxHeight' => 25,
 		);
-		$image->drawLegend(1300, 525, $legendOptions);
+		$image->drawLegend(1500, 525, $legendOptions);
 
 		$temporaryRadarFile = tempnam(NULL, 'radarchart');
 		$image->render($temporaryRadarFile);
@@ -396,7 +394,7 @@ class SubmissionService {
 		$image = new pImage(1800, 1000, $data);
 
 		/* Set the default font properties */
-		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/verdana.ttf';
+		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/Cambria.ttf';
 		$image->setFontProperties(array(
 			'FontName' => $fontPath,
 			'FontSize' => 20,
@@ -523,7 +521,7 @@ class SubmissionService {
 		$image = new pImage(1800, 1000, $data);
 
 		/* Set the default font properties */
-		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/verdana.ttf';
+		$fontPath = FLOW_PATH_PACKAGES . 'Application/GIB.GradingTool/Resources/Private/Fonts/Cambria.ttf';
 		$image->setFontProperties(array(
 			'FontName' => $fontPath,
 			'FontSize' => 20,

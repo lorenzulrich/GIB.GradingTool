@@ -1,0 +1,48 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<style>
+	h3 {
+		color: #0f4fa2;
+		font-family: 'Cambria Bold Italic';
+		font-style: italic;
+	}
+	strong {
+		color: #0f4fa2;
+		font-family: 'Cambria Bold';
+	}
+	table { margin: 0; }
+</style>
+<f:for each="{submission.sections}" as="section" iteration="sectionIterator">
+	<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: section.label, 1: 1, 2: '2.{sectionIterator.cycle}', 3: 'blue'})}" />
+	<div style="page-break-after: avoid;">
+	<h3>
+		<table>
+			<tbody>
+				<tr>
+					<td width="12%">2.{sectionIterator.cycle}</td>
+					<td width="88%">{section.label}</td>
+				</tr>
+			</tbody>
+		</table>
+	</h3>
+	</div>
+	<table>
+		<tbody>
+			<f:for each="{section.questions}" as="question" iteration="iterator">
+				<tr>
+					<td width="12%"></td>
+					<td width="88%">
+						<p>
+							<strong>{question.label}</strong><br />
+							{question.value}
+							<f:if condition="{question.comment}">
+								<br /><em>{question.comment}</em>
+							</f:if>
+						</p>
+						<img src="{onePixelResource}" height="1" />
+					</td>
+				</tr>
+			</f:for>
+		</tbody>
+	</table>
+	<img src="{onePixelResource}" height="50" />
+</f:for>

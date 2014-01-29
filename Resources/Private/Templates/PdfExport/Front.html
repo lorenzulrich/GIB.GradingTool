@@ -1,7 +1,22 @@
 {namespace gib=GIB\GradingTool\ViewHelpers}
-<tcpdf method="ImageEps" params="{gib:tcPdfParams(params: {0: epsLogoResource, 1: 25, 2: 10, 3: 38})}" />
-<h1>{project.projectTitle}</h1>
-<p>{dataSheet.projectSubtitle.value}</p>
-<p></p>
-<h2>Content</h2>
-<p></p>
+<tcpdf method="ImageEps" params="{gib:tcPdfParams(params: {0: epsLogoResource, 1: 125, 2: 20, 3: 65})}" />
+<style>
+	h1.projectTitle {
+		font-size: 24px;
+		color: #0f4fa2;
+		font-weight: normal;
+	}
+	h1.subtitle {
+		color: #555555;
+	}
+	p.projectLocation {
+		font-weight: bold;
+		font-size: 14px;
+		color: #555555;
+	}
+</style>
+<img src="{onePixelResource}" height="350" />
+<h1 class="projectTitle">GIB Sustainable Infrastructure Grading</h1>
+<h1 class="projectTitle subtitle">{project.projectTitle}</h1>
+<img src="{onePixelResource}" height="40" />
+<p class="projectLocation">– {dataSheet.city.value}, <gib:countryName>{dataSheet.country.value}</gib:countryName></p>

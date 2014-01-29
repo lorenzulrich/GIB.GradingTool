@@ -1,54 +1,581 @@
 {namespace gib=GIB\GradingTool\ViewHelpers}
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Facts and Figures', 1: 0})}" />
-<h2>Facts and Figures</h2>
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Overview', 1: 1})}" />
-<h3>Overview</h3>
-<f:if condition="{dataSheet.projectTitle.value}">
-	<p>
-		<strong>{dataSheet.projectTitle.label}</strong><br />
-		{dataSheet.projectTitle.value}
-	</p>
-</f:if>
-<f:if condition="{dataSheet.projectSubtitle.value}">
-	<p>
-		<strong>{dataSheet.projectSubtitle.label}</strong><br />
-		{dataSheet.projectSubtitle.value}
-	</p>
-</f:if>
-<f:if condition="{dataSheet.categories.value}">
-	<p>
-		<strong>{dataSheet.categories.label}</strong><br />
-		<f:for each="{dataSheet.categories.value}" as="category" iteration="categoryIterator">
-			<f:if condition="categoryIterator.isLast">
-				<f:then>
-					{category}
-				</f:then>
-				<f:else>
-					{category}<br />
-				</f:else>
-			</f:if>
-		</f:for>
-	</p>
-</f:if>
-<f:if condition="{dataSheet.city.value}">
-	<p>
-		<strong>{dataSheet.city.label}</strong><br />
-		{dataSheet.city.value}
-	</p>
-</f:if>
-<f:if condition="{project.country}">
-	<p>
-		<strong>{dataSheet.country.label}</strong><br />
-		{project.country}
-	</p>
-</f:if>
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Project Owner', 1: 1})}" />
-<h3>Project Owner</h3>
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Project Manager', 1: 1})}" />
-<h3>Project Manager</h3>
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Project Information', 1: 1})}" />
-<h3>Project Information</h3>
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Roadmap', 1: 1})}" />
-<h3>Roadmap</h3>
-<tcpdf method="Bookmark" params="{gib:tcPdfParams(params: {0: 'Finances', 1: 1})}" />
-<h3>Finances</h3>
+<style>
+	h3 {
+		color: #c92938;
+		font-family: 'Cambria Bold Italic';
+		font-style: italic;
+	}
+	strong { font-family: 'Cambria Bold'; }
+	table.dataSheetTable th { font-family: 'Cambria Bold'; }
+</style>
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'Overview', 1: 1, 2: '1.1', 3: 'red'})}" />
+<h3>
+	<table>
+		<tbody>
+			<tr>
+				<td width="12%">1.1</td>
+				<td width="88%">Overview</td>
+			</tr>
+		</tbody>
+	</table>
+</h3>
+<table class="dataSheetTable">
+	<tbody>
+		<tr>
+			<td width="12%"></td>
+			<td width="78%">
+				<strong>{dataSheet.projectTitle.label}</strong><br />
+				{dataSheet.projectTitle.value}<br />
+				<img src="{onePixelResource}" height="10" />
+			</td>
+		</tr>
+		<f:if condition="{dataSheet.projectSubtitle.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.projectSubtitle.label}</strong><br />
+					{dataSheet.projectSubtitle.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.categories.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.categories.label}</strong>
+					<ul>
+						<f:for each="{dataSheet.categories.value}" as="category" iteration="categoryIterator">
+							<li>{category}</li>
+						</f:for>
+					</ul>
+					<img src="{onePixelResource}" height="1" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.city.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.city.label}</strong><br />
+					{dataSheet.city.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<tr>
+			<td width="12%"></td>
+			<td width="78%">
+				<strong>{dataSheet.country.label}</strong><br />
+				<gib:countryName>{dataSheet.country.value}</gib:countryName><br />
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'Project Owner', 1: 1, 2: '1.2', 3: 'red'})}" />
+<img src="{onePixelResource}" height="40" />
+<h3>
+	<table>
+		<tbody>
+			<tr>
+				<td width="12%">1.2</td>
+				<td width="88%">Project Owner</td>
+			</tr>
+		</tbody>
+	</table>
+</h3>
+<table class="dataSheetTable">
+	<tbody>
+		<f:if condition="{dataSheet.projectOwnerSalutation.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerSalutation.label}</th>
+				<td width="43%">{dataSheet.projectOwnerSalutation.value}</td>
+			</tr>
+		</f:if>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">First Name</th>
+			<td width="43%">{dataSheet.projectOwnerFirstName.value}</td>
+		</tr>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">Last Name</th>
+			<td width="43%">{dataSheet.projectOwnerLastName.value}</td>
+		</tr>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">{dataSheet.projectOwnerOrganisation.label}</th>
+			<td width="43%">{dataSheet.projectOwnerOrganisation.value}</td>
+		</tr>
+		<f:if condition="{dataSheet.projectOwnerOccupation.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerOccupation.label}</th>
+				<td width="43%">{dataSheet.projectOwnerOccupation.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectOwnerEmail.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerEmail.label}</th>
+				<td width="43%">{dataSheet.projectOwnerEmail.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectOwnerPhone.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerPhone.label}</th>
+				<td width="43%">{dataSheet.projectOwnerPhone.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectOwnerWebsite.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerWebsite.label}</th>
+				<td width="43%">{dataSheet.projectOwnerWebsite.value}</td>
+			</tr>
+		</f:if>
+	</tbody>
+</table>
+
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'Project Manager', 1: 1, 2: '1.3', 3: 'red'})}" />
+<img src="{onePixelResource}" height="50" />
+<h3>
+	<table>
+		<tbody>
+			<tr>
+				<td width="12%">1.3</td>
+				<td width="88%">Project Manager</td>
+			</tr>
+		</tbody>
+	</table>
+</h3>
+<table class="dataSheetTable">
+	<tbody>
+		<f:if condition="{dataSheet.projectManagerSalutation.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerSalutation.label}</th>
+				<td width="43%">{dataSheet.projectManagerSalutation.value}</td>
+			</tr>
+		</f:if>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">First Name</th>
+			<td width="43%">{dataSheet.projectManagerFirstName.value}</td>
+		</tr>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">Last Name</th>
+			<td width="43%">{dataSheet.projectManagerLastName.value}</td>
+		</tr>
+		<f:if condition="{dataSheet.projectManagerOrganisation.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerOrganisation.label}</th>
+				<td width="43%">{dataSheet.projectManagerOrganisation.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectManagerOccupation.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerOccupation.label}</th>
+				<td width="43%">{dataSheet.projectManagerOccupation.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectManagerStreet.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerStreet.label}</th>
+				<td width="43%">{dataSheet.projectManagerStreet.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectManagerAddress2.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerAddress2.label}</th>
+				<td width="43%">{dataSheet.projectManagerAddress2.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectManagerCity.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerCity.label}</th>
+				<td width="43%">{dataSheet.projectManagerCity.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectManagerState.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerState.label}</th>
+				<td width="43%">{dataSheet.projectManagerState.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectManagerZip.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectManagerZip.label}</th>
+				<td width="43%">{dataSheet.projectManagerZip.value}</td>
+			</tr>
+		</f:if>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">{dataSheet.projectManagerCountry.label}</th>
+			<td width="43%"><gib:countryName>{dataSheet.projectManagerCountry.value}</gib:countryName></td>
+		</tr>
+		<tr>
+			<td width="12%"></td>
+			<th width="35%">{dataSheet.projectOwnerEmail.label}</th>
+			<td width="43%">{dataSheet.projectOwnerEmail.value}</td>
+		</tr>
+		<f:if condition="{dataSheet.projectOwnerPhone.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerPhone.label}</th>
+				<td width="43%">{dataSheet.projectOwnerPhone.value}</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.projectOwnerWebsite.value}">
+			<tr>
+				<td width="12%"></td>
+				<th width="35%">{dataSheet.projectOwnerWebsite.label}</th>
+				<td width="43%">{dataSheet.projectOwnerWebsite.value}</td>
+			</tr>
+		</f:if>
+	</tbody>
+</table>
+
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'Project Information', 1: 1, 2: '1.4', 3: 'red'})}" />
+<img src="{onePixelResource}" height="50" />
+<h3>
+	<table>
+		<tbody>
+			<tr>
+				<td width="12%">1.4</td>
+				<td width="88%">Project Information</td>
+			</tr>
+		</tbody>
+	</table>
+</h3>
+<table class="dataSheetTable">
+	<tbody>
+		<tr>
+			<td width="12%"></td>
+			<td width="78%">
+				<strong>Description</strong><br />
+				<f:format.nl2br>{dataSheet.description.value}</f:format.nl2br><br />
+				<img src="{onePixelResource}" height="10" />
+			</td>
+		</tr>
+		<f:if condition="{dataSheet.stage.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.stage.label}</strong>
+					<ul>
+						<f:for each="{dataSheet.stage.value}" as="stage">
+							<li>{stage}</li>
+						</f:for>
+					</ul>
+					<img src="{onePixelResource}" height="1" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.documentsAvailable.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.documentsAvailable.label}</strong>
+					<ul>
+						<f:for each="{dataSheet.documentsAvailable.value}" as="documentAvailable">
+							<li>{documentAvailable}</li>
+						</f:for>
+					</ul>
+					<img src="{onePixelResource}" height="1" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.aims.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.aims.label}</strong><br />
+					{dataSheet.aims.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.firstInnovation.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Areas of innovation</strong>
+					<ul>
+						<li>{dataSheet.firstInnovation.value}</li>
+						<f:if condition="{dataSheet.secondInnovation.value}">
+							<li>{dataSheet.secondInnovation.value}</li>
+						</f:if>
+						<f:if condition="{dataSheet.thirdInnovation.value}">
+							<li>{dataSheet.thirdInnovation.value}</li>
+						</f:if>
+					</ul>
+					<img src="{onePixelResource}" height="1" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.players.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.players.label}</strong>
+					<ul>
+						<f:for each="{dataSheet.players.value}" as="player">
+							<li>{player}</li>
+						</f:for>
+					</ul>
+					<img src="{onePixelResource}" height="1" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.industryName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Industry</strong><br />
+					{dataSheet.industryName.value}<br />
+					{dataSheet.industryLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.energyName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Energy/energy utilities supplier</strong><br />
+					{dataSheet.energyName.value}<br />
+					{dataSheet.energyLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.buildingContractorName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Building Contractor</strong><br />
+					{dataSheet.buildingContractorName.value}<br />
+					{dataSheet.buildingContractorLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.technologySupplierName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Technology supplier</strong><br />
+					{dataSheet.technologySupplierName.value}<br />
+					{dataSheet.technologySupplierLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.urbanPlannerName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Urban planner, architect or consultant</strong><br />
+					{dataSheet.urbanPlannerName.value}<br />
+					{dataSheet.urbanPlannerLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.investorName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Investor</strong><br />
+					{dataSheet.investorName.value}<br />
+					{dataSheet.investorLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.scientistName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Scientist</strong><br />
+					{dataSheet.scientistName.value}<br />
+					{dataSheet.scientistLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.governanceName.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Governance, region or town council</strong><br />
+					{dataSheet.governanceName.value}<br />
+					{dataSheet.governanceLink.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.partners.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.partners.label}</strong><br />
+					{dataSheet.partners.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+	</tbody>
+</table>
+
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'Roadmap', 1: 1, 2: '1.5', 3: 'red'})}" />
+<img src="{onePixelResource}" height="40" />
+<h3>
+	<table>
+		<tbody>
+			<tr>
+				<td width="12%">1.5</td>
+				<td width="88%">Roadmap</td>
+			</tr>
+		</tbody>
+	</table>
+</h3>
+<table class="dataSheetTable">
+	<tbody>
+		<f:if condition="{dataSheet.startingDate.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.startingDate.label}</strong><br />
+					<f:format.date>{dataSheet.startingDate.value}</f:format.date><br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.implementationTimeframe.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.implementationTimeframe.label}</strong><br />
+					{dataSheet.implementationTimeframe.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.implementationComments.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.implementationComments.label}</strong><br />
+					<f:format.nl2br>{dataSheet.implementationComments.value}</f:format.nl2br><br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+	</tbody>
+</table>
+
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'Finances', 1: 1, 2: '1.6', 3: 'red'})}" />
+<img src="{onePixelResource}" height="40" />
+<h3>
+	<table>
+		<tbody>
+			<tr>
+				<td width="12%">1.6</td>
+				<td width="88%">Finances</td>
+			</tr>
+		</tbody>
+	</table>
+</h3>
+
+<table class="dataSheetTable">
+	<tbody>
+		<f:if condition="{dataSheet.cost.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Total Investment</strong><br />
+					<f:format.number decimals="2">{dataSheet.cost.value}</f:format.number> Mio. USD<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.implementationTimeframe.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.implementationTimeframe.label}</strong><br />
+					{dataSheet.implementationTimeframe.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.financialStatus.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.financialStatus.label}</strong><br />
+					{dataSheet.financialStatus.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.requiredInvestment.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>Required Investment</strong><br />
+					<f:format.number decimals="2">{dataSheet.requiredInvestment.value}</f:format.number> Mio. USD<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.irr.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.irr.label}</strong><br />
+					{dataSheet.irr.value}<br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.preferredSourcesOfFunds.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.preferredSourcesOfFunds.label}</strong>
+					<ul>
+						<f:for each="{dataSheet.preferredSourcesOfFunds.value}" as="source">
+							<li>{source}</li>
+						</f:for>
+					</ul>
+					<img src="{onePixelResource}" height="1" />
+				</td>
+			</tr>
+		</f:if>
+		<f:if condition="{dataSheet.financesComment.value}">
+			<tr>
+				<td width="12%"></td>
+				<td width="78%">
+					<strong>{dataSheet.financesComment.label}</strong><br />
+					<f:format.nl2br>{dataSheet.financesComment.value}</f:format.nl2br><br />
+					<img src="{onePixelResource}" height="10" />
+				</td>
+			</tr>
+		</f:if>
+	</tbody>
+</table>

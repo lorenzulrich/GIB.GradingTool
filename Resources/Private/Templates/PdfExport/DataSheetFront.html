@@ -1,0 +1,25 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'GIB Data Sheet', 1: 0, 2: '1', 3: 'red'})}" />
+<style>
+	h2 {
+		color: #555555;
+		text-align: center;
+		font-size: 75px;
+		font-family: 'Cambria';
+		font-weight: normal;
+	}
+	p.borderBottom {
+		border-bottom: 1px solid #555555;
+	}
+	h6 {
+		font-size: 480px;
+		color: #c92938;
+		text-align: center;
+		font-weight: normal;
+		line-height: 480px !important;
+	}
+</style>
+<h2>GIB Data Sheet</h2>
+<img src="{onePixelResource}" height="175" />
+<p class="borderBottom"></p>
+<h6>1</h6>

@@ -1,0 +1,25 @@
+{namespace gib=GIB\GradingTool\ViewHelpers}
+<tcpdf method="setBookmarkWithChapterNumberAndClass" params="{gib:tcPdfParams(params: {0: 'GIB Grading Questionnaire', 1: 0, 2: '2', 3: 'blue'})}" />
+<style>
+	h2 {
+		color: #555555;
+		text-align: center;
+		font-size: 75px;
+		font-family: 'Cambria';
+		font-weight: normal;
+	}
+	p.borderBottom {
+		border-bottom: 1px solid #555555;
+	}
+	h6 {
+		font-size: 480px;
+		color: #0f4fa2;
+		text-align: center;
+		font-weight: normal;
+		line-height: 480px !important;
+	}
+</style>
+<h2>GIB Grading<br />Questionnaire</h2>
+<img src="{onePixelResource}" height="100" />
+<p class="borderBottom"></p>
+<h6>2</h6>

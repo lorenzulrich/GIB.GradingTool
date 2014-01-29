@@ -383,24 +383,99 @@ class ProjectController extends AbstractBaseController {
 	}
 
 	/**
+	 * Export a PDF report for a project
+	 *
 	 * @param \GIB\GradingTool\Domain\Model\Project $project
 	 */
 	public function exportReportAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
 		$dataSheet = $this->dataSheetService->getFlatProcessedDataSheet($project);
 
-		$pdf = new \TYPO3\TcPdf\Pdf();
+		$pdf = new \GIB\GradingTool\Utility\TcPdf();
 
-		$pdf->SetPrintHeader(FALSE);
+		// set font
+		\TCPDF_FONTS::addTTFfont('resource://GIB.GradingTool/Private/Fonts/Cambria.ttf', 'TrueTypeUnicode');
+		\TCPDF_FONTS::addTTFfont('resource://GIB.GradingTool/Private/Fonts/Cambria Bold.ttf', 'TrueTypeUnicode');
+		\TCPDF_FONTS::addTTFfont('resource://GIB.GradingTool/Private/Fonts/Cambria Italic.ttf', 'TrueTypeUnicode');
+		\TCPDF_FONTS::addTTFfont('resource://GIB.GradingTool/Private/Fonts/Cambria Bold Italic.ttf', 'TrueTypeUnicode');
+
+		// set margins
+		$pdf->SetMargins(20, 45);
+		$pdf->SetHeaderMargin(20);
+
+		$pdf->SetFont('Cambria', '', 10);
+		$pdf->SetHeaderFont(array('Cambria', '', 10));
+		$pdf->setHtmlVSpace(array(
+			'h1' => array(
+				array(
+					'h' => 0,
+					'n' => 0
+				),
+				array(
+					'h' => 0,
+					'n' => 0
+				)
+			),
+			'h2' => array(
+				array(
+					'h' => 0,
+					'n' => 0
+				),
+				array(
+					'h' => 0,
+					'n' => 0
+				)
+			),
+			'h3' => array(
+				array(
+					'h' => 0,
+					'n' => 0
+				),
+				array(
+					'h' => 1,
+					'n' => 3
+				)
+			),
+			'h6' => array(
+				array(
+					'h' => 0,
+					'n' => 0
+				),
+				array(
+					'h' => 0,
+					'n' => 0
+				)
+			),
+			'p' => array(
+				array(
+					'h' => 0,
+					'n' => 0
+				),
+				array(
+					'h' => 1,
+					'n' => 2.5
+				)
+			),
+			'ul' => array(
+				array(
+					'h' => 0,
+					'n' => 0
+				),
+				array(
+					'h' => 1,
+					'n' => 2.5
+				)
+			),
+		));
+		$pdf->setListIndentWidth(3);
+
+		$pdf->SetPrintHeader(TRUE);
 		$pdf->SetPrintFooter(FALSE);
 
 		// set document information
 		$pdf->SetCreator(PDF_CREATOR);
-		$pdf->SetAuthor('Global Infrastructure Basel');
+		$pdf->SetAuthor('Global Infrastructure Basel Foundation');
 		$pdf->SetTitle($project->getProjectTitle());
-
-		// set margins
-		$pdf->SetMargins(25, 45);
 
 		// set auto page breaks
 		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -408,81 +483,135 @@ class ProjectController extends AbstractBaseController {
 		// set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-		// set font
-		$pdf->SetFont('dejavusans', '', 10);
-
 		// Must be an Illustrator 3 file
 		$epsLogoResource = 'resource://GIB.GradingTool/Private/Images/logo_gib_print.eps';
+
+		// one pixel png
+		$onePixelResource = 'resource://GIB.GradingTool/Private/Images/one-pixel.png';
+
+		// partners png
+		$gibPartnersResource = 'resource://GIB.GradingTool/Private/Images/gib-partners.png';
 
 		// The processed submission
 		$submission = $this->submissionService->getProcessedSubmission($project);
 
-		/*** DATA SHEET ***/
+		/*** FRONT PAGE ***/
 		$pdf->addPage();
-		/** @var \TYPO3\Fluid\View\StandaloneView $emailView */
-		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
-		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/DataSheet.html');
-		$standAloneView->assignMultiple(array(
+		$arguments = array(
 			'dataSheet' => $dataSheet,
 			'project' => $project,
-		));
-		$html = $standAloneView->render();
-		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+			'epsLogoResource' => $epsLogoResource,
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('Front', $arguments), TRUE, FALSE, TRUE);
 
+		/*** PARTNERS PAGE ***/
+		$pdf->addPage();
+		$arguments = array(
+			'gibPartnersResource' => $gibPartnersResource,
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('Partners', $arguments), TRUE, FALSE, TRUE);
+
+		/*** TOC PAGE IS INSERTED AT PAGE 3 ***/
+
+		/*** DATA SHEET FRONT ***/
+		$pdf->addPage();
+		$pdf->SetAutoPageBreak(FALSE);
+		$arguments = array(
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('DataSheetFront', $arguments), TRUE, FALSE, TRUE);
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		/*** DATA SHEET ***/
+		$pdf->addPage();
+		$arguments = array(
+			'dataSheet' => $dataSheet,
+			'project' => $project,
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('DataSheet', $arguments), TRUE, FALSE, TRUE);
+
+		/*** GRADING FRONT ***/
+		$pdf->addPage();
+		$pdf->SetAutoPageBreak(FALSE);
+		$arguments = array(
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('GradingFront', $arguments), TRUE, FALSE, TRUE);
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 		/*** GRADING TOOL ***/
 		$pdf->addPage();
-		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
-		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/Submission.html');
-		$standAloneView->assignMultiple(array(
+		$arguments = array(
 			'submission' => $submission,
 			'project' => $project,
 			'scoreData' => $this->submissionService->getScoreData(),
-		));
-		$html = $standAloneView->render();
-		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('Grading', $arguments), TRUE, FALSE, TRUE);
+
+		/*** ANALYSIS FRONT ***/
+		$pdf->addPage();
+		$pdf->SetAutoPageBreak(FALSE);
+		$arguments = array(
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('AnalysisFront', $arguments), TRUE, FALSE, TRUE);
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 		/*** ANALYSIS ***/
 		$pdf->addPage();
-		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
-		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/Analysis.html');
 		$radarChartFileName = $this->submissionService->getRadarImage($project);
 		$lineGraphFileName = $this->submissionService->getLineGraphImage($project);
 		$answerLevelGraphFileName = $this->submissionService->getAnswerLevelBarChartImage($project);
-		$standAloneView->assignMultiple(array(
+		$arguments = array(
 			'radarChartFileName' => $radarChartFileName,
 			'lineGraphFileName' => $lineGraphFileName,
 			'answerLevelGraphFileName' => $answerLevelGraphFileName,
+			'onePixelResource' => $onePixelResource,
 			'submission' => $submission,
-		));
-		$html = $standAloneView->render();
-		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('Analysis', $arguments), TRUE, FALSE, TRUE);
 
+		/** This was the last page */
 		$pdf->lastPage();
-
 
 		/*** TOC PAGE ***/
 		$pdf->addTOCPage();
-
-		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
-		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/Front.html');
-		$standAloneView->assignMultiple(array(
+		$arguments = array(
 			'dataSheet' => $dataSheet,
 			'project' => $project,
-			'epsLogoResource' => $epsLogoResource
-		));
-		$html = $standAloneView->render();
-		$pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
+			'onePixelResource' => $onePixelResource
+		);
+		$pdf->writeHTML($this->pdfTemplateRenderer('TOCBeforeTOC', $arguments), TRUE, FALSE, TRUE);
 
-		$bookmark_templates = array();
-		$bookmark_templates[0] = '<table border="0" cellpadding="0" cellspacing="0"><tr><td width="90%"><span style="font-weight:bold;font-size:10pt;">#TOC_DESCRIPTION#</span></td><td width="10%"><span style="font-weight:bold;font-size:10pt;font-family:courier" align="right">#TOC_PAGE_NUMBER#</span></td></tr></table>';
-		$bookmark_templates[1] = '<table border="0" cellpadding="0" cellspacing="0"><tr><td width="5%"></td><td width="85%"><span style="font-size:10pt;">#TOC_DESCRIPTION#</span></td><td width="10%"><span style="font-size:10pt;font-family:courier" align="right">#TOC_PAGE_NUMBER#</span></td></tr></table>';
+		$arguments = array(
+			'onePixelResource' => $onePixelResource
+		);
+		$afterContent = $this->pdfTemplateRenderer('TOCAfterTOC', $arguments);
 
-		$pdf->addHTMLTOC(1, 'INDEX', $bookmark_templates, TRUE, 'B', array(128,0,0));
+		$bookmarkTemplates = array();
+		$bookmarkTemplates[0] = '<style>td.blue { color: #0f4fa2; }	td.orange { color: #f36e21; } td.red { color: #c92938; } td.black { color: #000000; } td.grey { color: #555555; }</style><table border="0" cellpadding="0" cellspacing="0"><tr><td class="#TOC_CSSCLASS#" width="12%"><strong>#TOC_CHAPTERNUMBER#</strong></td><td class="black" width="78%"><strong>#TOC_DESCRIPTION#</strong></td><td width="10%"><span style="font-weight:bold;font-size:10pt;text-align:right;" align="right">#TOC_PAGE_NUMBER#</span></td></tr></table>';
+		$bookmarkTemplates[1] = '<style>td.blue { color: #0f4fa2; }	td.orange { color: #f36e21; } td.red { color: #c92938; } td.black { color: #000000; } td.grey { color: #555555; }</style><table border="0" cellpadding="0" cellspacing="0"><tr><td class="#TOC_CSSCLASS#" width="12%"><strong>#TOC_CHAPTERNUMBER#</strong></td><td class="grey" width="78%">#TOC_DESCRIPTION#</td><td width="10%"><span style="font-size:10pt;text-align:right;" align="right">#TOC_PAGE_NUMBER#</span></td></tr></table>';
+		$pdf->addHTMLTOC(3, 'INDEX', $bookmarkTemplates, TRUE, 'B', array(128,0,0), $afterContent);
 
 		$pdf->endTOCPage();
 
 		$pdf->Output('export.pdf', 'I');
+	}
+
+	/**
+	 * @param string $templateName
+	 * @param array $arguments
+	 * @return string
+	 */
+	public function pdfTemplateRenderer($templateName, $arguments) {
+		$standAloneView = new \TYPO3\Fluid\View\StandaloneView();
+		$standAloneView->setTemplatePathAndFilename('resource://GIB.GradingTool/Private/Templates/PdfExport/' . $templateName . '.html');
+		$standAloneView->assignMultiple($arguments);
+		return $standAloneView->render();
 	}
 
 	/**
@@ -567,7 +696,7 @@ class ProjectController extends AbstractBaseController {
 			}
 			$columnNumber++;
 		}
-		
+
 		// Write project title
 		$worksheet->getCell($this->settings['export']['excel']['projectTitleCell'])->setValue($project->getProjectTitle());
 

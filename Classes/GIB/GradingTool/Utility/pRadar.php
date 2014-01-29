@@ -356,10 +356,17 @@ namespace GIB\GradingTool\Utility;
          $PointsArray = "";
          for($i=0; $i<count($Points);$i++) 
           { $PointsArray[] = $Points[$i][0]; $PointsArray[] = $Points[$i][1]; }
-         $Object->drawPolygon($PointsArray,$Color);
+			/** INSERT GIB.GRADINGTOOL BEGIN */
+			if ($ID !== 2) {
+			/** END INSERT GIB.GRADINGTOOL  */
+				$Object->drawPolygon($PointsArray,$Color);
+			/** INSERT GIB.GRADINGTOOL BEGIN */
+			}
+			/** END INSERT GIB.GRADINGTOOL  */
         }
-
-       $Color = array("R"=>$Palette[$ID]["R"],"G"=>$Palette[$ID]["G"],"B"=>$Palette[$ID]["B"],"Alpha"=>$Palette[$ID]["Alpha"],"Surrounding"=>$PointSurrounding);
+		// Set more weight for project performance
+		$Weight = ($ID == 2) ? 5 : NULL;
+       $Color = array("R"=>$Palette[$ID]["R"],"G"=>$Palette[$ID]["G"],"B"=>$Palette[$ID]["B"],"Alpha"=>$Palette[$ID]["Alpha"],"Surrounding"=>$PointSurrounding, "Weight"=>$Weight);
 
        /* Bubble and labels settings */
        $TextSettings = array("Align"=>TEXT_ALIGN_MIDDLEMIDDLE,"FontName"=>$ValueFontName,"FontSize"=>$ValueFontSize,"R"=>$Palette[$ID]["R"],"G"=>$Palette[$ID]["G"],"B"=>$Palette[$ID]["B"]);
@@ -377,7 +384,7 @@ namespace GIB\GradingTool\Utility;
        for($i=0; $i<count($Points);$i++) 
         {
          if ( $DrawLines && $i < count($Points)-1)
-          $Object->drawLine($Points[$i][0],$Points[$i][1],$Points[$i+1][0],$Points[$i+1][1],$Color);
+          $Object->drawLine($Points[$i][0],$Points[$i][1],$Points[$i+1][0],$Points[$i+1][1],$Color,100);
 
          if ( $DrawPoints )
           $Object->drawFilledCircle($Points[$i][0],$Points[$i][1],$PointRadius,$Color);
@@ -392,7 +399,7 @@ namespace GIB\GradingTool\Utility;
           }
 
          if ( $WriteValues )
-          $this->pChartObject->drawText($Points[$i][0]-1,$Points[$i][1]-1,$Points[$i][2],$TextSettings);
+          $this->pChartObject->drawText($Points[$i][0]-1,$Points[$i][1]-1,$Points[$i][2]+1,$TextSettings);
         }
       }
     }
@@ -632,7 +639,7 @@ namespace GIB\GradingTool\Utility;
        $Color = array("R"=>$Palette[$ID]["R"],"G"=>$Palette[$ID]["G"],"B"=>$Palette[$ID]["B"],"Alpha"=>$Palette[$ID]["Alpha"],"Surrounding"=>$PointSurrounding);
 
        /* Draw the polygons */
-       if ( $DrawPoly )
+       /*if ( $DrawPoly )
         {
          if ($PolyAlpha != NULL)
           $Color = array("R"=>$Palette[$ID]["R"],"G"=>$Palette[$ID]["G"],"B"=>$Palette[$ID]["B"],"Alpha"=>$PolyAlpha,"Surrounding"=>$PointSurrounding);
@@ -642,7 +649,7 @@ namespace GIB\GradingTool\Utility;
           { $PointsArray[] = $Points[$i][0]; $PointsArray[] = $Points[$i][1]; }
 
          $Object->drawPolygon($PointsArray,$Color);
-        }
+        }*/
 
        $Color = array("R"=>$Palette[$ID]["R"],"G"=>$Palette[$ID]["G"],"B"=>$Palette[$ID]["B"],"Alpha"=>$Palette[$ID]["Alpha"],"Surrounding"=>$PointSurrounding);
 
