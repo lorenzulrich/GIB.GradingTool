@@ -67,6 +67,10 @@ class TidyViewHelper extends AbstractViewHelper {
 				'output-xml' => TRUE,
 				'input-xml' => TRUE,
 				'indent' => TRUE,
+				'quote-nbsp' => FALSE,
+				'input-encoding' => 'utf8',
+				'output-encoding' => 'utf8',
+				'char-encoding' => 'utf8',
 			);
 			$tidy = tidy_parse_string($content, $configuration);
 			$tidy->cleanRepair();
