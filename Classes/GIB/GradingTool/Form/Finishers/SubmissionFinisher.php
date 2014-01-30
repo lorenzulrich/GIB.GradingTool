@@ -81,14 +81,13 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		// update the project with the data from the form
 		$formValueArray = $formRuntime->getFormState()->getFormValues();
 		$project->setSubmissionContent(serialize($formValueArray));
-		$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
-		$project->setLastUpdated(new \TYPO3\Flow\Utility\Now);
+		$project->setSubmissionLastUpdated(new \TYPO3\Flow\Utility\Now);
 		$this->projectRepository->update($project);
 
 		$this->persistenceManager->persistAll();
 
 		// add a flash message
-		$message = new \TYPO3\Flow\Error\Message('Your submission for project "%s" was successfully saved. You will receive your grading in the next days.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
+		$message = new \TYPO3\Flow\Error\Message('Thank you for submitting the data for your project "%s". You will receive your Grading in the next days.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
 		$this->flashMessageContainer->addMessage($message);
 
 		// send notification mail

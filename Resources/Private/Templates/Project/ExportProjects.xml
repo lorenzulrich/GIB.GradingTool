@@ -72,6 +72,7 @@
 					<FIELD NAME="grading_mean" TYPE="TEXT"/>
 				</f:if>
 			</f:for>
+			<FIELD NAME="grading_lastUpdated" TYPE="NUMBER"/>
 		</METADATA>
 		<RESULTSET>
 			<f:for each="{projects}" as="project">
@@ -190,6 +191,11 @@
 							</DATA>
 						</COL>
 					</gib:grading>
+					<COL>
+						<DATA>
+							<f:format.date format="d.m.Y">{project.submissionLastUpdated}</f:format.date>
+						</DATA>
+					</COL>
 				</ROW>
 			</f:for>
 		</RESULTSET>

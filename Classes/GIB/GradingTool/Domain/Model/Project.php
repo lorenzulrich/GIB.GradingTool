@@ -88,6 +88,12 @@ class Project {
 	protected $lastUpdated;
 
 	/**
+	 * @ORM\Column(nullable=true)
+	 * @var \DateTime
+	 */
+	protected $submissionLastUpdated;
+
+	/**
 	 * @var boolean
 	 */
 	protected $submissionFormAccess = FALSE;
@@ -340,6 +346,20 @@ class Project {
 	 */
 	public function getLastUpdated() {
 		return $this->lastUpdated;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getSubmissionLastUpdated() {
+		return $this->submissionLastUpdated;
+	}
+
+	/**
+	 * @param \DateTime $submissionLastUpdated
+	 */
+	public function setSubmissionLastUpdated($submissionLastUpdated) {
+		$this->submissionLastUpdated = $submissionLastUpdated;
 	}
 
 	/**

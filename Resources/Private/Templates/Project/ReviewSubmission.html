@@ -10,6 +10,10 @@
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
 			<h2>Review Grading for project "{project.projectTitle}"</h2>
+			<p>
+				<strong>Grading last edited at</strong><br>
+				<f:format.date format="Y-m-d, H:i">{project.submissionLastUpdated}</f:format.date>
+			</p>
 			<h3>Overview</h3>
 			<f:if condition="{submission.hasError}">
 				<div class="alert alert-danger">
@@ -86,7 +90,7 @@
 					</li>
 					<li class="list-group-item">
 						<span class="badge">{section.naAcceptanceLevel}</span>
-						(N/A Acceptance Level)
+						<em>N/A Acceptance Level</em>
 					</li>
 					<li class="list-group-item">
 						<span class="badge">{section.threshold}</span>
