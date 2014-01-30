@@ -409,6 +409,17 @@ class ProjectController extends AbstractBaseController {
 	 */
 	public function exportReportAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
+		// The processed submission
+		$submission = $this->submissionService->getProcessedSubmission($project);
+
+		if ($submission['hasError']) {
+			// Don't export the Grading if is has errors
+			$message = new \TYPO3\Flow\Error\Message('The Grading has errors and therefore it cannot be exported. Review and correct the Grading.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('index', 'Standard');
+		}
+
+		// The flat data sheet
 		$dataSheet = $this->dataSheetService->getFlatProcessedDataSheet($project);
 
 		$pdf = new \GIB\GradingTool\Utility\TcPdf();
@@ -511,9 +522,6 @@ class ProjectController extends AbstractBaseController {
 
 		// partners png
 		$gibPartnersResource = 'resource://GIB.GradingTool/Private/Images/gib-partners.png';
-
-		// The processed submission
-		$submission = $this->submissionService->getProcessedSubmission($project);
 
 		/*** FRONT PAGE ***/
 		$pdf->addPage();
