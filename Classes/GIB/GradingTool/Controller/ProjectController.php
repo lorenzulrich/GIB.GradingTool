@@ -53,6 +53,18 @@ class ProjectController extends AbstractBaseController {
 	protected $dataSheetService;
 
 	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Resource\ResourceManager
+	 */
+	protected $resourceManager;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Resource\Publishing\ResourcePublisher
+	 */
+	protected $resourcePublisher;
+
+	/**
 	 * @return void
 	 */
 	public function indexAction() {
@@ -254,10 +266,15 @@ class ProjectController extends AbstractBaseController {
 
 		$submission = $this->submissionService->getProcessedSubmission($project);
 
+		$radarChartImagePathAndFilename = $this->submissionService->getRadarImage($project);
+		$radarChartImageResource = $this->resourceManager->importResource($radarChartImagePathAndFilename);
+		$radarChartUri = $this->resourcePublisher->getPersistentResourceWebUri($radarChartImageResource);
+
+
 		$this->view->assignMultiple(array(
 			'submission' => $submission,
 			'project' => $project,
-			'scoreData' => $this->submissionService->getScoreData(),
+			'radarChartUri' => $radarChartUri
 		));
 
 	}

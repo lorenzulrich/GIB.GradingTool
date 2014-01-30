@@ -25,21 +25,21 @@
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-4">
 			<ul class="project-submission-overview list-group" style="width: 300px;">
-			<f:for each="{submission.sections}" as="section" iteration="sectionIterator2">
-					<li data-section="section{sectionIterator2.cycle}" class="list-group-item {f:if(condition: '{section.thresholdReached}', else:'danger')}">
-						<span class="badge">
-							<f:if condition="{section.thresholdReached}">
-								<f:then>
-									<f:format.number decimals="2" decimalSeparator=".">{section.weightedScore}</f:format.number>
-								</f:then>
-								<f:else>
-									<i class="fa fa-exclamation"></i>
-								</f:else>
-							</f:if>
-						</span>
-						{section.label}
-					</li>
-			</f:for>
+				<f:for each="{submission.sections}" as="section" iteration="sectionIterator2">
+						<li data-section="section{sectionIterator2.cycle}" class="list-group-item {f:if(condition: '{section.thresholdReached}', else:'danger')}">
+							<span class="badge">
+								<f:if condition="{section.thresholdReached}">
+									<f:then>
+										<f:format.number decimals="2" decimalSeparator=".">{section.weightedScore}</f:format.number>
+									</f:then>
+									<f:else>
+										<i class="fa fa-exclamation"></i>
+									</f:else>
+								</f:if>
+							</span>
+							{section.label}
+						</li>
+				</f:for>
 				<li id="overall-grading" class="list-group-item {f:if(condition: '{submission.hasError}', then:'danger')}">
 						<span class="badge">
 							<f:if condition="{submission.hasError}">
@@ -55,10 +55,10 @@
 				</li>
 			</ul>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-8">
 			<f:if condition="{submission.hasError}">
 				<f:else>
-					<div id="scoreChart"></div>
+					<img class="img-responsive" src="{radarChartUri}" />
 				</f:else>
 			</f:if>
 		</div>
@@ -184,5 +184,4 @@
 			</f:for>
 		</div>
 	</div>
-	<f:render partial="SpiderChartJavaScript" arguments="{submission:submission, scoreData:scoreData}"/>
 </f:section>

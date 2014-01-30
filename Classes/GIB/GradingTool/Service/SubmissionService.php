@@ -372,7 +372,7 @@ class SubmissionService {
 		);
 		$image->drawLegend(1500, 525, $legendOptions);
 
-		$temporaryRadarFile = tempnam(NULL, 'radarchart');
+		$temporaryRadarFile = tempnam(NULL, 'radarchart.png');
 		$image->render($temporaryRadarFile);
 
 		return $temporaryRadarFile;
@@ -455,11 +455,11 @@ class SubmissionService {
 		);
 		$image->drawLegend(0, 900, $legendOptions);
 
-		$temporaryRadarFile = tempnam(NULL, 'linegraph');
-		$image->render($temporaryRadarFile);
+		$temporaryLineGraphFile = tempnam(NULL, 'linegraph.png');
+		$image->render($temporaryLineGraphFile);
 
 
-		return $temporaryRadarFile;
+		return $temporaryLineGraphFile;
 
 	}
 
@@ -579,7 +579,7 @@ class SubmissionService {
 		);
 		$image->drawLegend(0, 900, $legendOptions);
 
-		$temporaryBarChartFile = tempnam(NULL, 'barchart');
+		$temporaryBarChartFile = tempnam(NULL, 'barchart.png');
 		$image->render($temporaryBarChartFile);
 		return $temporaryBarChartFile;
 
