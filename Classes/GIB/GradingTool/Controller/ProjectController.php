@@ -228,7 +228,7 @@ class ProjectController extends AbstractBaseController {
 		// access check
 		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
 
-		if (!in_array($form, array('submission', 'dataSheet'))) {
+		if (!in_array($form, array('submission'))) {
 			// security: only allow data changes to submission and dataSheet form
 			return FALSE;
 		}
@@ -244,6 +244,9 @@ class ProjectController extends AbstractBaseController {
 		$contentArray = unserialize($project->$contentGetter());
 		$contentArray[$fieldIdentifier] = $fieldValue;
 		$project->$contentSetter(serialize($contentArray));
+		if ($form === 'submission') {
+			$project->setSubmissionLastUpdated(new \TYPO3\Flow\Utility\Now);
+		}
 		$this->projectRepository->update($project);
 		$this->persistenceManager->persistAll();
 
