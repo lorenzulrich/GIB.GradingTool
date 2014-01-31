@@ -6,6 +6,7 @@ namespace GIB\GradingTool\Tests\Unit\Utility;
  *                                                                        *
  *                                                                        */
 use GIB\GradingTool\Utility\DiffUtility;
+use TYPO3\Flow\Utility\Algorithms;
 
 /**
  * Testcase for Project
@@ -22,7 +23,7 @@ class DiffUtilityTest extends \TYPO3\Flow\Tests\UnitTestCase {
 		$newData = $this->diffUtilityNewData();
 
 		$changes = DiffUtility::arrayDiffRecursive($currentData, $newData);
-		$numberOfChangesInTestData = 12;
+		$numberOfChangesInTestData = 15;
 
 		$this->assertEquals($numberOfChangesInTestData, count($changes));
 	}
@@ -59,7 +60,12 @@ class DiffUtilityTest extends \TYPO3\Flow\Tests\UnitTestCase {
 			),
 
 			'emptyToString' => '',
-			'emptyToArray' => ''
+			'emptyToArray' => '',
+			'emptyToFileResource' => '',
+
+			'fileResourceToEmpty' => $this->getMockFileResource(),
+			'fileResourceToNewFileResource' => $this->getMockFileResource('old.jpg'),
+			'fileResourceUnchanged' => $this->getMockFileResource()
 		);
 
 	}
@@ -92,15 +98,34 @@ class DiffUtilityTest extends \TYPO3\Flow\Tests\UnitTestCase {
 				0 => 'First item',
 				1 => 'Second item',
 			),
+			'emptyToFileResource' => $this->getMockFileResource(),
 
 			'nullToString' => 'String',
-
 			'nullToArray' => array(
 				0 => 'First item',
 				1 => 'Second item',
-			)
+			),
+
+			'fileResourceToEmpty' => '',
+			'fileResourceToNewFileResource' => $this->getMockFileResource('new.jpg'),
+			'fileResourceUnchanged' => $this->getMockFileResource()
+
 		);
 
+	}
+
+	public function getMockFileResource($filename = 'test.jpg') {
+
+		$hash = sha1(Algorithms::generateRandomBytes(40));
+		$resourcePointer = new \TYPO3\Flow\Resource\ResourcePointer($hash);
+
+		$mockResource = $this->getAccessibleMock('TYPO3\Flow\Resource\Resource', array('getResourcePointer'));
+		$mockResource->expects($this->any())
+			->method('getResourcePointer')
+			->will($this->returnValue($resourcePointer));
+		$mockResource->_set('filename', $filename);
+
+		return $mockResource;
 	}
 }
 ?>

@@ -1,6 +1,8 @@
 <?php
 namespace GIB\GradingTool\Utility;
 
+use TYPO3\Flow\Reflection\ObjectAccess;
+
 class DiffUtility {
 
 	/**
@@ -29,6 +31,21 @@ class DiffUtility {
 				}
 				// Remove the entry from the current data to see which data isn't present anymore
 				unset($current[$key]);
+			} elseif (is_object($newValue)) {
+				// currently we only diff objects of type Resource
+				$currentValue = array_key_exists($key, $current) ? $current[$key] : NULL;
+				if (ObjectAccess::isPropertyGettable($newValue, 'filename')) {
+					if (is_object($currentValue) && ObjectAccess::isPropertyGettable($currentValue, 'filename')) {
+						$currentValue = ObjectAccess::getProperty($currentValue, 'filename');
+					}
+					$newFilename = ObjectAccess::getProperty($newValue, 'filename');
+					$result = self::diffString($currentValue, $newFilename, $key);
+					if (is_array($result)) {
+						$changes[] = $result;
+					}
+					// Remove the entry from the current data to see which data isn't present anymore
+					unset($current[$key]);
+				}
 			}
 		}
 
@@ -41,6 +58,8 @@ class DiffUtility {
 					'key' => ucfirst($key),
 					'current' => $currentValue
 				);
+				// Remove the entry from the current data to see which data isn't present anymore
+				unset($current[$key]);
 			} elseif (is_array($currentValue)) {
 				// array to NULL
 				$changes[] = array(
@@ -48,6 +67,8 @@ class DiffUtility {
 					'key' => ucfirst($key),
 					'current' => implode("\n", $currentValue)
 				);
+				// Remove the entry from the current data to see which data isn't present anymore
+				unset($current[$key]);
 			}
 		}
 
@@ -85,6 +106,15 @@ class DiffUtility {
 				$result['key'] = ucfirst($key);
 				$result['current'] = implode("\n", $current);
 				$result['new'] = $new;
+			} elseif (is_object($current)) {
+				if (ObjectAccess::isPropertyGettable($current, 'filename')) {
+					$filename = ObjectAccess::getProperty($current, 'filename');
+					// file resource to empty
+					$result['reason'] = 'J';
+					$result['key'] = ucfirst($key);
+					$result['current'] = $filename;
+					$result['new'] = $new;
+				}
 			} else {
 				return FALSE;
 			}
