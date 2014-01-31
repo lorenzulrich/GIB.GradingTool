@@ -7,6 +7,7 @@ namespace GIB\GradingTool\Controller;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Utility\Now;
 
 class ProjectController extends AbstractBaseController {
 
@@ -433,9 +434,11 @@ class ProjectController extends AbstractBaseController {
 		// set margins
 		$pdf->SetMargins(20, 45);
 		$pdf->SetHeaderMargin(20);
+		$pdf->SetFooterMargin(20);
 
 		$pdf->SetFont('Cambria', '', 10);
 		$pdf->SetHeaderFont(array('Cambria', '', 10));
+		$pdf->SetFooterFont(array('Cambria', '', 10));
 		$pdf->setHtmlVSpace(array(
 			'h1' => array(
 				array(
@@ -501,12 +504,14 @@ class ProjectController extends AbstractBaseController {
 		$pdf->setListIndentWidth(3);
 
 		$pdf->SetPrintHeader(TRUE);
-		$pdf->SetPrintFooter(FALSE);
+		$pdf->SetPrintFooter(TRUE);
 
 		// set document information
 		$pdf->SetCreator(PDF_CREATOR);
 		$pdf->SetAuthor('Global Infrastructure Basel Foundation');
 		$pdf->SetTitle($project->getProjectTitle());
+		$pdf->projectTitle = $project->getProjectTitle();
+		$pdf->exportDate = strftime('%Y-%m-%d');
 
 		// set auto page breaks
 		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);

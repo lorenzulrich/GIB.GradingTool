@@ -285,14 +285,6 @@ class SubmissionService {
 			$projectScoreData[] = number_format($section['weightedScore'], 2, '.', '\'');
 		}
 
-		// Data for modest performance
-		$data->addPoints(
-			$modestScoreData,
-			'ModestPerformance'
-		);
-		$data->setSerieDescription('ModestPerformance', 'Modest Performance');
-		$data->setPalette('ModestPerformance', array('R' => 249, 'G' => 172, 'B'=>44));
-
 		// Data for good performance
 		$data->addPoints(
 			$goodScoreData,
@@ -300,6 +292,14 @@ class SubmissionService {
 		);
 		$data->setSerieDescription('GoodPerformance', 'Good Performance');
 		$data->setPalette('GoodPerformance', array('R' => 31, 'G' => 119, 'B' => 180));
+
+		// Data for modest performance
+		$data->addPoints(
+			$modestScoreData,
+			'ModestPerformance'
+		);
+		$data->setSerieDescription('ModestPerformance', 'Modest Performance');
+		$data->setPalette('ModestPerformance', array('R' => 249, 'G' => 172, 'B'=>44));
 
 		// Actual performance
 		$data->addPoints(
@@ -348,13 +348,14 @@ class SubmissionService {
 			'DrawPoly' => TRUE,
 			'WriteValues' => TRUE,
 			'LabelPos' => RADAR_LABELS_HORIZONTAL,
-			'ValueFontSize' => 11,
+			'ValueFontSize' => 14,
 			'DrawBackground' => FALSE,
 			'SegmentHeight' => 1,
 			'Segments' => 3,
 			'AxisRotation' => -90,
 			'FixedMax' => 4,
-			'FixedMin' => 1
+			'FixedMin' => 1,
+			'BackgroundAlpha' => 0,
 		);
 		$splitChart->drawRadar($image, $data, $radarOptions);
 

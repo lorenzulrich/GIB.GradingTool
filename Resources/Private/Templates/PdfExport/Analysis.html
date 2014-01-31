@@ -30,8 +30,7 @@
 		<tr>
 			<td width="12%"></td>
 			<td width="88%">
-				<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </p>
+				<p>The outcome of the GIB Sustainable Infrastructure Grading is given in the following table and two graphical representations. The first one is a spider graph with the assessment results. This spider graph also shows what we expect as modest performance (only 10 % of all projects will have worse results) and what we expect to be good performance (65 % of all projects will have worse results). This graphic succinctly shows the position of the project with respect to these two predefined	performance levels for each of the ten themes. The following graphic shows such a result:</p>
 				<img src="{onePixelResource}" height="20" />
 			</td>
 		</tr>
@@ -86,7 +85,7 @@
 		</tbody>
 	</table>
 </h3>
-<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+<p>The second analysis presents the level of «no answers» and hence shows whether the project assessment fully covers all aspects of the sustainability criteria defined by Global Infrastructure Basel. The limits defined for the minimum level of answers are as follows:</p>
 <img src="{answerLevelGraphFileName}" align="left" />
 
 <tcpdf method="AddPage" />
@@ -117,36 +116,24 @@
 			<tr>
 				<th>{section.label}<br /><img src="{onePixelResource}" height="10" /></th>
 				<td>
-					<f:for each="{section.questions}" as="question" iteration="bpIterator">
-						<f:if condition="{bpIterator.isLast}">
-							<f:then>
-								<f:if condition="{question.bestPractiseText}">
-									{question.bestPractiseText}<br /><img src="{onePixelResource}" height="20" />
-								</f:if>
-							</f:then>
-							<f:else>
-								<f:if condition="{question.bestPractiseText}">
-									{question.bestPractiseText}<br />
-								</f:if>
-							</f:else>
-						</f:if>
-					</f:for>
+					<ul>
+						<f:for each="{section.questions}" as="question">
+							<f:if condition="{question.bestPractiseText}">
+								<li>{question.bestPractiseText}</li>
+							</f:if>
+						</f:for>
+					</ul>
+					<br /><img src="{onePixelResource}" height="1" />
 				</td>
 				<td>
-					<f:for each="{section.questions}" as="question" iteration="lpIterator">
-						<f:if condition="{lpIterator.isLast}">
-							<f:then>
-								<f:if condition="{question.lowPerformanceText}">
-									{question.lowPerformanceText}
-								</f:if>
-							</f:then>
-							<f:else>
-								<f:if condition="{question.lowPerformanceText}">
-									{question.lowPerformanceText}<br />
-								</f:if>
-							</f:else>
-						</f:if>
-					</f:for>
+					<ul>
+						<f:for each="{section.questions}" as="question">
+							<f:if condition="{question.lowPerformanceText}">
+								<li>{question.lowPerformanceText}</li>
+							</f:if>
+						</f:for>
+					</ul>
+					<br /><img src="{onePixelResource}" height="1" />
 				</td>
 			</tr>
 			<f:if condition="{performanceIterator.isLast}">

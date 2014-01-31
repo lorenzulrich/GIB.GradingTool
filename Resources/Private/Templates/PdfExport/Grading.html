@@ -34,8 +34,10 @@
 						<p>
 							<strong>{question.label}</strong><br />
 							{question.value}
-							<f:if condition="{question.comment}">
-								<br /><em>{question.comment}</em>
+							<f:if condition="{question.score} == 0">
+								<f:if condition="{question.comment}">
+									<br /><em>Your comment: {question.comment}</em>
+								</f:if>
 							</f:if>
 						</p>
 						<img src="{onePixelResource}" height="1" />
