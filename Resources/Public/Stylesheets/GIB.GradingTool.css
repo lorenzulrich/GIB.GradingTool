@@ -88,7 +88,20 @@ a {
     float: right;
 }
 
-fieldset fieldset legend { font-size: 125%; }
+fieldset legend { font-size: 125%; }
+
+#dataSheetForm > fieldset > legend { display: none; }
+
+#dataSheetForm > fieldset > fieldset > legend {
+    font-size: 150%;
+    background-color: #f0f0f0;
+    padding: 5px;
+    clear: both;
+}
+
+#dataSheetForm > fieldset > fieldset {
+    margin-top: 50px;
+}
 
 .form-control { max-width: 400px; }
 textarea.form-control { max-width: 100% !important; min-height: 130px; }
