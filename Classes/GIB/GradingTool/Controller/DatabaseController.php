@@ -179,6 +179,7 @@ class DatabaseController extends AbstractBaseController {
 
 		$this->view->assignMultiple(array(
 			'project' => $project,
+			'submission' => $this->submissionService->getProcessedSubmission($project),
 			'radarChartImage' => $radarChartImage,
 		));
 	}

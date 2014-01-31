@@ -30,9 +30,9 @@
 						<p>
 							<img class="img-responsive" src="{f:uri.resource(resource: project.projectDataArray.picture)}" />
 						</p>
-						<h4>Project Details</h4>
-						<f:render partial="ProjectDetailsTable" arguments="{project:project}"/>
 					</f:if>
+					<h4>Project Details</h4>
+					<f:render partial="ProjectDetailsTable" arguments="{project:project, submission:submission}"/>
 				</div>
 			</div>
 			<div class="row">

@@ -89,5 +89,19 @@
 			</f:if>
 		</f:else>
 	</f:if>
+	<f:if condition="{project.projectDataArray.hideSpider}">
+		<f:else>
+			<f:if condition="{submission.mean}">
+				<tr>
+					<th>
+						GIB Grading:
+					</th>
+					<td>
+						<f:format.number decimals="2">{submission.mean}</f:format.number>
+					</td>
+				</tr>
+			</f:if>
+		</f:else>
+	</f:if>
 	</tbody>
 </table>
