@@ -706,6 +706,7 @@ class ProjectController extends AbstractBaseController {
 		// the uploaded export template
 		$templateFilePathAndFileName =  \TYPO3\Flow\Utility\Files::concatenatePaths(array($this->settings['export']['excel']['templatePath'], $this->settings['export']['excel']['templateFileName']));
 		$excelReader = new \PHPExcel_Reader_Excel2007();
+		$excelReader->setLoadSheetsOnly($this->settings['export']['excel']['worksheetLabel']);
 		$phpExcel = $excelReader->load($templateFilePathAndFileName);
 		$worksheet = $phpExcel->getSheetByName($this->settings['export']['excel']['worksheetLabel']);
 
