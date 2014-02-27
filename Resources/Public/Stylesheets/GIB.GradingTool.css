@@ -122,6 +122,15 @@ textarea.form-control { max-width: 100% !important; min-height: 130px; }
 #dataSheetForm-description { min-height: 500px; }
 #projectDataForm-overview { min-height: 300px; }
 
+.dataSheetForm button[type=submit] {
+    position: fixed;
+    z-index: 9999;
+    bottom: 20px;
+    right: 50%;
+    left: 50%;
+    width: 100px;
+}
+
 /* hide conditional fields on initialization */
 fieldset.conditionalSection { display: none; }
 
