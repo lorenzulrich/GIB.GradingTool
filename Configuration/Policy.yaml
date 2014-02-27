@@ -13,7 +13,6 @@ resources:
     formBuilderEditorController: 'class(TYPO3\FormBuilder\Controller\EditorController)'
     formBuilderFormManagerController: 'class(TYPO3\FormBuilder\Controller\FormManagerController)'
     formBuilderStandardController: 'class(TYPO3\FormBuilder\Controller\StandardController)'
-    databaseController: 'class(GIB\GradingTool\Controller\DatabaseController)'
 
   #entities:
   #  'GIB\GradingTool\Domain\Model\Project':
@@ -40,7 +39,6 @@ acls:
       formBuilderEditorController: GRANT
       formBuilderFormManagerController: GRANT
       formBuilderStandardController: GRANT
-      databaseController: GRANT
     #entities:
      # GIB_GradingTool_Projects_Own: GRANT
      # GIB_GradingTool_Projects_All: GRANT
@@ -48,6 +46,5 @@ acls:
     methods:
       editDataSheet: GRANT
       submission: GRANT
-      databaseController: GRANT
     #entities:
      # GIB_GradingTool_Projects_Own: GRANT
