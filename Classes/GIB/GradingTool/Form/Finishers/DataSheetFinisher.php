@@ -244,9 +244,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$uriBuilder = new \TYPO3\Flow\Mvc\Routing\UriBuilder();
 		$uriBuilder->setRequest($request);
 		$uriBuilder->reset();
-		$uri = $uriBuilder->uriFor('index', NULL, 'Standard');
-		$uri = $request->getHttpRequest()->getBaseUri() . $uri;
-
+		$uri = $uriBuilder->uriFor('editDatasheet', array('project'=>$project), 'Project');
 		$response = $formRuntime->getResponse();
 		$mainResponse = $response;
 		while ($response = $response->getParentResponse()) {
