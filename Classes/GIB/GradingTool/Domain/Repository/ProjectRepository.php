@@ -15,6 +15,7 @@ use TYPO3\Flow\Persistence\Repository;
 class ProjectRepository extends Repository {
 
 	protected $defaultOrderings = array(
+		'gibYear' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING,
 		'created' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING,
 		'projectTitle' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING
 	);
