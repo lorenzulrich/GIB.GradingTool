@@ -154,6 +154,16 @@
 			$.cookie("GIB_GradingTool_Language", $(this).attr('data-language'), { path: '/'});
 			location.reload(true);
 		});
+
+		/* jump to first error if there is one */
+		var $errorElement = $('.has-error:visible:first');
+
+		if ($errorElement.length == 1) {
+			$('html, body').animate({
+				scrollTop: $errorElement.offset().top
+			}, 1000);
+		}
+
 	});
 
 </script>
