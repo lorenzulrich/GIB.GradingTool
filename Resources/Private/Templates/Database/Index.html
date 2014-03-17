@@ -88,26 +88,13 @@
 									</li>
 								</ul>
 							</li>
-							<li>
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
-								<ul id="navbar-allStatus" class="dropdown-menu dropdown-menu-form">
-									<f:for each="{allStatus}" as="status" iteration="statusIterator">
-										<li>
-											<f:form.checkbox id="status{statusIterator.cycle}" value="{status}" name="demand[filter][allStatus][]" /> <label for="status{statusIterator.cycle}">{status}</label>
-										</li>
-									</f:for>
-									<li>
-										<f:form.button disabled="disabled" class="applyButton btn btn-primary">Apply</f:form.button>
-									</li>
-								</ul>
-							</li>
 							<f:security.ifHasRole role="GIB.GradingTool:Administrator">
 								<li class="filter-internal">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown">GIB <b class="caret"></b></a>
-									<ul id="navbar-gibEvents" class="dropdown-menu dropdown-menu-form">
-										<f:for each="{gibEvents}" as="gib" iteration="gibIterator">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
+									<ul id="navbar-allStatus" class="dropdown-menu dropdown-menu-form">
+										<f:for each="{allStatus}" as="status" iteration="statusIterator">
 											<li>
-												<f:form.checkbox id="gib{gibIterator.cycle}" value="{gib}" name="demand[filter][gibEvents][]" /> <label for="gib{gibIterator.cycle}">{gib}</label>
+												<f:form.checkbox id="status{statusIterator.cycle}" value="{status}" name="demand[filter][allStatus][]" /> <label for="status{statusIterator.cycle}">{status}</label>
 											</li>
 										</f:for>
 										<li>
@@ -116,6 +103,19 @@
 									</ul>
 								</li>
 							</f:security.ifHasRole>
+							<li>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">GIB <b class="caret"></b></a>
+								<ul id="navbar-gibEvents" class="dropdown-menu dropdown-menu-form">
+									<f:for each="{gibEvents}" as="gib" iteration="gibIterator">
+										<li>
+											<f:form.checkbox id="gib{gibIterator.cycle}" value="{gib}" name="demand[filter][gibEvents][]" /> <label for="gib{gibIterator.cycle}">{gib}</label>
+										</li>
+									</f:for>
+									<li>
+										<f:form.button disabled="disabled" class="applyButton btn btn-primary">Apply</f:form.button>
+									</li>
+								</ul>
+							</li>
 						</ul>
 						<f:comment>
 							<div class="form-group">
