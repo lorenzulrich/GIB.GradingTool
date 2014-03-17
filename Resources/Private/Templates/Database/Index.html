@@ -197,7 +197,7 @@
 						var $filterForm = $('#filter-form');
 						$filterForm.find('input:checkbox').removeAttr('checked').removeAttr('selected');
 						$filterForm.find('input.hiddenFilterField').val('');
-						$(this).attr('disabled', true);
+						$(this).attr('disabled', true).css('visibility', 'hidden');
 						filterProjectsByDemand(null);
 						filterMapByDemand(null);
 					})
