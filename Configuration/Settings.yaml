@@ -283,7 +283,7 @@ GIB:
         budget:
           brackets:
             1:
-              minimum: 5
+              minimum: 0
               maximum: 49
             2:
               minimum: 50
@@ -296,11 +296,11 @@ GIB:
               maximum: 499
             5:
               minimum: 500
-              maximum: 900
+              maximum: 2000
         requiredInvestment:
           brackets:
             1:
-              minimum: 5
+              minimum: 0
               maximum: 49
             2:
               minimum: 50
@@ -313,7 +313,7 @@ GIB:
               maximum: 499
             5:
               minimum: 500
-              maximum: 900
+              maximum: 2000
         stage:
           0: 'Project Identification'
           1: 'Pre-Feasibility'
