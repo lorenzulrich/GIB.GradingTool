@@ -278,7 +278,7 @@ GIB:
         XZ: 150
 
     projectDatabase:
-      itemsPerPage: 5
+      itemsPerPage: 10
       filters:
         budget:
           brackets:
