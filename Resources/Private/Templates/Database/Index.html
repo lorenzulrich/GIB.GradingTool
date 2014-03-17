@@ -127,9 +127,6 @@
 						<f:form.hidden class="hiddenFilterField" id="sortingProperty" name="demand[sorting][property]" />
 						<f:form.hidden class="hiddenFilterField" id="sortingOrder" name="demand[sorting][order]" />
 					</f:form>
-					<div class="pull-right">
-						<button type="button" disabled="disabled" class="btn btn-danger navbar-btn" id="clear-filters">Clear filter</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -139,6 +136,9 @@
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
 			<div id="map"></div>
+			<div class="pull-left">
+				<button type="button" disabled="disabled" style="visibility: hidden" class="btn btn-danger navbar-btn" id="clear-filters">Clear filter</button>
+			</div>
 			<div class="map-folding">
 				<button type="button" class="btn btn-default btn-xs" id="mapSizeToggle">
 					<span id="foldButton"><i class="fa fa-caret-square-o-up"></i> Fold map</span>
@@ -188,7 +188,7 @@
 						// close dropdown
 						$('.navbar-nav li.open', e.target).removeClass('open');
 						// allow clearing the filter
-						$("#clear-filters").attr('disabled', false);
+						$("#clear-filters").attr('disabled', false).css('visibility', 'visible');
 					});
 
 					// clear all filters and reload map and projects
@@ -249,7 +249,7 @@
 						} else {
 							filterProjectsByDemand(null);
 							filterMapByDemand(null);
-							$("#clear-filters").attr('disabled', true);
+							$("#clear-filters").attr('disabled', true).css('visibility', 'hidden');
 						}
 					})
 				}
@@ -283,7 +283,7 @@
 						filterProjectsByDemand(formData);
 						filterMapByDemand(formData);
 						// allow clearing the filter
-						$("#clear-filters").attr('disabled', false);
+						$("#clear-filters").attr('disabled', false).css('visibility', 'visible');
 					});
 				}
 
@@ -328,7 +328,7 @@
 						var formData = $filterForm.serialize();
 						filterProjectsByDemand(formData);
 						// allow clearing the filter
-						$("#clear-filters").attr('disabled', false);
+						$("#clear-filters").attr('disabled', false).css('visibility', 'visible');
 					});
 
 					map.write("map");
