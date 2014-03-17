@@ -51,16 +51,18 @@
 			</td>
 		</tr>
 	</f:if>
-	<f:if condition="{project.dataSheetContentArray.implementationTimeframe}">
-		<tr>
-			<th>
-				Project duration:
-			</th>
-			<td>
-				{project.dataSheetContentArray.implementationTimeframe}
-			</td>
-		</tr>
-	</f:if>
+	<f:comment>
+		<f:if condition="{project.dataSheetContentArray.implementationTimeframe}">
+			<tr>
+				<th>
+					Project duration:
+				</th>
+				<td>
+					{project.dataSheetContentArray.implementationTimeframe}
+				</td>
+			</tr>
+		</f:if>
+	</f:comment>
 	<f:if condition="{project.projectDataArray.hideRequiredInvestment}">
 		<f:else>
 			<f:if condition="{project.dataSheetContentArray.requiredInvestment}">
