@@ -44,7 +44,16 @@ class CountryNameViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 			$countryCode = $this->renderChildren();
 		}
 
-		return $this->cldrService->getTerritoryNameForIsoCode($countryCode);
+		$countryName = $this->cldrService->getTerritoryNameForIsoCode($countryCode);
+
+		if ($countryName !== $countryCode) {
+			return $countryName;
+		} elseif ($countryCode === 'XZ') {
+			// workaround because Kosovo isn't formally a country and therefore not in the CLDR repository
+			return 'Kosovo';
+		} else {
+			return $countryCode;
+		}
 	}
 
 }

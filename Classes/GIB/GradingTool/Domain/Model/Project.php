@@ -438,7 +438,16 @@ class Project {
 	 * @return string
 	 */
 	public function getCountry() {
-		return $this->cldrService->getTerritoryNameForIsoCode($this->getCountryCode());
+		$countryName = $this->cldrService->getTerritoryNameForIsoCode($this->getCountryCode());
+		if ($countryName !== $this->getCountryCode()) {
+			return $countryName;
+		} elseif ($this->getCountryCode() === 'XZ') {
+			// workaround because Kosovo isn't formally a country and therefore not in the CLDR repository
+			return 'Kosovo';
+		} else {
+			return $this->getCountryCode();
+		}
+
 	}
 
 	/**
