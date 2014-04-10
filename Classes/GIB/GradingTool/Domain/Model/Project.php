@@ -441,7 +441,7 @@ class Project {
 		$countryName = $this->cldrService->getTerritoryNameForIsoCode($this->getCountryCode());
 		if ($countryName !== $this->getCountryCode()) {
 			return $countryName;
-		} elseif ($this->getCountryCode() === 'XZ') {
+		} elseif ($this->getCountryCode() === 'XK') {
 			// workaround because Kosovo isn't formally a country and therefore not in the CLDR repository
 			return 'Kosovo';
 		} else {

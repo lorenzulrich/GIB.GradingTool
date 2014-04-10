@@ -275,7 +275,7 @@ GIB:
         ZM: '002'
         ZW: '002'
         AX: '150'
-        XZ: '150'
+        XK: '150'
 
     projectDatabase:
       itemsPerPage: 10
@@ -508,7 +508,7 @@ TYPO3:
                 KZ: Kazakhstan
                 KE: Kenya
                 KI: Kiribati
-                XZ: Kosovo
+                XK: Kosovo
                 KW: Kuwait
                 KG: Kyrgyzstan
                 LA: Laos

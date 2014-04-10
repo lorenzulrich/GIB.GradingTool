@@ -48,7 +48,7 @@ class CountryNameViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHel
 
 		if ($countryName !== $countryCode) {
 			return $countryName;
-		} elseif ($countryCode === 'XZ') {
+		} elseif ($countryCode === 'XK') {
 			// workaround because Kosovo isn't formally a country and therefore not in the CLDR repository
 			return 'Kosovo';
 		} else {
