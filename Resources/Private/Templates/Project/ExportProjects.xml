@@ -16,10 +16,20 @@
 											<f:if condition="{subsubsection.items}">
 												<f:then>
 													<f:for each="{subsubsection.items}" as="subsubsubsection">
-														<f:if condition="{subsubsubsection.identifier}">
-															<FIELD NAME="dataSheet_{subsubsubsection.identifier}"
-																   TYPE="TEXT"/>
-														</f:if>
+														<f:if condition="{subsubsubsection.items}">
+                                                            <f:then>
+                                                                <f:for each="{subsubsubsection.items}" as="subsubsubsubsection">
+                                                                     <f:if condition="{subsubsubsubsection.identifier}">
+                                                                         <FIELD NAME="dataSheet_{subsubsubsubsection.identifier}" TYPE="TEXT"/>
+                                                                     </f:if>
+                                                                </f:for>
+                                                            </f:then>
+                                                            <f:else>
+                                                                <f:if condition="{subsubsubsection.identifier}">
+                                                                    <FIELD NAME="dataSheet_{subsubsubsection.identifier}" TYPE="TEXT"/>
+                                                                </f:if>
+                                                            </f:else>
+                                                        </f:if>
 													</f:for>
 												</f:then>
 												<f:else>
@@ -44,6 +54,7 @@
 											<f:if condition="{subsubsection.items}">
 												<f:then>
 													<f:for each="{subsubsection.items}" as="subsubsubsection">
+
 														<f:if condition="{subsubsubsection.identifier}">
 															<FIELD NAME="projectData_{subsubsubsection.identifier}"
 																   TYPE="TEXT"/>
@@ -96,14 +107,30 @@
 											<f:if condition="{subsubsection.items}">
 												<f:then>
 													<f:for each="{subsubsection.items}" as="subsubsubsection">
-														<f:if condition="{subsubsubsection.identifier}">
-															<COL>
-																<DATA>
-																	<f:render partial="RenderExportValue"
-																			  arguments="{item:subsubsubsection}"/>
-																</DATA>
-															</COL>
-														</f:if>
+                                                        <f:if condition="{subsubsubsection.items}">
+                                                            <f:then>
+                                                                <f:for each="{subsubsubsection.items}" as="subsubsubsubsection">
+                                                                    <f:if condition="{subsubsubsubsection.identifier}">
+                                                                        <COL>
+                                                                            <DATA>
+                                                                                <f:render partial="RenderExportValue"
+                                                                                          arguments="{item:subsubsubsubsection}"/>
+                                                                            </DATA>
+                                                                        </COL>
+                                                                    </f:if>
+                                                                </f:for>
+                                                            </f:then>
+                                                            <f:else>
+                                                                <f:if condition="{subsubsubsection.identifier}">
+                                                                    <COL>
+                                                                        <DATA>
+                                                                            <f:render partial="RenderExportValue"
+                                                                                      arguments="{item:subsubsubsection}"/>
+                                                                        </DATA>
+                                                                    </COL>
+                                                                </f:if>
+                                                            </f:else>
+                                                        </f:if>
 													</f:for>
 												</f:then>
 												<f:else>
