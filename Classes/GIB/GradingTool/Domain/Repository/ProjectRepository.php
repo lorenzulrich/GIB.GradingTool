@@ -216,5 +216,14 @@ class ProjectRepository extends Repository {
 
 	}
 
+	/**
+	 * override of findAll with sorting by creation date
+	 *
+	 * @return \TYPO3\Flow\Persistence\QueryResultInterface
+	 */
+	public function findAll() {
+		return $this->createQuery()->setOrderings(array('created' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING))->execute();
+	}
+
 }
 ?>
