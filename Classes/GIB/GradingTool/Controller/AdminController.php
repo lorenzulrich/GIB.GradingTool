@@ -198,6 +198,7 @@ class AdminController extends AbstractBaseController {
 				unset($roles[$key]);
 			}
 		}
+		krsort($roles);
 		$this->view->assign('roles', $roles);
 	}
 
