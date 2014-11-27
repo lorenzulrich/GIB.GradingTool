@@ -6,7 +6,6 @@ use GIB\GradingTool\Domain\Model\Project;
 use TYPO3\Flow\Annotations as Flow;
 use Tokk\pChartBundle\pData;
 use Tokk\pChartBundle\pImage;
-use Tokk\pChartBundle\pRadar;
 
 class SubmissionService {
 
@@ -356,7 +355,7 @@ class SubmissionService {
 		$radarOptions = array(
 			'DrawPoly' => TRUE,
 			'WriteValues' => TRUE,
-			'LabelPos' => RADAR_LABELS_HORIZONTAL,
+			'LabelPos' => GIB_RADAR_LABELS_HORIZONTAL,
 			'ValueFontSize' => 14,
 			'DrawBackground' => FALSE,
 			'SegmentHeight' => 1,

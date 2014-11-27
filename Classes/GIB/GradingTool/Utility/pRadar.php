@@ -15,13 +15,14 @@
 
 namespace GIB\GradingTool\Utility;
 
- define("SEGMENT_HEIGHT_AUTO"		, 690001);
+ // todo
+define("GIB_SEGMENT_HEIGHT_AUTO"		, 690001);
 
- define("RADAR_LAYOUT_STAR"		, 690011);
- define("RADAR_LAYOUT_CIRCLE"		, 690012);
+define("GIB_RADAR_LAYOUT_STAR"		, 690011);
+define("GIB_RADAR_LAYOUT_CIRCLE"		, 690012);
 
- define("RADAR_LABELS_ROTATED"		, 690021);
- define("RADAR_LABELS_HORIZONTAL"	, 690022);
+define("GIB_RADAR_LABELS_ROTATED"		, 690021);
+define("GIB_RADAR_LABELS_HORIZONTAL"	, 690022);
 
  /* pRadar class definition */
  class pRadar
@@ -70,8 +71,8 @@ namespace GIB\GradingTool\Utility;
      $BackgroundB	= isset($Format["BackgroundB"]) ? $Format["BackgroundB"] : 255;
      $BackgroundAlpha	= isset($Format["BackgroundAlpha"]) ? $Format["BackgroundAlpha"] : 50;
      $BackgroundGradient= isset($Format["BackgroundGradient"]) ? $Format["BackgroundGradient"] : NULL;
-     $Layout		= isset($Format["Layout"]) ? $Format["Layout"] : RADAR_LAYOUT_STAR;
-     $SegmentHeight	= isset($Format["SegmentHeight"]) ? $Format["SegmentHeight"] : SEGMENT_HEIGHT_AUTO;
+     $Layout		= isset($Format["Layout"]) ? $Format["Layout"] : GIB_RADAR_LAYOUT_STAR;
+     $SegmentHeight	= isset($Format["SegmentHeight"]) ? $Format["SegmentHeight"] : GIB_SEGMENT_HEIGHT_AUTO;
      $Segments		= isset($Format["Segments"]) ? $Format["Segments"] : 4;
      $WriteLabels	= isset($Format["WriteLabels"]) ? $Format["WriteLabels"] : TRUE;
      $SkipLabels	= isset($Format["SkipLabels"]) ? $Format["SkipLabels"] : 1;
@@ -81,7 +82,7 @@ namespace GIB\GradingTool\Utility;
      $LabelsBGG		= isset($Format["LabelsBGR"]) ? $Format["LabelsBGG"] : 255;
      $LabelsBGB		= isset($Format["LabelsBGR"]) ? $Format["LabelsBGB"] : 255;
      $LabelsBGAlpha	= isset($Format["LabelsBGAlpha"]) ? $Format["LabelsBGAlpha"] : 50;
-     $LabelPos		= isset($Format["LabelPos"]) ? $Format["LabelPos"] : RADAR_LABELS_ROTATED;
+     $LabelPos		= isset($Format["LabelPos"]) ? $Format["LabelPos"] : GIB_RADAR_LABELS_ROTATED;
      $LabelPadding	= isset($Format["LabelPadding"]) ? $Format["LabelPadding"] : 4;
      $DrawPoints	= isset($Format["DrawPoints"]) ? $Format["DrawPoints"] : TRUE;
      $PointRadius	= isset($Format["PointRadius"]) ? $Format["PointRadius"] : 4;
@@ -124,7 +125,7 @@ namespace GIB\GradingTool\Utility;
       $EdgeHeight = $EdgeHeight - $FontSize - $LabelPadding - $TicksLength;
 
      /* Determine the scale if set to automatic */
-     if ( $SegmentHeight == SEGMENT_HEIGHT_AUTO)
+     if ( $SegmentHeight == GIB_SEGMENT_HEIGHT_AUTO)
       {
        if ( $FixedMax != VOID )
         $Max = $FixedMax;
@@ -161,7 +162,7 @@ namespace GIB\GradingTool\Utility;
 
        if ($BackgroundGradient == NULL)
         {
-         if ( $Layout == RADAR_LAYOUT_STAR )
+         if ( $Layout == GIB_RADAR_LAYOUT_STAR )
           {
            $Color      = array("R"=>$BackgroundR,"G"=>$BackgroundG,"B"=>$BackgroundB,"Alpha"=>$BackgroundAlpha);
            $PointArray = "";
@@ -172,7 +173,7 @@ namespace GIB\GradingTool\Utility;
             }
            $Object->drawPolygon($PointArray,$Color);
           }
-         elseif ( $Layout == RADAR_LAYOUT_CIRCLE )
+         elseif ( $Layout == GIB_RADAR_LAYOUT_CIRCLE )
           {
            $Color = array("R"=>$BackgroundR,"G"=>$BackgroundG,"B"=>$BackgroundB,"Alpha"=>$BackgroundAlpha);
            $Object->drawFilledCircle($CenterX,$CenterY,$EdgeHeight,$Color);
@@ -185,7 +186,7 @@ namespace GIB\GradingTool\Utility;
          $GradientBOffset	= ($BackgroundGradient["EndB"] - $BackgroundGradient["StartB"]) / $Segments;
          $GradientAlphaOffset	= ($BackgroundGradient["EndAlpha"] - $BackgroundGradient["StartAlpha"]) / $Segments;
 
-         if ( $Layout == RADAR_LAYOUT_STAR )
+         if ( $Layout == GIB_RADAR_LAYOUT_STAR )
           {
            for($j=$Segments;$j>=1;$j--)
             {
@@ -200,7 +201,7 @@ namespace GIB\GradingTool\Utility;
              $Object->drawPolygon($PointArray,$Color);
             }
           }
-         elseif ( $Layout == RADAR_LAYOUT_CIRCLE )
+         elseif ( $Layout == GIB_RADAR_LAYOUT_CIRCLE )
           {
            for($j=$Segments;$j>=1;$j--)
             {
@@ -215,7 +216,7 @@ namespace GIB\GradingTool\Utility;
      /* Axis to axis lines */
      $Color = array("R"=>$AxisR,"G"=>$AxisG,"B"=>$AxisB,"Alpha"=>$AxisAlpha);
      $ColorDotted = array("R"=>$AxisR,"G"=>$AxisG,"B"=>$AxisB,"Alpha"=>$AxisAlpha*.8, "Ticks"=>2);
-     if ( $Layout == RADAR_LAYOUT_STAR )
+     if ( $Layout == GIB_RADAR_LAYOUT_STAR )
       {
        for($j=1;$j<=$Segments;$j++)
         {
@@ -230,7 +231,7 @@ namespace GIB\GradingTool\Utility;
           }
         }
       }
-     elseif ( $Layout == RADAR_LAYOUT_CIRCLE )
+     elseif ( $Layout == GIB_RADAR_LAYOUT_CIRCLE )
       {
        for($j=1;$j<=$Segments;$j++)
         {
@@ -256,12 +257,12 @@ namespace GIB\GradingTool\Utility;
         {
          $Label  = ($j * $SegmentHeight) + $FixedMin;
 
-         if ( $Layout == RADAR_LAYOUT_CIRCLE )
+         if ( $Layout == GIB_RADAR_LAYOUT_CIRCLE )
           {
            $EdgeX1 = cos(deg2rad($Angle+$AxisRotation)) * ($EdgeHeight/$Segments)*$j + $CenterX;
            $EdgeY1 = sin(deg2rad($Angle+$AxisRotation)) * ($EdgeHeight/$Segments)*$j + $CenterY;
           }
-         elseif ( $Layout == RADAR_LAYOUT_STAR )
+         elseif ( $Layout == GIB_RADAR_LAYOUT_STAR )
           {
            $EdgeX1 = cos(deg2rad($AxisRotation)) * ($EdgeHeight/$Segments)*$j + $CenterX;
            $EdgeY1 = sin(deg2rad($AxisRotation)) * ($EdgeHeight/$Segments)*$j + $CenterY;
@@ -300,7 +301,7 @@ namespace GIB\GradingTool\Utility;
 
          if ($ID % $SkipLabels == 0)
           {
-           if ( $LabelPos == RADAR_LABELS_ROTATED )
+           if ( $LabelPos == GIB_RADAR_LABELS_ROTATED )
             $Object->drawText($LabelX,$LabelY,$Label,array("Angle"=>(360-($i+$AxisRotation+$Axisoffset))-90,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
            else
             {
@@ -444,7 +445,7 @@ namespace GIB\GradingTool\Utility;
      $BackgroundAlpha	= isset($Format["BackgroundAlpha"]) ? $Format["BackgroundAlpha"] : 50;
      $BackgroundGradient= isset($Format["BackgroundGradient"]) ? $Format["BackgroundGradient"] : NULL;
      $AxisSteps		= isset($Format["AxisSteps"]) ? $Format["AxisSteps"] : 20;
-     $SegmentHeight	= isset($Format["SegmentHeight"]) ? $Format["SegmentHeight"] : SEGMENT_HEIGHT_AUTO;
+     $SegmentHeight	= isset($Format["SegmentHeight"]) ? $Format["SegmentHeight"] : GIB_SEGMENT_HEIGHT_AUTO;
      $Segments		= isset($Format["Segments"]) ? $Format["Segments"] : 4;
      $WriteLabels	= isset($Format["WriteLabels"]) ? $Format["WriteLabels"] : TRUE;
      $LabelsBackground	= isset($Format["LabelsBackground"]) ? $Format["LabelsBackground"] : TRUE;
@@ -452,7 +453,7 @@ namespace GIB\GradingTool\Utility;
      $LabelsBGG		= isset($Format["LabelsBGR"]) ? $Format["LabelsBGG"] : 255;
      $LabelsBGB		= isset($Format["LabelsBGR"]) ? $Format["LabelsBGB"] : 255;
      $LabelsBGAlpha	= isset($Format["LabelsBGAlpha"]) ? $Format["LabelsBGAlpha"] : 50;
-     $LabelPos		= isset($Format["LabelPos"]) ? $Format["LabelPos"] : RADAR_LABELS_ROTATED;
+     $LabelPos		= isset($Format["LabelPos"]) ? $Format["LabelPos"] : GIB_RADAR_LABELS_ROTATED;
      $LabelPadding	= isset($Format["LabelPadding"]) ? $Format["LabelPadding"] : 4;
      $DrawPoints	= isset($Format["DrawPoints"]) ? $Format["DrawPoints"] : TRUE;
      $PointRadius	= isset($Format["PointRadius"]) ? $Format["PointRadius"] : 4;
@@ -497,7 +498,7 @@ namespace GIB\GradingTool\Utility;
       $EdgeHeight = $EdgeHeight - $FontSize - $LabelPadding - $TicksLength;
 
      /* Determine the scale if set to automatic */
-     if ( $SegmentHeight == SEGMENT_HEIGHT_AUTO)
+     if ( $SegmentHeight == GIB_SEGMENT_HEIGHT_AUTO)
       {
        if ( $FixedMax != VOID )
         $Max = $FixedMax;
@@ -593,7 +594,7 @@ namespace GIB\GradingTool\Utility;
          $LabelY = sin(deg2rad($i+$AxisRotation)) * ($EdgeHeight+$LabelPadding+$TicksLength) + $CenterY;
          $Label = $i."�";
 
-         if ( $LabelPos == RADAR_LABELS_ROTATED )
+         if ( $LabelPos == GIB_RADAR_LABELS_ROTATED )
           $Object->drawText($LabelX,$LabelY,$Label,array("Angle"=>(360-$i),"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
          else
           {
