@@ -39,6 +39,12 @@ class Project {
 	protected $projectManager;
 
 	/**
+	 * @var string
+	 * @ORM\Column(nullable=true)
+	 */
+	protected $dataSheetFormIdentifier;
+
+	/**
 	 * Serialized representation of Data Sheet Content
 	 *
 	 * @var string
@@ -97,6 +103,12 @@ class Project {
 	 * @var boolean
 	 */
 	protected $submissionFormAccess = FALSE;
+
+	/**
+	 * @var string
+	 * @ORM\Column(nullable=true)
+	 */
+	protected $submissionFormIdentifier = NULL;
 
 	/**
 	 * Serialized representation of Submission
@@ -560,6 +572,34 @@ class Project {
 	 */
 	public function getStatus() {
 		return $this->status;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSubmissionFormIdentifier() {
+		return $this->submissionFormIdentifier;
+	}
+
+	/**
+	 * @param string $submissionFormIdentifier
+	 */
+	public function setSubmissionFormIdentifier($submissionFormIdentifier) {
+		$this->submissionFormIdentifier = $submissionFormIdentifier;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDataSheetFormIdentifier() {
+		return $this->dataSheetFormIdentifier;
+	}
+
+	/**
+	 * @param string $dataSheetFormIdentifier
+	 */
+	public function setDataSheetFormIdentifier($dataSheetFormIdentifier) {
+		$this->dataSheetFormIdentifier = $dataSheetFormIdentifier;
 	}
 
 }
