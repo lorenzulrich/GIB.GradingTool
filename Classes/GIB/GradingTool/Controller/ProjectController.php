@@ -280,7 +280,8 @@ class ProjectController extends AbstractBaseController {
 		$radarChartImagePathAndFilename = $this->submissionService->getRadarImage($project);
 		$radarChartImageResource = $this->resourceManager->importResource($radarChartImagePathAndFilename);
 		$radarChartUri = $this->resourcePublisher->getPersistentResourceWebUri($radarChartImageResource);
-
+		// this is necessary because we're in a safe request, but generate a resource
+		$this->persistenceManager->persistAll();
 
 		$this->view->assignMultiple(array(
 			'submission' => $submission,
