@@ -98,7 +98,6 @@ class ProjectDataFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$uriBuilder->setRequest($request);
 		$uriBuilder->reset();
 		$uri = $uriBuilder->uriFor('index', NULL, 'Admin');
-		$uri = $request->getHttpRequest()->getBaseUri() . $uri;
 
 		$response = $formRuntime->getResponse();
 		$mainResponse = $response;

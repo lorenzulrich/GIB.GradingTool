@@ -102,7 +102,6 @@ class TemplateDatabaseFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$uriBuilder->setRequest($request);
 		$uriBuilder->reset();
 		$uri = $uriBuilder->uriFor('list', NULL, 'Template');
-		$uri = $request->getHttpRequest()->getBaseUri() . $uri;
 
 		$response = $formRuntime->getResponse();
 		$mainResponse = $response;
