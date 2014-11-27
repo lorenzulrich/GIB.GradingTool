@@ -89,12 +89,14 @@ class TemplateController extends AbstractBaseController {
 	 * @param \GIB\GradingTool\Domain\Model\Template $template
 	 */
 	public function removeAction(\GIB\GradingTool\Domain\Model\Template $template) {
-		$this->templateRepository->remove($template);
-		$this->persistenceManager->persistAll();
+		//$this->templateRepository->remove($template);
+		//$this->persistenceManager->persistAll();
 
 		// add a flash message
-		$message = new \TYPO3\Flow\Error\Message('The template "%s" was successfully removed.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($template->getTemplateIdentifier()));
-		$this->flashMessageContainer->addMessage($message);
+		//$message = new \TYPO3\Flow\Error\Message('The template "%s" was successfully removed.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($template->getTemplateIdentifier()));
+		//$this->flashMessageContainer->addMessage($message);
+
+		// disabled removeAction because of accidentally removed templates in the past
 
 		$this->redirect('list', 'Template');
 	}
