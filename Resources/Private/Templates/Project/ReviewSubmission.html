@@ -10,10 +10,28 @@
 	<div class="row" xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers">
 		<div class="col-md-12">
 			<h2>Review Grading for project "{project.projectTitle}"</h2>
-			<p>
-				<strong>Grading last edited at</strong><br>
-				<f:format.date format="Y-m-d, H:i">{project.submissionLastUpdated}</f:format.date>
-			</p>
+			<table id="reviewSubmissionTable">
+				<thead>
+				<tr>
+					<th>
+						Grading last edited at
+					</th>
+					<th>
+						Grading form
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>
+						<f:format.date format="Y-m-d, H:i">{project.submissionLastUpdated}</f:format.date>
+					</td>
+					<td>
+						{project.submissionFormIdentifier}
+					</td>
+				</tr>
+				</tbody>
+			</table>
 			<h3>Overview</h3>
 			<f:if condition="{submission.hasError}">
 				<div class="alert alert-danger">

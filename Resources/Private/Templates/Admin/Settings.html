@@ -21,7 +21,15 @@
 		<tbody>
 		<f:for each="{forms}" as="form">
 			<tr>
-				<td>{form.persistenceIdentifier}</td>
+				<td>
+					{form.persistenceIdentifier}
+					<f:if condition="{form.persistenceIdentifier} == {settings.forms.dataSheet.default}">
+						<strong>(default)</strong>
+					</f:if>
+					<f:if condition="{form.persistenceIdentifier} == {settings.forms.submission.default}">
+						<strong>(default)</strong>
+					</f:if>
+				</td>
 				<td>{form.name}</td>
 				<td>
 					<f:link.action target="_blank" class="btn btn-primary btn-sm" package="TYPO3.FormBuilder" action="index" controller="editor" arguments="{formPersistenceIdentifier:form.persistenceIdentifier, presetName:form.defaultPresetName}"><i class="fa fa-edit"></i> Edit</f:link.action>

@@ -279,6 +279,10 @@ ul.submissionAnswer span {
     padding-right: 100px;
 }
 
+#reviewSubmissionTable th {
+    padding-right: 100px;
+}
+
 @media print {
     body { font-size: 11px; }
     h1 { font-size: 18px; }

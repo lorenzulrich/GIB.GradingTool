@@ -5,8 +5,12 @@ GIB:
     databaseName: 'GIB Project Finder'
 
     forms:
-      dataSheet: 'dataSheetForm'
-      submission: 'submissionForm'
+      dataSheet:
+        default: 'dataSheetForm2014'
+        1: 'dataSheetForm'
+      submission:
+        default: 'submissionForm2014'
+        1: 'submissionForm'
       emailTemplate: 'emailTemplate'
       projectData: 'projectDataForm'
 

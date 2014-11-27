@@ -18,6 +18,9 @@
 				<th>
 					Data Sheet last edited at
 				</th>
+				<th>
+					Data Sheet form
+				</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -27,6 +30,9 @@
 				</td>
 				<td>
 					<f:format.date>{project.lastUpdated}</f:format.date>
+				</td>
+				<td>
+					{project.dataSheetFormIdentifier}
 				</td>
 			</tr>
 			</tbody>

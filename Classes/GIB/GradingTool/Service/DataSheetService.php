@@ -37,7 +37,7 @@ class DataSheetService {
 	 */
 	public function getProcessedDataSheet(\GIB\GradingTool\Domain\Model\Project $project) {
 		/** @var \TYPO3\Form\Core\Model\FormDefinition $formDefinition */
-		$formDefinition = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
+		$formDefinition = $this->formPersistenceManager->load($project->getDataSheetFormIdentifier());
 		$fieldArray = $this->buildFieldArray($formDefinition['renderables'], $project->getDataSheetContentArray());
 		return $fieldArray;
 	}
@@ -103,7 +103,7 @@ class DataSheetService {
 		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
 		$factory = new \TYPO3\Form\Factory\ArrayFormFactory;
 		// todo overlay if needed
-		$overrideConfiguration = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
+		$overrideConfiguration = $this->formPersistenceManager->load($project->getDataSheetFormIdentifier());
 		/** @var \TYPO3\Form\Core\Model\FormDefinition $formDefinition */
 		$formDefinition = $factory->build($overrideConfiguration);
 

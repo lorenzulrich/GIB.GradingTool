@@ -81,7 +81,7 @@ class ProjectController extends AbstractBaseController {
 	public function newDataSheetAction() {
 		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
+		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']['default']);
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 
 		$formDefinition = $factory->build($overrideConfiguration);
@@ -107,9 +107,10 @@ class ProjectController extends AbstractBaseController {
 		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
 
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['dataSheet']);
+		$formName = $this->getFormNameRespectingLocale($project->getDataSheetFormIdentifier());
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration);
+
 		foreach ($project->getDataSheetContentArray() as $dataSheetField => $dataSheetContent) {
 			$formDefinition->addElementDefaultValue($dataSheetField, $dataSheetContent);
 		}
@@ -190,8 +191,14 @@ class ProjectController extends AbstractBaseController {
 		// access check
 		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
 
+		if (empty($project->getSubmissionFormIdentifier())) {
+			$project->setSubmissionFormIdentifier($this->settings['forms']['submission']['default']);
+			$this->projectRepository->update($project);
+			$this->persistenceManager->persistAll();
+		}
+
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
-		$formName = $this->getFormNameRespectingLocale($this->settings['forms']['submission'], $project->getLanguage());
+		$formName = $this->getFormNameRespectingLocale($project->getSubmissionFormIdentifier(), $project->getLanguage());
 		$overrideConfiguration = $this->formPersistenceManager->load($formName);
 		$formDefinition = $factory->build($overrideConfiguration);
 

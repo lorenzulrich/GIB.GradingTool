@@ -2,6 +2,7 @@
 namespace GIB\GradingTool\Service;
 
 
+use GIB\GradingTool\Domain\Model\Project;
 use TYPO3\Flow\Annotations as Flow;
 use Tokk\pChartBundle\pData;
 use Tokk\pChartBundle\pImage;
@@ -29,16 +30,22 @@ class SubmissionService {
 	protected $formPersistenceManager;
 
 	/**
-	 * @param \GIB\GradingTool\Domain\Model\Project $project
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Utility\Environment
+	 */
+	protected $environmentUtility;
+
+	/**
+	 * @param Project $project
 	 * @param bool $languageOverlay
 	 * @return array
 	 */
-	public function getProcessedSubmission(\GIB\GradingTool\Domain\Model\Project $project, $languageOverlay = FALSE) {
+	public function getProcessedSubmission(Project $project, $languageOverlay = FALSE) {
 
 		$submissionContentArray = unserialize($project->getSubmissionContent());
 		// we don't overlay the form here because we need to review the submission in english
 		// todo overlay if needed
-		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
+		$submissionFormDefinition = $this->formPersistenceManager->load($project->getSubmissionFormIdentifier());
 
 		$submission = array();
 		$submission['hasError'] = FALSE;
@@ -232,10 +239,12 @@ class SubmissionService {
 	/**
 	 * Get score basis data
 	 *
+	 * @param Project $project
 	 * @return array
 	 */
-	public function getScoreData() {
-		$submissionFormDefinition = $this->formPersistenceManager->load($this->settings['forms']['submission']);
+	public function getScoreData(Project $project = NULL) {
+		$form = $project instanceof Project ? $project->getSubmissionFormIdentifier() : $this->settings['forms']['submission']['default'];
+		$submissionFormDefinition = $this->formPersistenceManager->load($form);
 
 		$scoreData = array();
 
@@ -260,7 +269,7 @@ class SubmissionService {
 	/**
 	 * Get the score data of a project for pChart usage
 	 *
-	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @param $project Project
 	 * @return pData
 	 */
 	public function getScoreDataForGraph($project) {
@@ -268,7 +277,7 @@ class SubmissionService {
 		$data = new pData();
 
 		// get and process the basis score data
-		$basisScoreData = $this->getScoreData();
+		$basisScoreData = $this->getScoreData($project);
 		$goodScoreData = array();
 		$modestScoreData = array();
 		$axisLabels = array();
@@ -324,7 +333,7 @@ class SubmissionService {
 	/**
 	 * Render a radar from the project score
 	 *
-	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @param $project Project
 	 * @return string The filename of the radar file
 	 */
 	public function getRadarImage($project) {
@@ -383,7 +392,7 @@ class SubmissionService {
 	/**
 	 * Render a line graph from the project score
 	 *
-	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @param $project Project
 	 * @return string The filename of the file
 	 */
 	public function getLineGraphImage($project) {
@@ -467,7 +476,7 @@ class SubmissionService {
 	/**
 	 * Render a answer level bar chart from the project score
 	 *
-	 * @param $project \GIB\GradingTool\Domain\Model\Project
+	 * @param $project Project
 	 * @return string The filename of the file
 	 */
 	public function getAnswerLevelBarChartImage($project) {
@@ -476,7 +485,7 @@ class SubmissionService {
 		$data = new pData();
 
 		// get and process the basis score data
-		$basisScoreData = $this->getScoreData();
+		$basisScoreData = $this->getScoreData($project);
 		$axisLabels = array();
 		foreach ($basisScoreData as $category) {
 			$axisLabels[] = $category['categoryName'];
