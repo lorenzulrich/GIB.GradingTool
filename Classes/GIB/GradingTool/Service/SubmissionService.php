@@ -381,7 +381,7 @@ class SubmissionService {
 		);
 		$image->drawLegend(1500, 525, $legendOptions);
 
-		$temporaryRadarFile = tempnam(NULL, 'radarchart.png');
+		$temporaryRadarFile = tempnam($this->environmentUtility->getPathToTemporaryDirectory(), 'radarchart.png');
 		$image->render($temporaryRadarFile);
 
 		return $temporaryRadarFile;
@@ -464,7 +464,7 @@ class SubmissionService {
 		);
 		$image->drawLegend(0, 900, $legendOptions);
 
-		$temporaryLineGraphFile = tempnam(NULL, 'linegraph.png');
+		$temporaryLineGraphFile = tempnam($this->environmentUtility->getPathToTemporaryDirectory(), 'linegraph.png');
 		$image->render($temporaryLineGraphFile);
 
 
@@ -588,7 +588,7 @@ class SubmissionService {
 		);
 		$image->drawLegend(0, 900, $legendOptions);
 
-		$temporaryBarChartFile = tempnam(NULL, 'barchart.png');
+		$temporaryBarChartFile = tempnam($this->environmentUtility->getPathToTemporaryDirectory(), 'barchart.png');
 		$image->render($temporaryBarChartFile);
 		return $temporaryBarChartFile;
 
