@@ -160,6 +160,7 @@ class DataSheetFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 			$project = new \GIB\GradingTool\Domain\Model\Project();
 			$project->setProjectTitle($formValueArray['projectTitle']);
 			$project->setDataSheetFormIdentifier($this->settings['forms']['dataSheet']['default']);
+			$project->setSubmissionFormIdentifier($this->settings['forms']['submission']['default']);
 
 			// store identifier=userName and password for later usage
 			$identifier = $formValueArray['userName'];
