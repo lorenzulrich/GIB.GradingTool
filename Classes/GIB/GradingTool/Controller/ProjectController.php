@@ -659,15 +659,24 @@ class ProjectController extends AbstractBaseController {
 	 * Export all projects as a single XML file meeting the FMPXMLRESULT grammar
 	 *
 	 * @param string $authToken
+	 * @param string $dataSheetFormIdentifier
+	 * @param string $submissionFormIdentifier
 	 */
-	public function exportProjectsAction($authToken = '') {
+	public function exportProjectsAction($authToken = '', $dataSheetFormIdentifier = '', $submissionFormIdentifier = '') {
 		if (empty($authToken) || $authToken !== $this->settings['export']['xml']['requestToken']) {
 			$message = new \TYPO3\Flow\Error\Message('Permission denied. Authentication token missing or wrong.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
 			$this->flashMessageContainer->addMessage($message);
 			$this->redirect('index', 'Standard');
 		}
 
-		$projects = $this->projectRepository->findAll();
+		if (empty($dataSheetFormIdentifier)) {
+			$dataSheetFormIdentifier = $this->settings['forms']['dataSheet']['default'];
+		}
+		if (empty($submissionFormIdentifier)) {
+			$submissionFormIdentifier = $this->settings['forms']['submission']['default'];
+		}
+
+		$projects = $this->projectRepository->findByDataSheetFormIdentifierAndSubmissionFormIdentifier($dataSheetFormIdentifier, $submissionFormIdentifier);
 
 		$this->view->assignMultiple(array(
 			'projects' => $projects

@@ -225,5 +225,24 @@ class ProjectRepository extends Repository {
 		return $this->createQuery()->setOrderings(array('created' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING))->execute();
 	}
 
+	/**
+	 * override of findAll with sorting by creation date
+	 *
+	 * @param $dataSheetFormIdentifier
+	 * @param $submissionFormIdentifier
+	 * @return \TYPO3\Flow\Persistence\QueryResultInterface
+	 */
+	public function findByDataSheetFormIdentifierAndSubmissionFormIdentifier($dataSheetFormIdentifier, $submissionFormIdentifier) {
+		$query = $this->createQuery();
+		$query->setOrderings(array('created' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING));
+		$query->matching(
+			$query->logicalAnd(
+				$query->equals('dataSheetFormIdentifier', $dataSheetFormIdentifier),
+				$query->equals('submissionFormIdentifier', $submissionFormIdentifier)
+			)
+		);
+		return $query->execute();
+	}
+
 }
 ?>
