@@ -55,7 +55,7 @@ class TidyViewHelper extends AbstractViewHelper {
 	 * Trims content, then trims each line of content
 	 *
 	 * @param string $content
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return string
 	 */
 	public function render($content = NULL) {
@@ -76,7 +76,7 @@ class TidyViewHelper extends AbstractViewHelper {
 			$tidy->cleanRepair();
 			return (string) $tidy;
 		}
-		throw new RuntimeException('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
+		throw new \RuntimeException('TidyViewHelper requires the PHP extension "tidy" which is not installed or not loaded.', 1352059753);
 	}
 
 }
