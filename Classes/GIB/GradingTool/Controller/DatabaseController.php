@@ -177,6 +177,8 @@ class DatabaseController extends AbstractBaseController {
 		$radarChartResource->setFilename('radarChart.jpg');
 		$radarChartImage = new \TYPO3\Media\Domain\Model\Image($radarChartResource);
 
+		$this->persistenceManager->persistAll();
+
 		$this->view->assignMultiple(array(
 			'project' => $project,
 			'submission' => $this->submissionService->getProcessedSubmission($project),
