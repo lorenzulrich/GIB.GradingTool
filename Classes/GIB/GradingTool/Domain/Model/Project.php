@@ -23,12 +23,14 @@ class Project {
 	/**
 	 * @var \GIB\GradingTool\Service\CldrService
 	 * @Flow\Inject
+	 * @Flow\Lazy
 	 */
 	protected $cldrService;
 
 	/**
 	 * @var \TYPO3\Flow\I18n\Cldr\CldrRepository
 	 * @Flow\Inject
+	 * @Flow\Lazy
 	 */
 	protected $cldrRepository;
 
