@@ -6,10 +6,10 @@ GIB:
 
     forms:
       dataSheet:
-        default: 'dataSheetForm2014'
+        default: 'dataSheetFormV2'
         1: 'dataSheetForm'
       submission:
-        default: 'submissionForm2014'
+        default: 'submissionFormV2'
         1: 'submissionForm'
       emailTemplate: 'emailTemplate'
       projectData: 'projectDataForm'
@@ -34,7 +34,7 @@ GIB:
         projectTitleCell: A1
         firstSectionColumn: A
         sectionLabelFirstRow: 2
-        templatePath: %FLOW_PATH_DATA%Templates/
+        templatePath: '%FLOW_PATH_DATA%Templates/'
         templateFileName: 'ExportGrading.xlsm'
 
     cldrService:
@@ -341,12 +341,15 @@ GIB:
              _key: '009'
              _value: Oceania
 
+
+
 TYPO3:
   Flow:
     session:
       inactivityTimeout: 14400
 
   Form:
+
     presets:
       gibdefault:
         title: 'GIB'
