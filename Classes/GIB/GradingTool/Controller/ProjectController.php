@@ -418,6 +418,9 @@ class ProjectController extends AbstractBaseController {
 	 */
 	public function exportReportAction(\GIB\GradingTool\Domain\Model\Project $project) {
 
+		// access check
+		$this->checkOwnerOrAdministratorAndDenyIfNeeded($project);
+
 		// The processed submission
 		$submission = $this->submissionService->getProcessedSubmission($project);
 
