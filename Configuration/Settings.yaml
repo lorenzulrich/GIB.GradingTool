@@ -396,6 +396,25 @@ TYPO3:
 
 
           ### FORM ELEMENTS: CUSTOM ###
+          'TYPO3.Form:SingleLineText':
+            formBuilder:
+              editors:
+                maxLength:
+                  sorting: 220
+                  label: 'Max length'
+                  propertyPath: 'properties.maxLength'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+
+          'TYPO3.Form:MultiLineText':
+            formBuilder:
+              editors:
+                maxLength:
+                  sorting: 220
+                  label: 'Max length'
+                  propertyPath: 'properties.maxLength'
+                  viewName: 'TYPO3.FormBuilder.View.ElementOptionsPanel.Editor.TextEditor'
+
+
           'TYPO3.Form:DatePicker':
             properties:
               elementClassAttribute: 'form-control'

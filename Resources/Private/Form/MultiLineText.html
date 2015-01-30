@@ -1,4 +1,11 @@
 <f:layout name="TYPO3.Form:Field" />
 <f:section name="field">
-	<f:form.textarea property="{element.identifier}" id="{element.uniqueIdentifier}" class="form-control {element.properties.elementClassAttribute}" additionalAttributes="{placeholder: element.properties.placeholder}" rows="{element.properties.rows}" cols="{element.properties.cols}" errorClass="{element.properties.elementErrorClassAttribute}" />
+	<f:if condition="{element.properties.maxLength}">
+		<f:then>
+			<f:form.textarea property="{element.identifier}" id="{element.uniqueIdentifier}" class="form-control {element.properties.elementClassAttribute}" additionalAttributes="{placeholder: element.properties.placeholder, maxlength: element.properties.maxLength}" rows="{element.properties.rows}" cols="{element.properties.cols}" errorClass="{element.properties.elementErrorClassAttribute}" />
+		</f:then>
+		<f:else>
+			<f:form.textarea property="{element.identifier}" id="{element.uniqueIdentifier}" class="form-control {element.properties.elementClassAttribute}" additionalAttributes="{placeholder: element.properties.placeholder}" rows="{element.properties.rows}" cols="{element.properties.cols}" errorClass="{element.properties.elementErrorClassAttribute}" />
+		</f:else>
+	</f:if>
 </f:section>

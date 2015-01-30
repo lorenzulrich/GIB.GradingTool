@@ -25,6 +25,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script src="{f:uri.resource(path: 'JavaScripts/jquery.cookie.js')}"></script>
+	<script src="{f:uri.resource(path: 'JavaScripts/bootstrap-maxlength.min.js')}"></script>
 	<f:comment>
 		<script src="{f:uri.resource(path: 'JavaScripts/json2.js')}"></script>
 		<script src="{f:uri.resource(path: 'JavaScripts/jstorage.min.js')}"></script>
@@ -124,7 +125,9 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <script src="{f:uri.resource(path: 'JavaScripts/bootbox.min.js')}"></script>
 <script>
-	$(document).on("click", ".returnConfirm", function(e) {
+	var $body = $('body');
+
+	$body.on("click", ".returnConfirm", function(e) {
 		e.preventDefault();
 		var targetElement = $(e.target);
 		var message = targetElement.attr('data-confirm');
@@ -135,7 +138,7 @@
 		});
 	});
 
-	$(document).on("click", ".returnConfirmFormSubmit", function(e) {
+	$body.on("click", ".returnConfirmFormSubmit", function(e) {
 		e.preventDefault();
 		var targetElement = $(e.target);
 		var $form = $(e.target).closest('form');
@@ -157,12 +160,20 @@
 
 		/* jump to first error if there is one */
 		var $errorElement = $('.has-error:visible:first');
-
 		if ($errorElement.length == 1) {
 			$('html, body').animate({
 				scrollTop: $errorElement.offset().top
 			}, 1000);
 		}
+
+		/* Maximum length enforcement and indication */
+		var options = {
+			alwaysShow: true,
+			validate: true
+		};
+		$('input[maxlength]').maxlength(options);
+		$('textarea[maxlength]').maxlength(options);
+
 
 	});
 
