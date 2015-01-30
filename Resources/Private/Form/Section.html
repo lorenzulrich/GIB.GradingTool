@@ -8,20 +8,12 @@
 		<form:renderRenderable renderable="{element}" />
 	</f:for>
 </fieldset>
-<script type="text/javascript">
-	function registerConditionalSection(fieldsetId, triggerFieldId, triggerValue) {
-
-		$(document).delegate('.dataSheetForm-' + triggerFieldId, 'change', function(e) {
-			if ($(e.target).val() == triggerValue) {
-				$('fieldset#' + fieldsetId).slideToggle();
-			}
-		});
-	}
-</script>
 <f:if condition="{section.properties.displayConditionField}">
 	<script>
 		$(function() {
-			registerConditionalSection('{section.uniqueIdentifier}', '{section.properties.displayConditionField}', '{section.properties.displayConditionValue}');
+			if (typeof registerConditionalSection !== 'undefined') {
+				registerConditionalSection('{section.uniqueIdentifier}', '{section.properties.displayConditionField}', '{section.properties.displayConditionValue}');
+			}
 		});
 	</script>
 </f:if>

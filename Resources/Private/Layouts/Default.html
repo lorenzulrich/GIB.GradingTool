@@ -150,6 +150,24 @@
 		});
 	});
 
+
+	function registerConditionalSection(fieldsetId, triggerFieldId, triggerValue) {
+		/* Enabling toggling of conditional sections */
+		var formId = $('#' + fieldsetId).closest('form').attr('id');
+		var triggerFieldSelector = '.' + formId + '-' + triggerFieldId;
+		$body.on('change', triggerFieldSelector, function(e) {
+			if ($(e.target).val() == triggerValue) {
+				$('fieldset#' + fieldsetId).slideToggle();
+			}
+		});
+
+		/* Display conditional fieldset if according checkbox is checked */
+		if ($(triggerFieldSelector + " input[value='" + triggerValue + "']").prop('checked')) {
+			$('#' + fieldsetId).show();
+		};
+
+	};
+
 	$(function() {
 		/* Set a language cookie depending on the language selector */
 		$('a.languageSelect').click(function(e) {
