@@ -8,6 +8,16 @@
 			{project.projectDataArray.status}
 		</td>
 	</tr>
+	<f:if condition="{project.dataSheetContentArray.primarySector}">
+		<tr>
+			<th>
+				Primary Sector:
+			</th>
+			<td>
+				{project.dataSheetContentArray.primarySector}
+			</td>
+		</tr>
+	</f:if>
 	<f:if condition="{project.dataSheetContentArray.categories}">
 		<tr>
 			<th>

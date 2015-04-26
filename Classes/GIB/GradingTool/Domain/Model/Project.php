@@ -154,6 +154,12 @@ class Project {
 	 * @var string
 	 * @ORM\Column(type="text", nullable=true)
 	 */
+	protected $primarySector;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="text", nullable=true)
+	 */
 	protected $categories;
 
 	/**
@@ -278,6 +284,12 @@ class Project {
 		}
 		$this->setStage($stage);
 
+		// PrimarySector: dataSheetFormV2
+		if (isset($dataSheetContent['primarySector'])) {
+			$this->setPrimarySector($dataSheetContent['primarySector']);
+		}
+
+		// Categories: Sectors from dataSheetForm and Multiple Sectors from dataSheetFormV2
 		if (isset($dataSheetContent['categories']) && is_array($dataSheetContent['categories'])) {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}
@@ -626,6 +638,20 @@ class Project {
 	 */
 	public function setDataSheetFormIdentifier($dataSheetFormIdentifier) {
 		$this->dataSheetFormIdentifier = $dataSheetFormIdentifier;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPrimarySector() {
+		return $this->primarySector;
+	}
+
+	/**
+	 * @param string $primarySector
+	 */
+	public function setPrimarySector($primarySector) {
+		$this->primarySector = $primarySector;
 	}
 
 }
