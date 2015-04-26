@@ -54,7 +54,7 @@
 								<ul id="navbar-stages" class="dropdown-menu dropdown-menu-form">
 									<f:for each="{stages}" as="stage" iteration="stagesIterator">
 										<li>
-											<f:form.checkbox id="stage{stagesIterator.cycle}" value="{stage}" name="demand[filter][stages][]" /> <label for="stage{stagesIterator.cycle}">{stage}</label>
+											<f:form.checkbox id="stage{stagesIterator.cycle}" value="{stage._key}" name="demand[filter][stages][]" /> <label for="stage{stagesIterator.cycle}">{stage._value}</label>
 										</li>
 									</f:for>
 									<li>

@@ -123,7 +123,7 @@ class ProjectRepository extends Repository {
 		if (isset($demand['filter']['stages']) && !empty($demand['filter']['stages'])) {
 			$stages = array();
 			foreach($demand['filter']['stages'] as $stage) {
-				$stages[] = $query->like('stage', '%' . strtoupper($stage) . '%');
+				$stages[] = $query->like('stage', '%###' . $stage . '###%');
 			}
 			$constraints[] = $query->logicalOr(
 				$stages

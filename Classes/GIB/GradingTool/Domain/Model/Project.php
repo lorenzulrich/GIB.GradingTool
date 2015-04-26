@@ -259,9 +259,25 @@ class Project {
 		if (isset($dataSheetContent['language'])) {
 			$this->setLanguage($dataSheetContent['language']);
 		}
+
+		// Stages are lowercase and without whitespaces and special chars
+		$stage = '';
+		// dataSheetForm
 		if (isset($dataSheetContent['stage']) && is_array($dataSheetContent['stage'])) {
-			$this->setStage(implode($dataSheetContent['stage']));
+			foreach ($dataSheetContent['stage'] as $currentStage) {
+				$stageValue = strtolower(preg_replace("/[\s_]/", '', str_replace('-', '', $currentStage)));
+				$stage .= '###' . $stageValue . '###';
+			}
 		}
+		// dataSheetFormV2
+		if (isset($dataSheetContent['mainProjectStage']) && is_array($dataSheetContent['mainProjectStage'])) {
+			foreach ($dataSheetContent['mainProjectStage'] as $currentStage) {
+				$stageValue = strtolower(preg_replace("/[\s_]/", '', str_replace('-', '', $currentStage)));
+				$stage .= '###' . $stageValue . '###';
+			}
+		}
+		$this->setStage($stage);
+
 		if (isset($dataSheetContent['categories']) && is_array($dataSheetContent['categories'])) {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}

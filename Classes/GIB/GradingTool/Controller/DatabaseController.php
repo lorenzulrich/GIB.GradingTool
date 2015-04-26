@@ -131,6 +131,17 @@ class DatabaseController extends AbstractBaseController {
 				}
 			}
 
+			// return not only the stages requested, but also their names
+			if (isset($demand['filter']['stages']) && is_array($demand['filter']['stages'])) {
+				$stagesRequested = $demand['filter']['stages'];
+				unset($demand['filter']['stages']);
+				$stagesSettings = $this->settings['projectDatabase']['filters']['stage'];
+				foreach ($stagesRequested as $stage) {
+					$demand['filter']['stages'][$stage]['key'] = $stage;
+					$demand['filter']['stages'][$stage]['name'] = $stagesSettings[$stage]['_value'];
+				}
+			}
+
 			// return not only the budget bracket keys, but also the minimum and maximum value
 			if (isset($demand['filter']['budgetBrackets']) && is_array($demand['filter']['budgetBrackets'])) {
 				$bracketsRequested = $demand['filter']['budgetBrackets'];

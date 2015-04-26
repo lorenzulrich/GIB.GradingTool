@@ -319,11 +319,21 @@ GIB:
               minimum: 500
               maximum: 2000
         stage:
-          0: 'Project Identification'
-          1: 'Pre-Feasibility'
-          2: Feasibility
-          3: 'Ready to invest'
-          4: Implementation
+          'projectidentifiaction':
+            _key: 'projectidentification'
+            _value: 'Project Identification'
+          'prefeasibility':
+            _key: 'prefeasibility'
+            _value: 'Pre-Feasibility'
+          'feasibility':
+            _key: 'feasibility'
+            _value: 'Feasibility'
+          'readytoinvest':
+            _key: 'readytoinvest'
+            _value: 'Ready to invest'
+          'brownfield':
+            _key: 'brownfield'
+            _value: 'Brownfield'
         region:
           -
              _key: '002'
