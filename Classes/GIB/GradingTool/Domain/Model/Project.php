@@ -281,9 +281,17 @@ class Project {
 		if (isset($dataSheetContent['categories']) && is_array($dataSheetContent['categories'])) {
 			$this->setCategories(implode($dataSheetContent['categories']));
 		}
+
+		// Total investment
+		// dataSheetForm
 		if (isset($dataSheetContent['cost'])) {
 			$this->setCost($dataSheetContent['cost']);
 		}
+		// dataSheetFormV2
+		if (isset($dataSheetContent['capex'])) {
+			$this->setCost($dataSheetContent['capex']);
+		}
+
 		if (isset($dataSheetContent['requiredInvestment'])) {
 			$this->setRequiredInvestment($dataSheetContent['requiredInvestment']);
 		}
