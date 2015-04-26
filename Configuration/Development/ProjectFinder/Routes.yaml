@@ -1,0 +1,19 @@
+-
+  name: 'GIB.GradingTool Home'
+  uriPattern: ''
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Database'
+    '@action': 'index'
+  appendExceedingArguments: true
+-
+  name: 'GIB.GradingTool Open Project'
+  uriPattern: '{project}/open'
+  defaults:
+    '@package': 'GIB.GradingTool'
+    '@controller': 'Database'
+    '@action': 'open'
+  routeParts:
+    project:
+      objectType: 'GIB\GradingTool\Domain\Model\Project'
+      uriPattern: '{projectTitle}'
