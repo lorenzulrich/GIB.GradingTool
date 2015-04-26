@@ -93,19 +93,22 @@
 			</f:if>
 		</f:else>
 	</f:if>
-	<f:if condition="{project.projectDataArray.hideSpider}">
-		<f:else>
-			<f:if condition="{submission.mean}">
-				<tr>
-					<th>
-						GIB Grading:
-					</th>
-					<td>
-						<f:format.number decimals="2">{submission.mean}</f:format.number>
-					</td>
-				</tr>
-			</f:if>
-		</f:else>
-	</f:if>
+	<f:comment>
+		<f:if condition="{project.projectDataArray.hideSpider}">
+			<f:else>
+				<f:if condition="{submission.mean}">
+					<tr>
+						<th>
+							GIB Grading:
+						</th>
+						<td>
+							<f:format.number decimals="2">{submission.mean}</f:format.number>
+						</td>
+					</tr>
+				</f:if>
+			</f:else>
+		</f:if>
+	</f:comment>
 	</tbody>
 </table>
+<small>For more information please contact <a href="mailto:katharina.braig@gib-foundation.org">katharina.braig@gib-foundation.org</a>.</small>

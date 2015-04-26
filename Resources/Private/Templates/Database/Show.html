@@ -16,6 +16,7 @@
 					<p>
 						<f:format.nl2br>{project.projectDataArray.overview}</f:format.nl2br>
 					</p>
+					<f:comment>
 					<p>
 						<f:if condition="{project.projectDataArray.hideSpider}">
 							<f:else>
@@ -24,6 +25,7 @@
 							</f:else>
 						</f:if>
 					</p>
+					</f:comment>
 				</div>
 				<div class="col-md-5">
 					<f:if condition="{project.projectDataArray.picture}">
