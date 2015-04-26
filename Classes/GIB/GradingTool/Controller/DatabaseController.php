@@ -45,7 +45,7 @@ class DatabaseController extends AbstractBaseController {
 		/** @var \TYPO3\Form\Factory\ArrayFormFactory $factory */
 		$factory = $this->objectManager->get('TYPO3\Form\Factory\ArrayFormFactory');
 
-		$dataSheetForm = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']);
+		$dataSheetForm = $this->formPersistenceManager->load($this->settings['forms']['dataSheet']['default']);
 		/** @var \TYPO3\Form\Core\Model\FormDefinition $test */
 		$dataSheetFormDefinition = $factory->build($dataSheetForm);
 		$categories = $dataSheetFormDefinition->getElementByIdentifier('categories')->getProperties()['options'];
