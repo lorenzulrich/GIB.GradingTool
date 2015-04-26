@@ -121,7 +121,7 @@ class DatabaseController extends AbstractBaseController {
 				$demand['filter']['country']['isoCode'] = $isoCode;
 			}
 
-			// return not only the regions requested
+			// return not only the regions requested, but also their names
 			if (isset($demand['filter']['regions']) && is_array($demand['filter']['regions'])) {
 				$regionsRequested = $demand['filter']['regions'];
 				unset($demand['filter']['regions']);
