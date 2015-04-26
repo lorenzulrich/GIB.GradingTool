@@ -35,21 +35,23 @@
 					<p class="navbar-text">
 						<strong>Stages:</strong><br />
 						<f:for each="{demand.filter.stages}" as="stage">
-							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{stage}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> {stage}<br />
+							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{stage.key}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> {stage.name}<br />
 						</f:for>
 					</p>
 				</div>
 			</f:if>
-			<f:if condition="{demand.filter.requiredInvestmentBrackets}">
-				<div class="col-md-3">
-					<p class="navbar-text">
-						<strong>Required Investment:</strong><br />
-						<f:for each="{demand.filter.requiredInvestmentBrackets}" as="requiredInvestmentBracket">
-							<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{requiredInvestmentBracket.key}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> USD {requiredInvestmentBracket.minimum}-{requiredInvestmentBracket.maximum} Mio.<br />
-						</f:for>
-					</p>
-				</div>
-			</f:if>
+			<f:comment>
+				<f:if condition="{demand.filter.requiredInvestmentBrackets}">
+					<div class="col-md-3">
+						<p class="navbar-text">
+							<strong>Required Investment:</strong><br />
+							<f:for each="{demand.filter.requiredInvestmentBrackets}" as="requiredInvestmentBracket">
+								<a class="removeFromFilter" data-target-type="checkbox" data-target-value="{requiredInvestmentBracket.key}" title="Remove from filter" href="#"><i class="fa fa-times"></i></a> USD {requiredInvestmentBracket.minimum}-{requiredInvestmentBracket.maximum} Mio.<br />
+							</f:for>
+						</p>
+					</div>
+				</f:if>
+			</f:comment>
 			<f:if condition="{demand.filter.budgetBrackets}">
 				<div class="col-md-3">
 					<p class="navbar-text">

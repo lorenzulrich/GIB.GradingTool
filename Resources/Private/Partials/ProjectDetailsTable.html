@@ -63,20 +63,22 @@
 			</tr>
 		</f:if>
 	</f:comment>
-	<f:if condition="{project.projectDataArray.hideRequiredInvestment}">
-		<f:else>
-			<f:if condition="{project.dataSheetContentArray.requiredInvestment}">
-				<tr>
-					<th>
-						Required Investment:
-					</th>
-					<td>
-						US $ {project.dataSheetContentArray.requiredInvestment} Mio.
-					</td>
-				</tr>
-			</f:if>
-		</f:else>
-	</f:if>
+	<f:comment>
+		<f:if condition="{project.projectDataArray.hideRequiredInvestment}">
+			<f:else>
+				<f:if condition="{project.dataSheetContentArray.requiredInvestment}">
+					<tr>
+						<th>
+							Required Investment:
+						</th>
+						<td>
+							US $ {project.dataSheetContentArray.requiredInvestment} Mio.
+						</td>
+					</tr>
+				</f:if>
+			</f:else>
+		</f:if>
+	</f:comment>
 	<f:if condition="{project.projectDataArray.hideTotalInvestment}">
 		<f:else>
 			<f:if condition="{project.dataSheetContentArray.cost}">
