@@ -35,6 +35,12 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 	protected $projectRepository;
 
 	/**
+	 * @var \GIB\GradingTool\Service\SubmissionService
+	 * @Flow\Inject
+	 */
+	protected $submissionService;
+
+	/**
 	 * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
 	 * @Flow\Inject
 	 */
@@ -78,6 +84,11 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		/** @var \GIB\GradingTool\Domain\Model\Project $project */
 		$project = $this->projectRepository->findByIdentifier($projectIdentifier);
 
+		$sendGradingToProjectManager = FALSE;
+		if (is_null($project->getSubmissionLastUpdated())) {
+			$sendGradingToProjectManager = TRUE;
+		}
+
 		// update the project with the data from the form
 		$formValueArray = $formRuntime->getFormState()->getFormValues();
 		$project->setSubmissionContent(serialize($formValueArray));
@@ -87,12 +98,17 @@ class SubmissionFinisher extends \TYPO3\Form\Core\Model\AbstractFinisher {
 		$this->persistenceManager->persistAll();
 
 		// add a flash message
-		$message = new \TYPO3\Flow\Error\Message('Thank you for submitting the data for your project "%s". You will receive your Grading in the next days.', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
+		$message = new \TYPO3\Flow\Error\Message('Thank you for submitting the data for your project "%s".', \TYPO3\Flow\Error\Message::SEVERITY_OK, array($project->getProjectTitle()));
 		$this->flashMessageContainer->addMessage($message);
 
 		// send notification mail
 		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newSubmissionNotification', $project);
 		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $project->getProjectManager());
+
+		if ($sendGradingToProjectManager) {
+			// The grading was completed for the first time, so we send the grading to the project manager
+			$this->submissionService->sendGradingToProjectManager($project);
+		}
 
 		// redirect to dashboard
 		$formRuntime = $this->finisherContext->getFormRuntime();

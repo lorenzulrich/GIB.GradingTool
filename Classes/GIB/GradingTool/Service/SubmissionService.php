@@ -35,6 +35,36 @@ class SubmissionService {
 	protected $environmentUtility;
 
 	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Resource\ResourceManager
+	 */
+	protected $resourceManager;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Resource\Publishing\ResourcePublisher
+	 */
+	protected $resourcePublisher;
+
+	/**
+	 * @var \GIB\GradingTool\Service\NotificationMailService
+	 * @Flow\Inject
+	 */
+	protected $notificationMailService;
+
+	/**
+	 * @var \GIB\GradingTool\Service\TemplateService
+	 * @Flow\Inject
+	 */
+	protected $templateService;
+
+	/**
+	 * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+	 * @Flow\Inject
+	 */
+	protected $persistenceManager;
+
+	/**
 	 * @param Project $project
 	 * @param bool $languageOverlay
 	 * @return array
@@ -592,6 +622,28 @@ class SubmissionService {
 		$image->render($temporaryBarChartFile);
 		return $temporaryBarChartFile;
 
+	}
+
+	/**
+	 * Send a mail to the project manager with the spider graph as attachement
+	 *
+	 * @param Project $project
+	 */
+	public function sendGradingToProjectManager($project) {
+		// send mail to project manager
+		$radarChartImagePathAndFilename = $this->getRadarImage($project);
+		$radarChartImageResource = $this->resourceManager->importResource($radarChartImagePathAndFilename);
+		$radarChartUri = $this->resourcePublisher->getPersistentResourceWebUri($radarChartImageResource);
+		// this is necessary because we're in a safe request, but generate a resource
+		$this->persistenceManager->persistAll();
+		$attachements = array(
+			array(
+				'source' => $radarChartUri,
+				'fileName' => 'gib-grading.png'
+			)
+		);
+		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newSubmissionProjectManagerNotification', $project);
+		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $project->getProjectManager(), $project->getProjectManager()->getName()->getFirstName() . ' ' . $project->getProjectManager()->getName()->getLastName(), $project->getProjectManager()->getPrimaryElectronicAddress()->getIdentifier(), '', $attachements);
 	}
 
 }

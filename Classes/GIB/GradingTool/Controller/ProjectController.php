@@ -252,9 +252,11 @@ class ProjectController extends AbstractBaseController {
 		$contentArray = unserialize($project->$contentGetter());
 		$contentArray[$fieldIdentifier] = $fieldValue;
 		$project->$contentSetter(serialize($contentArray));
-		if ($form === 'submission') {
-			$project->setSubmissionLastUpdated(new \TYPO3\Flow\Utility\Now);
-		}
+		// Don't update submissionLastUpdated because we use it to determine if a submission was finished
+		// the first time, so it is only set in the SubmissionFinisher now
+//		if ($form === 'submission') {
+//			$project->setSubmissionLastUpdated(new \TYPO3\Flow\Utility\Now);
+//		}
 		$this->projectRepository->update($project);
 		$this->persistenceManager->persistAll();
 
@@ -385,10 +387,25 @@ class ProjectController extends AbstractBaseController {
 	}
 
 	/**
+	 * Check if an administrator is logged in and deny access if someone else is trying to access
+	 */
+	public function checkAdministratorAndDenyIfNeeded() {
+		// check if the user has access to this project
+		if (!array_key_exists('GIB.GradingTool:Administrator', $this->securityContext->getRoles())) {
+			// add a flash message
+			$message = new \TYPO3\Flow\Error\Message('Access denied.', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+			$this->flashMessageContainer->addMessage($message);
+			$this->redirect('index', 'Standard');
+		}
+	}
+
+	/**
 	 * Iterates through all the projects and updates them with the current state of the data sheet
 	 * This is a helper method needed if the the separately persisted properties changed in the model
 	 */
 	public function updateAllProjectsAction() {
+		$this->checkAdministratorAndDenyIfNeeded();
+
 		$projects = $this->projectRepository->findAll();
 		$i = 0;
 		foreach ($projects as $project) {
@@ -764,6 +781,28 @@ class ProjectController extends AbstractBaseController {
 
 	}
 
-}
+	/**
+	 * Send the grading of a project to its project manager if the submission is complete
+	 *
+	 * @param string $submissionFormIdentifier
+	 * @param boolean $testMode
+	 */
+	public function sendGradingToProjectManagerAction($submissionFormIdentifier, $testMode = TRUE) {
+		$this->checkAdministratorAndDenyIfNeeded();
+		$projects = $this->projectRepository->findBySubmissionFormIdentifier($submissionFormIdentifier);
+		foreach ($projects as $project) {
+			/** @var \GIB\GradingTool\Domain\Model\Project $project */
+			if (!is_null($project->getSubmissionLastUpdated()) && !empty($project->getSubmissionContent())) {
+				$message = 'Send Grading for Project ' . $project->getProjectTitle() . ' to ' . $project->getProjectManager()->getPrimaryElectronicAddress()->getIdentifier() . '.';
+				if (!$testMode) {
+					$this->submissionService->sendGradingToProjectManager($project);
+					print('[!!!] ' . $message . PHP_EOL);
+				} else {
+					print('[TEST] ' . $message . PHP_EOL);
+				}
+			}
+		}
+		die();
+	}
 
-?>
+}

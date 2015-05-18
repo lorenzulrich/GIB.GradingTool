@@ -34,9 +34,10 @@ class NotificationMailService {
 	 * @param string $recipientName
 	 * @param string $recipientEmail
 	 * @param string $additionalContent
+	 * @param array $attachements
 	 * @return bool|void
 	 */
-	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $additionalContent = '') {
+	public function sendNotificationMail($templateIdentifier, \GIB\GradingTool\Domain\Model\Project $project, \GIB\GradingTool\Domain\Model\ProjectManager $projectManager = NULL, $recipientName = '', $recipientEmail = '', $additionalContent = '', $attachements = array()) {
 		if ($this->settings['email']['activateNotifications'] === FALSE) {
 			return TRUE;
 		}
@@ -73,6 +74,13 @@ class NotificationMailService {
 			$email->setBcc(array($templateContentArray['senderEmail'] => $templateContentArray['senderName']));
 		} else {
 			$email->setTo(array($templateContentArray['recipientEmail'] => $templateContentArray['recipientName']));
+		}
+		if (!empty($attachements)) {
+			foreach ($attachements as $attachement) {
+				$email->attach(
+					\Swift_Attachment::fromPath($attachement['source'])->setFilename($attachement['fileName'])
+				);
+			}
 		}
 		$email->setSubject($templateContentArray['subject']);
 		$email->setBody($emailBody, 'text/html');
