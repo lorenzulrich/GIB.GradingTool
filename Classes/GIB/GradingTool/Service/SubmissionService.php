@@ -410,6 +410,15 @@ class SubmissionService {
 			'BoxHeight' => 25,
 		);
 		$image->drawLegend(1500, 525, $legendOptions);
+		$textSettings = array(
+			'R' => 150,
+			'G' => 150,
+			'B' => 150,
+			'FontSize' => 80,
+			/*, "Angle" => 10*/);
+		$image->drawText(425,540, 'Self Asssessment', $textSettings);
+		$formattedDate = strftime('%Y-%m-%d', time());
+		$image->drawText(525,640, $formattedDate, $textSettings);
 
 		$temporaryRadarFile = tempnam($this->environmentUtility->getPathToTemporaryDirectory(), 'radarchart.png');
 		$image->render($temporaryRadarFile);
