@@ -105,6 +105,28 @@
 			</f:if>
 		</f:else>
 	</f:if>
+	<f:if condition="{project.lastUpdated}">
+		<f:then>
+			<tr>
+				<th>
+					Last update of project data:
+				</th>
+				<td>
+					<f:format.date>{project.lastUpdated}</f:format.date>
+				</td>
+			</tr>
+		</f:then>
+		<f:else>
+			<tr>
+				<th>
+					Last update of project data:
+				</th>
+				<td>
+					<f:format.date>{project.created}</f:format.date>
+				</td>
+			</tr>
+		</f:else>
+	</f:if>
 	<f:comment>
 		<f:if condition="{project.projectDataArray.hideSpider}">
 			<f:else>
