@@ -17,9 +17,9 @@ GIB:
     defaultLanguage: en
     languages:
       en: English
-      fr: Français
-      es: Español
-      zh: '中文'
+      #fr: Français
+      #es: Español
+      #zh: '中文'
 
     email:
       activateNotifications: TRUE
