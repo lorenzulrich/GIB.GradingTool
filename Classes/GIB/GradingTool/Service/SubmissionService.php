@@ -653,6 +653,8 @@ class SubmissionService {
 		);
 		$templateIdentifierOverlay = $this->templateService->getTemplateIdentifierOverlay('newSubmissionProjectManagerNotification', $project);
 		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $project->getProjectManager(), $project->getProjectManager()->getName()->getFirstName() . ' ' . $project->getProjectManager()->getName()->getLastName(), $project->getProjectManager()->getPrimaryElectronicAddress()->getIdentifier(), '', $attachements);
+		// CC to GIB
+		$this->notificationMailService->sendNotificationMail($templateIdentifierOverlay, $project, $project->getProjectManager(), $project->getProjectManager()->getName()->getFirstName() . ' ' . $project->getProjectManager()->getName()->getLastName(), 'grading@gib-foundation.org', '', $attachements);
 	}
 
 }
