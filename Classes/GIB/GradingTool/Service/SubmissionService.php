@@ -416,7 +416,7 @@ class SubmissionService {
 			'B' => 150,
 			'FontSize' => 80,
 			/*, "Angle" => 10*/);
-		$image->drawText(425,540, 'Self Asssessment', $textSettings);
+		$image->drawText(425,540, 'Self Assessment', $textSettings);
 		$formattedDate = strftime('%Y-%m-%d', time());
 		$image->drawText(525,640, $formattedDate, $textSettings);
 
