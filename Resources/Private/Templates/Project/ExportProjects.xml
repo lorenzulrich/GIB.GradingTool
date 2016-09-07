@@ -78,6 +78,9 @@
 					<gib:grading subject="{project}">
 						<f:for each="{grading.sections}" as="section">
 							<FIELD NAME="grading_{section.identifier}" TYPE="TEXT"/>
+							<f:for each="{section.questions}" as="question" iteration="questionIterator">
+								<FIELD NAME="grading_{section.identifier}_question{questionIterator.cycle}" TYPE="TEXT"/>
+							</f:for>
 						</f:for>
 					</gib:grading>
 					<FIELD NAME="grading_mean" TYPE="TEXT"/>
@@ -211,6 +214,13 @@
 									<f:format.number decimals="2">{section.weightedScore}</f:format.number>
 								</DATA>
 							</COL>
+							<f:for each="{section.questions}" as="question" iteration="questionScoreIterator">
+								<COL>
+									<DATA>
+										{question.score}
+									</DATA>
+								</COL>
+							</f:for>
 						</f:for>
 						<COL>
 							<DATA>
